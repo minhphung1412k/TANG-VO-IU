@@ -3,91 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thế Giới Lung Linh Của Vợ Yêu ❤️</title>
+    <title>Thế Giới Cầu Vồng Của Vợ Yêu ❤️</title>
     <style>
-        /* NỀN CHUYỂN ĐỘNG ĐA SẮC RỰC RỠ */
+        /* NỀN CẦU VỒNG CHUYỂN ĐỘNG MẠNH */
+        @keyframes rainbowBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
             margin: 0; padding: 0;
             font-family: 'Arial', sans-serif;
             height: 100vh; display: flex;
             justify-content: center; align-items: center;
             overflow: hidden;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background: linear-gradient(-45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
             background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
+            animation: rainbowBG 8s linear infinite;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* KHUNG KÍNH PHÁT SÁNG */
+        /* KHUNG KÍNH PHÁT SÁNG NEON */
         .glass-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+            border-radius: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            padding: 50px 40px;
             width: 350px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 0 10px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.3), inset 0 0 20px rgba(255,255,255,0.2);
             z-index: 10;
             transition: 0.5s;
         }
 
-        h2 { color: white; text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d; font-size: 1.4rem; margin-bottom: 25px; }
-
-        /* INPUT RỰC RỠ */
-        .input-group { position: relative; margin-bottom: 20px; }
-        input {
-            width: 100%; padding: 15px; border: none; border-radius: 50px;
-            background: rgba(255, 255, 255, 0.9); outline: none;
-            font-size: 16px; transition: 0.3s; box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        /* CHỮ PHÁT SÁNG NEON */
+        h2 { 
+            color: #fff; 
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff00c8, 0 0 30px #ff00c8;
+            font-size: 1.5rem; 
+            margin-bottom: 30px; 
+            letter-spacing: 2px;
         }
-        input:focus { transform: scale(1.05); box-shadow: 0 0 20px #fff; }
 
-        #toggleEye { position: absolute; right: 20px; top: 12px; cursor: pointer; font-size: 1.4rem; }
+        /* Ô NHẬP LIỆU BẢO MẬT (ĐÃ XÓA GỢI Ý) */
+        .input-group { position: relative; margin-bottom: 25px; }
+        input {
+            width: 100%; padding: 16px; border: none; border-radius: 50px;
+            background: rgba(255, 255, 255, 0.9); outline: none;
+            font-size: 16px; transition: 0.4s;
+            text-align: center; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        input:focus { transform: scale(1.1); box-shadow: 0 0 30px #fff; }
 
-        /* NÚT BẤM NEON */
+        #toggleEye { position: absolute; right: 20px; top: 14px; cursor: pointer; font-size: 1.5rem; }
+
+        /* NÚT BẤM RỰC RỠ */
         button#btnSubmit {
-            background: #ff4d6d; color: white; border: none; padding: 15px;
+            background: linear-gradient(45deg, #ff00c8, #7a00ff);
+            color: white; border: none; padding: 16px;
             width: 100%; border-radius: 50px; font-weight: bold;
-            cursor: pointer; font-size: 1.1rem;
-            box-shadow: 0 0 20px #ff4d6d;
+            cursor: pointer; font-size: 1.2rem;
+            box-shadow: 0 0 25px #ff00c8;
             transition: 0.3s;
         }
-        button#btnSubmit:hover { background: #fff; color: #ff4d6d; box-shadow: 0 0 40px #fff; }
+        button#btnSubmit:hover { transform: scale(1.05); box-shadow: 0 0 50px #fff; }
 
-        /* MENU RỰC RỠ SAU KHI VÀO */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
+        /* MENU RỰC RỠ */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
         .menu-btn {
             background: rgba(255, 255, 255, 0.2);
             padding: 25px 10px; border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            color: white; font-weight: bold; cursor: pointer;
-            transition: 0.3s; text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            border: 2px solid #fff; color: #fff;
+            font-weight: bold; cursor: pointer; transition: 0.4s;
+            text-shadow: 0 0 10px #000;
         }
-        .menu-btn:hover { background: white; color: #ff4d6d; transform: scale(1.1); box-shadow: 0 0 20px #fff; }
+        .menu-btn:hover { background: #fff; color: #ff00c8; transform: translateY(-10px) rotate(3deg); box-shadow: 0 0 30px #fff; }
 
-        /* NÚT LOA VÀ SÓNG NHẠC */
+        /* LOA VÀ HIỆU ỨNG SÓNG NHẠC */
         #music-btn {
             position: fixed; bottom: 30px; right: 30px;
-            width: 70px; height: 70px; background: white;
+            width: 80px; height: 80px; background: #fff;
             border-radius: 50%; display: none; align-items: center; justify-content: center;
-            font-size: 35px; cursor: pointer; z-index: 1000;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            font-size: 40px; cursor: pointer; z-index: 1000;
+            box-shadow: 0 0 30px #ff00c8;
         }
-        .waves { animation: ripple 1s linear infinite; }
-        @keyframes ripple { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.7); } 100% { box-shadow: 0 0 0 30px rgba(255,255,255,0); } }
+        .playing { animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        /* TRÁI TIM VÀ ÁNH SÁNG BAY */
-        .particle { position: absolute; pointer-events: none; animation: floatUp forwards; }
+        /* HẠT ÁNH SÁNG & TRÁI TIM */
+        .particle { position: absolute; pointer-events: none; animation: floatUp linear forwards; }
         @keyframes floatUp {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
             50% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+            100% { transform: translateY(-20vh) scale(1.5) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
@@ -98,20 +109,20 @@
     </audio>
 
     <div class="glass-card" id="login-box">
-        <h2>THẾ GIỚI CỦA VỢ YÊU ❤️</h2>
+        <h2>VỢ YÊU ĐĂNG NHẬP ❤️</h2>
         <div class="input-group">
-            <input type="text" id="user" placeholder="Tài khoản: anhyeuemlamdonha">
+            <input type="text" id="user" placeholder="Nhập tên tài khoản...">
         </div>
         <div class="input-group">
-            <input type="password" id="pass" placeholder="Mật khẩu: xindungboroianh">
+            <input type="password" id="pass" placeholder="Nhập mật khẩu...">
             <span id="toggleEye" onclick="togglePass()">👁️</span>
         </div>
-        <button id="btnSubmit" onclick="checkLogin()">MỞ CÁNH CỬA BÍ MẬT ✨</button>
-        <p id="error-msg" style="color: yellow; font-weight: bold; margin-top: 15px; display: none;">VỢ IU NHẬP SAI ÒI ❌</p>
+        <button id="btnSubmit" onclick="checkLogin()">MỞ QUÀ NGAY ✨</button>
+        <p id="error-msg" style="color: yellow; font-weight: bold; margin-top: 15px; display: none; text-shadow: 0 0 10px #000;">VỢ IU NHẬP SAI ÒI ❌</p>
     </div>
 
-    <div class="glass-card" id="main-content" style="display: none; width: 80%; max-width: 600px;">
-        <h1 style="color: white; font-size: 2.2rem; text-shadow: 0 0 20px #ff4d6d;">Gửi Vợ Yêu ❤️</h1>
+    <div class="glass-card" id="main-content" style="display: none; width: 85%; max-width: 650px;">
+        <h1 style="color: white; font-size: 2.5rem; text-shadow: 0 0 30px #ff00c8;">Chào Vợ Yêu Của Anh ❤️</h1>
         <div class="menu-grid">
             <div class="menu-btn">CHUYỆN QUÁ KHỨ</div>
             <div class="menu-btn">CHUYỆN HIỆN TẠI</div>
@@ -140,23 +151,24 @@
             const btn = document.getElementById('music-btn');
 
             if(u === u_c && p === p_c) {
-                document.getElementById('login-box').style.transform = "scale(0) rotate(360deg)";
+                document.getElementById('login-box').style.transform = "translateY(-100vh) rotate(540deg)";
+                document.getElementById('login-box').style.opacity = "0";
+                
                 setTimeout(() => {
                     document.getElementById('login-box').style.display = "none";
                     document.getElementById('main-content').style.display = "block";
                     btn.style.display = "flex";
                     
-                    // Lệnh ép phát nhạc
+                    // PHÁT NHẠC
                     song.play().then(() => {
                         btn.innerText = "🔊";
-                        btn.classList.add('waves');
+                        btn.classList.add('playing');
                     }).catch(e => {
-                        console.log("Browser blocked autoplay");
                         btn.innerText = "🔇";
                     });
                     
-                    setInterval(spawnParticles, 100);
-                }, 600);
+                    setInterval(spawnParticles, 80); // Tạo hạt ánh sáng dày hơn
+                }, 700);
             } else {
                 document.getElementById('error-msg').style.display = "block";
                 document.getElementById('pass').value = "";
@@ -167,24 +179,21 @@
             const s = document.getElementById('mySong');
             const b = document.getElementById('music-btn');
             if(s.paused) { 
-                s.play(); 
-                b.innerText = "🔊"; 
-                b.classList.add('waves'); 
+                s.play(); b.innerText = "🔊"; b.classList.add('playing'); 
             } else { 
-                s.pause(); 
-                b.innerText = "🔇"; 
-                b.classList.remove('waves'); 
+                s.pause(); b.innerText = "🔇"; b.classList.remove('playing'); 
             }
         }
 
         function spawnParticles() {
             const p = document.createElement('div');
             p.className = 'particle';
-            const icons = ['❤️', '✨', '💖', '⭐', '🌸'];
-            p.innerHTML = icons[Math.floor(Math.random()*icons.length)];
+            const items = ['❤️', '✨', '💖', '💎', '🌈', '⭐'];
+            p.innerHTML = items[Math.floor(Math.random()*items.length)];
             p.style.left = Math.random() * 100 + "vw";
-            p.style.fontSize = Math.random() * 20 + 20 + "px";
-            p.style.animationDuration = Math.random() * 3 + 2 + "s";
+            p.style.fontSize = Math.random() * 25 + 20 + "px";
+            p.style.animationDuration = Math.random() * 2 + 2 + "s";
+            p.style.filter = "drop-shadow(0 0 10px white)";
             document.body.appendChild(p);
             setTimeout(() => p.remove(), 4000);
         }
