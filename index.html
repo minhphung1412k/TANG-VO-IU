@@ -79,4 +79,218 @@
         .input-container i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--neon-pink); }
         .input-container input {
             width: 100%; padding: 18px 50px; background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.1); border-radius:
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            color: #fff; font-size: 16px; transition: 0.3s;
+        }
+        .input-container input:focus { border-color: var(--neon-pink); background: rgba(255,255,255,0.12); }
+
+        /* CON MẮT MẬT KHẨU */
+        .eye-toggle {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            color: #888; cursor: pointer; transition: 0.3s;
+        }
+        .eye-toggle:hover { color: #fff; }
+
+        .btn-neon {
+            width: 100%; padding: 18px; border: none; border-radius: 12px;
+            background: linear-gradient(45deg, #ff2d55, #ff512f);
+            color: #fff; font-weight: 800; font-size: 1.1rem; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 2px;
+            box-shadow: 0 10px 20px rgba(255, 45, 85, 0.4); transition: 0.3s;
+        }
+        .btn-neon:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 45, 85, 0.6); }
+
+        /* MUSIC CONTROLLER */
+        #music-disc {
+            position: fixed; top: 20px; right: 20px; z-index: 2000;
+            width: 55px; height: 55px; background: #111; border-radius: 50%;
+            border: 2px solid #333; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; opacity: 0; transition: 1s;
+        }
+        .spin { animation: rotate 4s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* INTRO SCREEN */
+        #intro {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: 1.2s;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="city-bg"></div>
+    <div id="flash-overlay"></div>
+    <canvas id="firework-engine"></canvas>
+
+    <div id="intro" onclick="boot()">
+        <h1 style="color:#fff; font-size:3rem; letter-spacing:10px; font-family:'Montserrat';">ENTER LOVE</h1>
+        <div style="margin-top:30px;"><i class="fas fa-heart-pulse fa-beat" style="font-size:70px; color:var(--neon-pink);"></i></div>
+    </div>
+
+    <div id="music-disc" onclick="controlAudio()">
+        <i class="fas fa-music" id="music-icon" style="color: var(--neon-pink);"></i>
+    </div>
+
+    <div id="yt-player"></div>
+
+    <div class="crystal-panel" id="login-box">
+        <h2 class="title-love">Vợ Yêu ❤️</h2>
+        <div class="input-container">
+            <i class="fas fa-user-heart"></i>
+            <input type="text" id="user" placeholder="Tên đăng nhập">
+        </div>
+        <div class="input-container">
+            <i class="fas fa-key"></i>
+            <input type="password" id="pass" placeholder="Mật khẩu">
+            <i class="fas fa-eye eye-toggle" onclick="togglePass()"></i>
+        </div>
+        <button class="btn-neon" onclick="login()">BẮT ĐẦU</button>
+    </div>
+
+    <div class="crystal-panel" id="menu-box">
+        <h2 class="title-love" style="font-size: 2.5rem;">The Journey</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+            <div onclick="superFire()" style="background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--crystal-border);">QUÁ KHỨ</div>
+            <div onclick="superFire()" style="background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--crystal-border);">HIỆN TẠI</div>
+            <div onclick="superFire()" style="background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--crystal-border);">TƯƠNG LAI</div>
+            <div onclick="alert('Anh hứa!')" style="background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--crystal-border);">LỜI HỨA</div>
+        </div>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        /* HỆ THỐNG JAVASCRIPT CHI TIẾT 
+           Xử lý: Pháo hoa vật lý, Âm thanh, và Logic Login
+        */
+        const canvas = document.getElementById('firework-engine');
+        const ctx = canvas.getContext('2d');
+        const city = document.getElementById('city-bg');
+        const flash = document.getElementById('flash-overlay');
+        let rockets = [], particles = [], player;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.onresize = resize;
+        resize();
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player', {
+                height: '0', width: '0', videoId: 'iXaw-jwmjjA',
+                playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
+                events: { 'onReady': (e) => e.target.mute() }
+            });
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const force = Math.random() * 12 + 3;
+                this.vx = Math.cos(angle) * force;
+                this.vy = Math.sin(angle) * force;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.01 + 0.005;
+                this.gravity = 0.2;
+            }
+            update() {
+                this.vx *= 0.95; this.vy *= 0.95; this.vy += this.gravity;
+                this.x += this.vx; this.y += this.vy;
+                this.alpha -= this.decay;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10; ctx.shadowColor = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI*2); ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class Rocket {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * (canvas.height * 0.45);
+                this.speed = Math.random() * 5 + 15;
+                this.color = `hsl(${Math.random()*360}, 100%, 75%)`;
+            }
+            update() {
+                this.y -= this.speed; this.speed *= 0.98;
+                if(this.y <= this.targetY || this.speed < 1.5) {
+                    this.explode(); return false;
+                }
+                return true;
+            }
+            draw() {
+                ctx.fillStyle = "#fff";
+                ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI*2); ctx.fill();
+            }
+            explode() {
+                // Flash effect
+                city.style.filter = "brightness(0.6) contrast(1.4) blur(0px)";
+                flash.style.opacity = "1";
+                flash.style.background = `radial-gradient(circle at ${this.x}px ${this.y}px, ${this.color}44 0%, transparent 70%)`;
+                setTimeout(() => {
+                    city.style.filter = "brightness(0.15) contrast(1.2) blur(1px)";
+                    flash.style.opacity = "0";
+                }, 300);
+
+                for(let i=0; i<150; i++) particles.push(new Particle(this.x, this.y, this.color));
+            }
+        }
+
+        function boot() {
+            document.getElementById('intro').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('intro').style.display = 'none';
+                document.getElementById('login-box').classList.add('active');
+                document.getElementById('music-disc').style.opacity = '1';
+                player.unMute(); player.playVideo();
+                setInterval(() => rockets.push(new Rocket()), 1500);
+            }, 1000);
+        }
+
+        function togglePass() {
+            const p = document.getElementById('pass');
+            p.type = p.type === 'password' ? 'text' : 'password';
+        }
+
+        function controlAudio() {
+            const disc = document.getElementById('music-disc');
+            if(player.getPlayerState() === 1) {
+                player.pauseVideo(); disc.classList.remove('spin');
+            } else {
+                player.playVideo(); disc.classList.add('spin');
+            }
+        }
+
+        function login() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
+                document.getElementById('login-box').classList.remove('active');
+                setTimeout(() => {
+                    document.getElementById('menu-box').classList.add('active');
+                    superFire();
+                }, 800);
+            } else { alert("Sai mật khẩu rồi vợ ơi!"); }
+        }
+
+        function superFire() { for(let i=0; i<10; i++) setTimeout(() => rockets.push(new Rocket()), i*200); }
+
+        function render() {
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+            rockets = rockets.filter(r => { r.draw(); return r.update(); });
+            particles = particles.filter(p => { p.update(); p.draw(); return p.alpha > 0; });
+            requestAnimationFrame(render);
+        }
+        render();
+    </script>
+</body>
+</html>
