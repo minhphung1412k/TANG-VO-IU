@@ -3,274 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gửi Vợ Yêu ❤️</title>
+    <title>Gửi Người Anh Yêu ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --primary-color: #ff4d6d;
-            --warm-glow: rgba(255, 183, 197, 0.4);
-        }
+        :root { --primary: #ff4d6d; --warm: rgba(255, 255, 255, 0.2); }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body, html { width: 100%; height: 100%; overflow: hidden; font-family: 'Quicksand', sans-serif; background-color: #000; }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body, html { width: 100%; height: 100%; overflow: hidden; font-family: 'Quicksand', sans-serif; background: #1a1a1a; }
-
-        /* HÌNH NỀN THIÊN NHIÊN ẤM ÁP */
-        .background-container {
+        /* HÌNH NỀN THIÊN NHIÊN - ĐẢM BẢO KHÔNG BỊ ĐEN */
+        .main-bg {
             position: fixed; inset: 0;
-            background: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+            background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
             z-index: -2;
-            transform: scale(1.1);
-            transition: transform 3s ease-out;
+            transition: transform 2s ease;
         }
 
         .overlay {
             position: fixed; inset: 0;
-            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5));
             z-index: -1;
         }
 
-        /* HIỆU ỨNG CÁNH HOA RƠI */
-        #canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+        /* HIỆU ỨNG HOA RƠI */
+        canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
 
-        /* MÀN HÌNH CHỜ (INTRO) */
+        /* INTRO MÀN HÌNH CHỜ */
         #intro {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 1s ease;
+            transition: 1s; cursor: pointer;
         }
-        .heart-loader {
-            font-size: 80px; color: var(--primary-color);
-            animation: heartBeat 1.5s infinite ease-in-out;
-            cursor: pointer; text-shadow: 0 0 30px var(--primary-color);
-        }
+        .heart { font-size: 80px; color: var(--primary); animation: beat 1s infinite; text-shadow: 0 0 20px var(--primary); }
 
-        /* KHUNG CHÍNH (GLASSMORPHISM) */
-        .container {
-            position: relative; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 10;
-        }
-
+        /* GLASS CARD */
         .card {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px 30px; border-radius: 30px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 40px 25px; border-radius: 30px;
             width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            display: none; animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            display: none; z-index: 10; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
-        h2 { font-family: 'Dancing Script', cursive; color: #fff; font-size: 2.5rem; margin-bottom: 25px; }
+        h2 { font-family: 'Dancing Script', cursive; color: #fff; font-size: 2.2rem; margin-bottom: 25px; }
 
-        /* INPUT VÀ CON MẮT MẬT KHẨU */
-        .input-group { position: relative; margin-bottom: 20px; }
+        .input-box { position: relative; margin-bottom: 15px; }
         input {
-            width: 100%; padding: 15px 45px; border-radius: 15px; border: none;
-            background: rgba(255, 255, 255, 0.8); color: #333; font-size: 16px;
-            outline: none; transition: 0.3s;
+            width: 100%; padding: 15px 40px; border-radius: 12px; border: none;
+            background: rgba(255,255,255,0.9); font-weight: 600; outline: none;
         }
-        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--primary-color); }
-        .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666; }
+        .input-box i:first-child { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--primary); }
+        .eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666; padding: 5px; }
 
-        .btn-main {
-            width: 100%; padding: 15px; border-radius: 15px; border: none;
-            background: linear-gradient(45deg, #ff4d6d, #ff758f);
-            color: white; font-weight: 600; cursor: pointer;
-            transition: 0.3s; box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+        .btn {
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            background: var(--primary); color: #fff; font-weight: bold; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
         }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(255, 77, 109, 0.4); }
 
-        /* MENU 4 MỤC */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        /* MENU 4 MỤC THEO YÊU CẦU */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
         .menu-item {
-            background: rgba(255, 255, 255, 0.15); padding: 25px 10px;
-            border-radius: 20px; color: #fff; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s;
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            background: var(--warm); padding: 20px 10px; border-radius: 15px;
+            color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
         }
-        .menu-item i { font-size: 24px; color: #ffb3c1; }
-        .menu-item:hover { background: rgba(255, 77, 109, 0.4); transform: scale(1.05); }
+        .menu-item:hover { background: var(--primary); transform: translateY(-5px); }
 
-        /* ĐIỀU KHIỂN NHẠC */
-        #music-ctrl {
-            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
-            background: var(--primary-color); border-radius: 50%;
+        /* ICON BẬT TẮT NHẠC */
+        #music-btn {
+            position: fixed; top: 20px; right: 20px; width: 45px; height: 45px;
+            background: rgba(255,255,255,0.2); border-radius: 50%;
             display: none; justify-content: center; align-items: center;
-            color: white; cursor: pointer; z-index: 10000;
-            box-shadow: 0 0 20px var(--warm-glow);
+            color: white; cursor: pointer; z-index: 10000; border: 1px solid #fff;
         }
 
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas"></canvas>
-    <div class="background-container" id="bg"></div>
+    <div class="main-bg" id="bg"></div>
     <div class="overlay"></div>
+    <canvas id="petal-canvas"></canvas>
 
-    <div id="intro" onclick="initExperience()">
-        <div class="heart-loader"><i class="fas fa-heart"></i></div>
-        <p style="color: white; margin-top: 20px; letter-spacing: 5px; font-size: 12px;">CHẠM VÀO ĐỂ BẮT ĐẦU</p>
+    <div id="intro" onclick="startNow()">
+        <div class="heart"><i class="fas fa-heart"></i></div>
+        <p style="color: white; margin-top: 15px; letter-spacing: 3px;">CHẠM ĐỂ BẮT ĐẦU</p>
     </div>
 
-    <div id="music-ctrl" onclick="toggleMusic()">
-        <i id="music-icon" class="fas fa-compact-disc fa-spin"></i>
+    <div id="player"></div>
+
+    <div id="music-btn" onclick="toggleMusic()">
+        <i id="m-icon" class="fas fa-compact-disc fa-spin"></i>
     </div>
 
-    <iframe id="youtube-player" style="display:none"
-        src="https://www.youtube.com/embed/7maJOI3QMu0?enablejsapi=1&loop=1&playlist=7maJOI3QMu0" 
-        frameborder="0"></iframe>
-
-    <div class="container">
-        <div class="card" id="login-card">
-            <h2>Khu Vườn Bí Mật</h2>
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" id="username" placeholder="Tên của em..." autocomplete="off">
-            </div>
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Mật mã tình yêu...">
-                <i class="fas fa-eye toggle-password" id="eye-toggle" onclick="togglePass()"></i>
-            </div>
-            <button class="btn-main" onclick="handleLogin()">KHÁM PHÁ NGAY</button>
+    <div class="card" id="login-card">
+        <h2>Xin Chào Vợ ❤️</h2>
+        <div class="input-box">
+            <i class="fas fa-user"></i>
+            <input type="text" id="user" placeholder="TÊN ĐĂNG NHẬP">
         </div>
+        <div class="input-box">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="pass" placeholder="MẬT KHẨU">
+            <i class="fas fa-eye eye" onclick="togglePass()"></i>
+        </div>
+        <button class="btn" onclick="checkLogin()">ĐĂNG NHẬP</button>
+    </div>
 
-        <div class="card" id="menu-card">
-            <h2>Lối Vào Trái Tim</h2>
-            <div class="menu-grid">
-                <div class="menu-item" onclick="alert('Lưu giữ mọi kỷ niệm đẹp nhất...')">
-                    <i class="fas fa-camera-retro"></i>
-                    <span>KỶ NIỆM</span>
-                </div>
-                <div class="menu-item" onclick="alert('Cùng nhau xây đắp tương lai...')">
-                    <i class="fas fa-hourglass-half"></i>
-                    <span>TƯƠNG LAI</span>
-                </div>
-                <div class="menu-item" onclick="alert('Lời hứa mãi mãi bên em...')">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    <span>HỨA HẸN</span>
-                </div>
-                <div class="menu-item" onclick="alert('Anh yêu em rất nhiều!')">
-                    <i class="fas fa-kiss-wink-heart"></i>
-                    <span>YÊU EM</span>
-                </div>
-            </div>
+    <div class="card" id="menu-card">
+        <h2>Khu Vườn Tình Yêu</h2>
+        <div class="menu-grid">
+            <div class="menu-item" onclick="alert('Chuyện quá khứ...')">CHUYỆN QUÁ KHỨ</div>
+            <div class="menu-item" onclick="alert('Chuyện hiện tại...')">CHUYỆN HIỆN TẠI</div>
+            <div class="menu-item" onclick="alert('Chuyện tương lai...')">CHUYỆN TƯƠNG LAI</div>
+            <div class="menu-item" onclick="alert('Lời hứa...')">LỜI NHẮN NHỦ VÀ LỜI HỨA</div>
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // Hiệu ứng hoa rơi (Sakura/Petals)
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const petals = [];
-
-        class Petal {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height - canvas.height;
-                this.size = Math.random() * 7 + 3;
-                this.speed = Math.random() * 2 + 1;
-                this.angle = Math.random() * 360;
-                this.spin = Math.random() * 2 - 1;
-            }
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle * Math.PI / 180);
-                ctx.fillStyle = 'rgba(255, 183, 197, 0.8)';
-                ctx.beginPath();
-                ctx.ellipse(0, 0, this.size, this.size/2, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-            update() {
-                this.y += this.speed;
-                this.x += Math.sin(this.y / 50);
-                this.angle += this.spin;
-                if (this.y > canvas.height) this.y = -20;
-            }
+        // Khởi tạo Nhạc YouTube
+        let player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0', width: '0',
+                videoId: '7maJOI3QMu0',
+                playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': '7maJOI3QMu0' },
+                events: { 'onReady': onPlayerReady }
+            });
         }
+        function onPlayerReady(event) { event.target.mute(); event.target.playVideo(); }
 
-        for (let i = 0; i < 50; i++) petals.push(new Petal());
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            petals.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // Logic điều khiển
-        let playing = true;
-        const player = document.getElementById('youtube-player').contentWindow;
-
-        function initExperience() {
+        let isMusicPlaying = true;
+        function startNow() {
             document.getElementById('intro').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('intro').style.display = 'none';
                 document.getElementById('login-card').style.display = 'block';
-                document.getElementById('music-ctrl').style.display = 'flex';
-                document.getElementById('bg').style.transform = 'scale(1)';
+                document.getElementById('music-btn').style.display = 'flex';
+                // Bật tiếng và phát nhạc khi người dùng tương tác
+                player.unMute();
+                player.playVideo();
             }, 1000);
-            player.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        }
-
-        function togglePass() {
-            const passInput = document.getElementById('password');
-            const eye = document.getElementById('eye-toggle');
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                eye.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                passInput.type = 'password';
-                eye.classList.replace('fa-eye-slash', 'fa-eye');
-            }
         }
 
         function toggleMusic() {
-            const icon = document.getElementById('music-icon');
-            if (playing) {
-                player.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            const icon = document.getElementById('m-icon');
+            if(isMusicPlaying) {
+                player.pauseVideo();
                 icon.classList.remove('fa-spin');
                 icon.classList.replace('fa-compact-disc', 'fa-play');
             } else {
-                player.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                player.playVideo();
                 icon.classList.add('fa-spin');
                 icon.classList.replace('fa-play', 'fa-compact-disc');
             }
-            playing = !playing;
+            isMusicPlaying = !isMusicPlaying;
         }
 
-        function handleLogin() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            if (u === "anhyeuemlamdonha" && p === "xindungboroianh") {
-                document.getElementById('login-card').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('login-card').style.display = 'none';
-                    document.getElementById('menu-card').style.display = 'block';
-                }, 500);
+        function togglePass() {
+            const p = document.getElementById('pass');
+            p.type = p.type === 'password' ? 'text' : 'password';
+        }
+
+        function checkLogin() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            // Sử dụng thông tin đăng nhập bạn đã cung cấp trước đó
+            if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
+                document.getElementById('login-card').style.display = 'none';
+                document.getElementById('menu-card').style.display = 'block';
+                document.getElementById('bg').style.transform = 'scale(1.2)';
             } else {
-                alert("Sai tên hoặc mật mã rồi vợ ơi! ❤️");
+                alert("Thông tin không chính xác!");
             }
         }
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+        // Hiệu ứng hoa rơi
+        const canvas = document.getElementById('petal-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const petals = [];
+        class Petal {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.s = Math.random() * 5 + 2;
+                this.v = Math.random() * 2 + 1;
+            }
+            draw() {
+                ctx.fillStyle = "rgba(255, 182, 193, 0.8)";
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.s, 0, Math.PI*2);
+                ctx.fill();
+            }
+            update() {
+                this.y += this.v;
+                this.x += Math.sin(this.y/50);
+                if(this.y > canvas.height) this.y = -10;
+            }
+        }
+        for(let i=0; i<60; i++) petals.push(new Petal());
+        function anim() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            petals.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(anim);
+        }
+        anim();
     </script>
 </body>
 </html>
