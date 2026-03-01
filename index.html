@@ -3,140 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Khu Vườn Bí Mật ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <title>Khu Vườn Cho Vợ ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; font-family: 'Quicksand', sans-serif;
-            background: #000;
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Quicksand', sans-serif; }
 
-        /* PHONG CẢNH THIÊN NHIÊN (SỬ DỤNG ẢNH KHÁC HOÀN TOÀN) */
-        #nature-background {
+        /* PHONG CẢNH THIÊN NHIÊN RỰC RỠ */
+        #bg {
             position: fixed; inset: 0; z-index: -1;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                        url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1500&q=80');
-            background-size: cover; background-position: center;
-            transition: 1s;
+            background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+            filter: brightness(0.6);
         }
 
-        /* HIỆU ỨNG CÁNH HOA ĐA SẮC */
-        .petal {
-            position: absolute; pointer-events: none; z-index: 10;
-            animation: fall linear forwards;
-        }
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-        }
-
-        /* MÀN HÌNH CHỜ SANG TRỌNG */
-        #intro-overlay {
+        /* MÀN HÌNH CHỜ */
+        #intro {
             position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-            z-index: 10000; display: flex; flex-direction: column;
+            z-index: 999; display: flex; flex-direction: column;
             justify-content: center; align-items: center; cursor: pointer;
         }
-        .magic-rose {
-            font-size: 100px; filter: drop-shadow(0 0 40px #ff4d6d);
-            animation: heartbeat 2s infinite;
-        }
-        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .rose { font-size: 80px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
-        /* KHUNG GIAO DIỆN MỚI */
-        .glass-box {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 40px; padding: 45px 30px;
-            width: 90%; max-width: 400px; text-align: center;
-            display: none; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-            color: white;
+        /* KHUNG ĐĂNG NHẬP */
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 30px; padding: 30px;
+            width: 85%; max-width: 350px; text-align: center;
+            display: none; border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
         }
 
-        h2 { font-family: 'Dancing Script', cursive; color: #ffb3c1; font-size: 3rem; margin-bottom: 25px; }
-
+        h2 { font-family: 'Dancing Script', cursive; color: #ffb3c1; font-size: 2.5rem; margin: 0 0 20px 0; }
         input {
-            width: 100%; padding: 18px; border-radius: 20px; border: none;
-            background: rgba(255,255,255,0.15); color: white; margin-bottom: 15px;
-            text-align: center; outline: none; font-size: 16px;
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            background: rgba(255,255,255,0.2); color: #fff; margin-bottom: 10px;
+            text-align: center; outline: none;
+        }
+        .btn {
+            background: #ff4d6d; color: white; border: none; padding: 15px;
+            width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer;
         }
 
-        .btn-glow {
-            background: linear-gradient(45deg, #ff758c, #ff7eb3);
-            color: white; border: none; padding: 18px; width: 100%;
-            border-radius: 20px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255, 117, 140, 0.3);
-            text-transform: uppercase; letter-spacing: 2px;
-        }
-
-        #music-control {
-            position: fixed; bottom: 25px; left: 25px;
-            width: 55px; height: 55px; background: rgba(255,255,255,0.1);
-            border-radius: 50%; display: none; align-items: center;
-            justify-content: center; font-size: 22px; border: 1px solid #fff; z-index: 1001;
+        /* CÁNH HOA RƠI */
+        .petal { position: absolute; pointer-events: none; animation: fall linear forwards; }
+        @keyframes fall {
+            to { transform: translateY(105vh) rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
-    <div id="nature-background"></div>
+    <div id="bg"></div>
 
-    <div id="intro-overlay" onclick="launch()">
-        <div class="magic-rose">🌹</div>
-        <p style="color: #fff; margin-top: 30px; letter-spacing: 5px; opacity: 0.7;">NHẤN VÀO ĐỂ NGHE NHẠC</p>
+    <div id="intro" onclick="openMagic()">
+        <div class="rose">🌹</div>
+        <p style="color: white; margin-top: 20px; letter-spacing: 2px;">CHẠM VÀO ĐỂ BẮT ĐẦU</p>
     </div>
 
-    <audio id="piano-player" loop>
-        <source src="https://files.catbox.moe/kpkp67.mp3?v=2" type="audio/mpeg">
+    <audio id="music" loop preload="auto">
+        <source src="https://files.catbox.moe/kpkp67.mp3" type="audio/mpeg">
     </audio>
 
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-        <div class="glass-box" id="login-form">
-            <h2>Vợ Yêu ❤️</h2>
-            <input type="text" id="usr_name" placeholder="Tên của vợ..." autocomplete="off">
-            <input type="password" id="usr_pass" placeholder="Mật mã yêu thương..." autocomplete="off">
-            <button class="btn-glow" onclick="checkLogin()">VÀO KHU VƯỜN ✨</button>
-            <p id="err-msg" style="color: #ff4d6d; display: none; margin-top: 15px;">Sai mật mã rồi vợ ơi! ❌</p>
-        </div>
+    <div class="card" id="login-box">
+        <h2>Vợ Yêu ❤️</h2>
+        <input type="text" id="u" placeholder="Tên tài khoản...">
+        <input type="password" id="p" placeholder="Mật khẩu...">
+        <button class="btn" onclick="check()">KHÁM PHÁ ✨</button>
+    </div>
 
-        <div class="glass-box" id="content-box">
-            <h2>Dành Cho Em</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="btn-glow" style="padding: 20px 5px; font-size: 11px;">KỶ NIỆM</div>
-                <div class="btn-glow" style="padding: 20px 5px; font-size: 11px;">TƯƠNG LAI</div>
-                <div class="btn-glow" style="padding: 20px 5px; font-size: 11px;">HỨA HẸN</div>
-                <div class="btn-glow" style="padding: 20px 5px; font-size: 11px;">YÊU EM</div>
-            </div>
+    <div class="card" id="menu-box">
+        <h2>Khu Vườn Của Em</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="btn" style="font-size: 12px;">KỈ NIỆM</div>
+            <div class="btn" style="font-size: 12px;">TƯƠNG LAI</div>
+            <div class="btn" style="font-size: 12px;">HỨA HẸN</div>
+            <div class="btn" style="font-size: 12px;">YÊU EM</div>
         </div>
     </div>
 
-    <div id="music-control" onclick="toggleMute()">🔊</div>
-
     <script>
-        const music = document.getElementById('piano-player');
+        const music = document.getElementById('music');
 
-        function launch() {
-            music.play().catch(e => console.log("Lỗi nhạc:", e));
-            document.getElementById('intro-overlay').style.display = 'none';
-            document.getElementById('login-form').style.display = 'block';
-            document.getElementById('music-control').style.display = 'flex';
-            setInterval(createPetal, 400);
+        function openMagic() {
+            // Phát nhạc
+            music.play().catch(e => console.log("Nhạc chờ kích hoạt"));
+            
+            // Chuyển màn hình ngay lập tức, không dùng hiệu ứng để tránh đơ
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('login-box').style.display = 'block';
+            
+            // Tạo cánh hoa
+            setInterval(createPetal, 500);
         }
 
-        function checkLogin() {
-            const u = document.getElementById('usr_name').value;
-            const p = document.getElementById('usr_pass').value;
+        function check() {
+            const u = document.getElementById('u').value;
+            const p = document.getElementById('p').value;
             if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('content-box').style.display = 'block';
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('menu-box').style.display = 'block';
             } else {
-                document.getElementById('err-msg').style.display = 'block';
+                alert("Sai mật khẩu rồi vợ ơi!");
             }
         }
 
-        function toggleMute() {
-            if(music.paused) { music.play(); document.getElementById('music-control').innerText = "🔊"; }
-            else { music.pause(); document.getElementById('music-control').innerText = "
+        function createPetal() {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.innerHTML = '🌸';
+            p.style.left = Math.random() * 100 + "vw";
+            p.style.top = "-5vh";
+            p.style.fontSize = Math.random() * 20 + 10 + "px";
+            p.style.animationDuration = Math.random() * 5 + 3 + "s";
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 8000);
+        }
+    </script>
+</body>
+</html>
