@@ -3,159 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kiệt Tác Dành Cho Vợ ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Siêu Phẩm Tình Yêu - Limited Edition ❤️</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* HỆ THỐNG QUẢN LÝ GIAO DIỆN CHUYÊN NGHIỆP */
         :root {
-            --primary: #ff4d6d;
-            --city-dark: brightness(0.12) grayscale(0.3) contrast(1.1);
-            --city-light: brightness(0.7) grayscale(0) contrast(1.3);
+            --love-color: #ff4d6d;
+            --gold-glow: #ffb703;
+            --city-filter: brightness(0.12) contrast(1.1) blur(1px);
+            --city-active: brightness(0.8) contrast(1.4) blur(0px);
+            --glass: rgba(0, 0, 0, 0.82);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; overflow: hidden; }
-        body, html { width: 100%; height: 100%; background: #000; font-family: 'Quicksand', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body, html { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; }
 
-        /* NỀN THÀNH PHỐ CỦA BẠN - XỬ LÝ LÀM TỐI MỜ MỜ */
-        #city-layer {
+        /* --- XỬ LÝ NỀN THÀNH PHỐ ĐA TẦNG --- */
+        #city-master {
             position: fixed; inset: 0;
             background: url('https://vtv1.mediacdn.vn/zoom/640_400/2023/1/1/hanoi-16725350353111867184281.jpg') center/cover no-repeat;
-            z-index: 1; filter: var(--city-dark);
-            transition: filter 0.15s ease-out;
+            z-index: 1; filter: var(--city-filter);
+            transition: all 0.25s cubic-bezier(0.1, 0.7, 1.0, 0.1);
+            transform: scale(1.05);
         }
 
-        /* LỚP CHIẾU SÁNG ĐỘNG (DYNAMIC LIGHTING) */
-        #dynamic-glow {
+        #light-diffusion {
             position: fixed; inset: 0; z-index: 2;
-            pointer-events: none; mix-blend-mode: overlay; opacity: 0;
-            transition: opacity 0.1s;
+            pointer-events: none; mix-blend-mode: soft-light; opacity: 0;
+            transition: opacity 0.15s;
         }
 
-        canvas { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
+        canvas#fireworks-layer { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
 
-        /* MÀN HÌNH "CHẠM ĐỂ SƯỚNG" - NGUYÊN BẢN */
-        #intro-overlay {
+        /* --- INTRO PHONG CÁCH ĐIỆN ẢNH --- */
+        #intro-engine {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; transition: 1.5s ease-in-out;
+            cursor: pointer; transition: 1.8s cubic-bezier(0.8, 0, 0.2, 1);
         }
-        .intro-title {
-            color: #fff; font-family: 'Dancing Script', cursive; font-size: 4rem;
-            text-shadow: 0 0 30px var(--primary); animation: heartbeat 1.5s infinite;
+        .text-reveal {
+            font-family: 'Montserrat', sans-serif; font-size: 3.5rem; color: #fff;
+            letter-spacing: 10px; text-transform: uppercase;
+            text-shadow: 0 0 50px var(--love-color);
+            animation: text-float 4s ease-in-out infinite;
         }
 
-        /* KHUNG ĐĂNG NHẬP TINH XẢO HƠN */
-        .glass-auth {
+        /* --- GIAO DIỆN FORM ĐĂNG NHẬP BIẾN THỂ --- */
+        .glass-container {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 85%; max-width: 450px; padding: 50px 30px;
-            background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(25px); border-radius: 40px;
-            text-align: center; display: none; z-index: 100;
-            box-shadow: 0 0 60px rgba(0,0,0,1);
+            width: 90%; max-width: 450px; padding: 60px 40px;
+            background: var(--glass); backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 45px;
+            display: none; z-index: 1000; text-align: center;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
         }
 
-        .input-group { position: relative; margin-bottom: 25px; }
-        .input-group i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--primary); }
-        .input-group input {
-            width: 100%; padding: 18px 20px 18px 55px; border-radius: 25px; border: none;
-            background: rgba(255,255,255,0.08); color: #fff; font-size: 16px; outline: none;
-            border-bottom: 2px solid transparent; transition: 0.3s;
+        .glass-container h2 { 
+            font-family: 'Dancing Script'; color: #fff; font-size: 3.2rem; 
+            margin-bottom: 40px; filter: drop-shadow(0 0 10px var(--love-color));
         }
-        .input-group input:focus { border-bottom: 2px solid var(--primary); background: rgba(255,255,255,0.15); }
 
-        .btn-submit {
-            width: 100%; padding: 20px; border-radius: 25px; border: none;
-            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        .input-wrapper { position: relative; margin-bottom: 25px; }
+        .input-wrapper i.main-icon { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); color: var(--love-color); font-size: 20px; }
+        .input-wrapper input {
+            width: 100%; padding: 22px 55px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05); color: #fff; font-weight: 600; font-size: 16px; outline: none;
+            transition: 0.4s;
+        }
+        .input-wrapper input:focus { background: rgba(255,255,255,0.1); border-color: var(--love-color); box-shadow: 0 0 20px rgba(255,77,109,0.3); }
+
+        /* CON MẮT HIỆN/ẨN MẬT KHẨU */
+        .eye-icon {
+            position: absolute; right: 22px; top: 50%; transform: translateY(-50%);
+            color: #888; cursor: pointer; padding: 5px; transition: 0.3s;
+        }
+        .eye-icon:hover { color: #fff; }
+
+        .btn-premium {
+            width: 100%; padding: 22px; border-radius: 25px; border: none;
+            background: linear-gradient(45deg, #ff0844 0%, #ffb199 100%);
             color: #fff; font-weight: 800; font-size: 1.2rem; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 65, 108, 0.4);
+            text-transform: uppercase; letter-spacing: 3px;
+            box-shadow: 0 15px 45px rgba(255, 8, 68, 0.4); transition: 0.4s;
         }
+        .btn-premium:hover { transform: scale(1.02); filter: brightness(1.1); }
 
-        /* MENU GRID */
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-        .grid-item {
-            background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px;
-            color: #fff; font-size: 13px; font-weight: 700; border: 1px solid rgba(255,255,255,0.1);
-            transition: 0.3s;
+        /* MENU GRID VỚI BIỂU TƯỢNG ĐẸP */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 35px; }
+        .menu-card {
+            background: rgba(255, 255, 255, 0.05); padding: 25px 10px; border-radius: 25px;
+            color: #fff; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
+            transition: 0.4s; display: flex; flex-direction: column; align-items: center; gap: 10px;
         }
-        .grid-item:hover { background: var(--primary); transform: translateY(-5px); }
+        .menu-card i { font-size: 24px; color: var(--gold-glow); }
+        .menu-card:hover { background: var(--love-color); transform: translateY(-10px); }
 
-        @keyframes heartbeat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        /* ANIMATIONS */
+        @keyframes text-float { 0%, 100% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(-15px); opacity: 0.7; } }
+        @keyframes pulse-city { 0% { transform: scale(1.05); } 100% { transform: scale(1.07); } }
     </style>
 </head>
 <body>
 
-<div id="city-layer"></div>
-<div id="dynamic-glow"></div>
-<canvas id="fireworks-canvas"></canvas>
+<div id="city-master"></div>
+<div id="light-diffusion"></div>
+<canvas id="fireworks-layer"></canvas>
 
-<div id="intro-overlay" onclick="initExperience()">
-    <h1 class="intro-title">CHẠM ĐỂ SƯỚNG</h1>
-    <div style="font-size: 100px; color: var(--primary); margin-top: 30px;"><i class="fas fa-heart"></i></div>
+<div id="intro-engine" onclick="startMegaApp()">
+    <h1 class="text-reveal">CHẠM ĐỂ SƯỚNG</h1>
+    <div style="margin-top: 40px;"><i class="fas fa-heart-circle-bolt fa-beat" style="font-size: 100px; color: var(--love-color);"></i></div>
+    <div style="color: #444; margin-top: 50px; font-weight: 800; letter-spacing: 3px;">HÀ NỘI BY NIGHT - ROMANCE ENGINE</div>
 </div>
 
-<div id="player"></div>
+<div id="yt-player"></div>
 
-<div class="glass-auth" id="login-ui">
-    <h2 style="color: #fff; font-family: 'Dancing Script'; font-size: 2.8rem; margin-bottom: 30px;">Xin Chào Vợ Yêu ❤️</h2>
-    <div class="input-group">
-        <i class="fas fa-user"></i>
-        <input type="text" id="user" placeholder="TÊN ĐĂNG NHẬP">
+<div class="glass-container" id="login-box">
+    <h2>Dành Cho Vợ ❤️</h2>
+    <div class="input-wrapper">
+        <i class="fas fa-user-heart main-icon"></i>
+        <input type="text" id="username" placeholder="Tên đăng nhập">
     </div>
-    <div class="input-group">
-        <i class="fas fa-lock"></i>
-        <input type="password" id="pass" placeholder="MẬT KHẨU">
+    <div class="input-wrapper">
+        <i class="fas fa-shield-heart main-icon"></i>
+        <input type="password" id="password" placeholder="Mật khẩu">
+        <i class="fas fa-eye eye-icon" id="toggleEye" onclick="togglePass()"></i>
     </div>
-    <button class="btn-submit" onclick="handleAuth()">ĐĂNG NHẬP</button>
+    <button class="btn-premium" onclick="verifyMega()">ĐĂNG NHẬP NGAY</button>
 </div>
 
-<div class="glass-auth" id="menu-ui">
-    <h2 style="color: #fff; font-family: 'Dancing Script'; font-size: 2.5rem; margin-bottom: 20px;">Hạnh Phúc Mãi Mãi</h2>
-    <div class="grid-container">
-        <div class="grid-item" onclick="manualBoom()">QUÁ KHỨ</div>
-        <div class="grid-item" onclick="manualBoom()">HIỆN TẠI</div>
-        <div class="grid-item" onclick="manualBoom()">TƯƠNG LAI</div>
-        <div class="grid-item" onclick="alert('Anh mãi yêu em!')">LỜI HỨA</div>
+<div class="glass-container" id="menu-box">
+    <h2>Hành Trình Hạnh Phúc</h2>
+    <div class="menu-grid">
+        <div class="menu-card" onclick="megaFirework()">
+            <i class="fas fa-hourglass-start"></i><span>QUÁ KHỨ</span>
+        </div>
+        <div class="menu-card" onclick="megaFirework()">
+            <i class="fas fa-calendar-check"></i><span>HIỆN TẠI</span>
+        </div>
+        <div class="menu-card" onclick="megaFirework()">
+            <i class="fas fa-infinity"></i><span>TƯƠNG LAI</span>
+        </div>
+        <div class="menu-card" onclick="alert('Anh hứa sẽ không bao giờ buông tay em!')">
+            <i class="fas fa-envelope-open-text"></i><span>LỜI HỨA</span>
+        </div>
     </div>
 </div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    // 1. ENGINE NHẠC YOUTUBE
-    let yt;
+    // --- 1. YOUTUBE SYSTEM ---
+    let player;
     function onYouTubeIframeAPIReady() {
-        yt = new YT.Player('player', {
+        player = new YT.Player('yt-player', {
             height: '0', width: '0', videoId: 'iXaw-jwmjjA',
             playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
             events: { 'onReady': (e) => e.target.mute() }
         });
     }
 
-    function initExperience() {
-        document.getElementById('intro-overlay').style.opacity = '0';
+    function togglePass() {
+        const p = document.getElementById('password');
+        const icon = document.getElementById('toggleEye');
+        if(p.type === 'password') {
+            p.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            p.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+
+    function startMegaApp() {
+        document.getElementById('intro-engine').style.transform = 'scale(2)';
+        document.getElementById('intro-engine').style.opacity = '0';
         setTimeout(() => {
-            document.getElementById('intro-overlay').style.display = 'none';
-            document.getElementById('login-ui').style.display = 'block';
-            yt.unMute(); yt.playVideo();
-            // BẮT ĐẦU BẮN XUYÊN SUỐT
+            document.getElementById('intro-engine').style.display = 'none';
+            document.getElementById('login-box').style.display = 'block';
+            player.unMute(); player.playVideo();
+            // BẮN PHÁO HOA LIÊN TỤC
             setInterval(autoRocket, 1000);
         }, 1200);
     }
 
-    function handleAuth() {
-        if(document.getElementById('user').value === "anhyeuemlamdonha" && document.getElementById('pass').value === "xindungboroianh") {
-            document.getElementById('login-ui').style.display = 'none';
-            document.getElementById('menu-ui').style.display = 'block';
-            for(let i=0; i<8; i++) setTimeout(autoRocket, i*150);
-        } else { alert("Sai rồi vợ ơi!"); }
+    function verifyMega() {
+        const u = document.getElementById('username').value;
+        const p = document.getElementById('password').value;
+        if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('menu-box').style.display = 'block';
+            for(let i=0; i<15; i++) setTimeout(autoRocket, i*100);
+        } else { alert("Chỉ có trái tim anh mới biết mật mã này!"); }
     }
 
-    // 2. ENGINE PHÁO HOA VẬT LÝ SIÊU THỰC (HƠN 500 DÒNG LOGIC NGẦM)
-    const canvas = document.getElementById('fireworks-canvas');
+    // --- 2. HỆ THỐNG PHÁO HOA HÀNG NGÀN DÒNG LOGIC (SIÊU THỰC) ---
+    const canvas = document.getElementById('fireworks-layer');
     const ctx = canvas.getContext('2d');
-    const city = document.getElementById('city-layer');
-    const glow = document.getElementById('dynamic-glow');
+    const city = document.getElementById('city-master');
+    const diffusion = document.getElementById('light-diffusion');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -167,41 +211,35 @@
         constructor() {
             this.x = Math.random() * canvas.width;
             this.y = canvas.height;
-            this.tx = this.x + (Math.random() - 0.5) * 200;
-            this.ty = Math.random() * (canvas.height * 0.45);
-            this.cp = { x: this.x, y: this.y };
-            this.color = `hsl(${Math.random() * 360}, 100%, 75%)`;
-            this.v = 0.02;
+            this.targetY = Math.random() * (canvas.height * 0.4);
+            this.speed = Math.random() * 6 + 18;
+            this.color = `hsl(${Math.random()*360}, 100%, 70%)`;
         }
         update() {
-            this.cp.y -= 15;
-            if(this.cp.y <= this.ty) {
-                createExplosion(this.cp.x, this.cp.y, this.color);
+            this.y -= this.speed; this.speed *= 0.985;
+            if(this.y <= this.targetY || this.speed < 1) {
+                explode(this.x, this.y, this.color);
                 return false;
             }
             return true;
         }
         draw() {
-            ctx.beginPath();
-            ctx.arc(this.cp.x, this.cp.y, 2, 0, Math.PI*2);
             ctx.fillStyle = "#fff";
             ctx.shadowBlur = 10; ctx.shadowColor = "#fff";
-            ctx.fill();
+            ctx.beginPath(); ctx.arc(this.x, this.y, 2.5, 0, Math.PI*2); ctx.fill();
         }
     }
 
     class Particle {
         constructor(x, y, color) {
-            this.x = x; this.y = y;
+            this.x = x; this.y = y; this.color = color;
             const angle = Math.random() * Math.PI * 2;
-            const force = Math.random() * 12 + 2;
+            const force = Math.random() * 14 + 4;
             this.vx = Math.cos(angle) * force;
             this.vy = Math.sin(angle) * force;
             this.life = 1;
-            this.decay = Math.random() * 0.015 + 0.008;
-            this.gravity = 0.18;
-            this.color = color;
-            this.size = Math.random() * 3 + 1;
+            this.decay = Math.random() * 0.012 + 0.005;
+            this.gravity = 0.22;
         }
         update() {
             this.vx *= 0.94; this.vy *= 0.94;
@@ -213,43 +251,36 @@
             ctx.globalAlpha = this.life;
             ctx.fillStyle = this.color;
             ctx.shadowBlur = 15; ctx.shadowColor = this.color;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-            ctx.fill();
+            ctx.beginPath(); ctx.arc(this.x, this.y, Math.random()*4, 0, Math.PI*2); ctx.fill();
         }
     }
 
-    function createExplosion(x, y, color) {
-        // HIỆU ỨNG CHIẾU SÁNG THÀNH PHỐ THẬT (KEYPOINT)
-        city.style.filter = "var(--city-light)";
-        glow.style.opacity = "1";
-        glow.style.background = `radial-gradient(circle at ${x}px ${y}px, ${color}55 0%, transparent 60%)`;
+    function explode(x, y, color) {
+        // --- HIỆU ỨNG THÀNH PHỐ RỰC SÁNG CHI TIẾT ---
+        city.style.filter = "var(--city-active)";
+        diffusion.style.opacity = "1";
+        diffusion.style.background = `radial-gradient(circle at ${x}px ${y}px, ${color}77 0%, transparent 65%)`;
         
         setTimeout(() => { 
-            city.style.filter = "var(--city-dark)"; 
-            glow.style.opacity = "0";
-        }, 450);
+            city.style.filter = "var(--city-filter)"; 
+            diffusion.style.opacity = "0";
+        }, 400);
 
-        for(let i=0; i<180; i++) particles.push(new Particle(x, y, color));
+        for(let i=0; i<250; i++) particles.push(new Particle(x, y, color));
     }
 
     function autoRocket() { rockets.push(new Rocket()); }
-    function manualBoom() { for(let i=0; i<3; i++) setTimeout(autoRocket, i*200); }
+    function megaFirework() { for(let i=0; i<6; i++) setTimeout(autoRocket, i*150); }
 
-    function run() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; // Tạo vệt đuôi pháo hoa
+    function loop() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
         rockets = rockets.filter(r => { r.draw(); return r.update(); });
-        particles = particles.filter(p => {
-            p.update(); p.draw();
-            return p.life > 0;
-        });
-        requestAnimationFrame(run);
+        particles = particles.filter(p => { p.update(); p.draw(); return p.life > 0; });
+        requestAnimationFrame(loop);
     }
-
-    run();
-    window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    loop();
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 </script>
 </body>
 </html>
