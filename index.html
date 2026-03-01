@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gửi Vợ Yêu ❤️</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-pink: #ff85a2;
@@ -14,36 +13,29 @@
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', cursive, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #fce4ec 0%, #ffebee 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-        }
-
-        /* Hiệu ứng bong bóng bay nhẹ nhàng phía sau */
-        .bg-bubbles {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
+            position: relative;
         }
 
         /* Form Đăng Nhập */
         #login-box {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(255, 133, 162, 0.3);
             text-align: center;
-            z-index: 10;
+            z-index: 100;
             width: 320px;
             border: 2px solid var(--primary-pink);
-            transition: 0.5s;
         }
 
-        h2 { color: var(--dark-pink); margin-bottom: 25px; font-size: 1.4em; }
+        h2 { color: var(--dark-pink); margin-bottom: 25px; font-size: 1.3em; }
 
         .input-group {
             position: relative;
@@ -57,17 +49,16 @@
             border-radius: 25px;
             outline: none;
             box-sizing: border-box;
-            transition: 0.3s;
         }
 
-        input:focus { border-color: var(--primary-pink); box-shadow: 0 0 8px rgba(255, 133, 162, 0.5); }
-
+        /* Nút con mắt tự chế bằng chữ để không bị lỗi icon */
         .toggle-password {
             position: absolute;
             right: 15px;
-            top: 12px;
+            top: 10px;
             cursor: pointer;
-            color: #888;
+            font-size: 1.2em;
+            user-select: none;
         }
 
         button {
@@ -79,73 +70,57 @@
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            transition: 0.3s;
+            font-size: 1em;
         }
 
-        button:hover { background: var(--dark-pink); transform: scale(1.05); }
+        button:active { transform: scale(0.95); }
 
-        #error-msg { color: #d32f2f; font-size: 0.9em; margin-top: 15px; display: none; }
+        #error-msg { 
+            color: #ff0000; 
+            font-weight: bold;
+            margin-top: 15px; 
+            display: none; 
+        }
 
-        /* Màn hình chính sau đăng nhập */
+        /* Màn hình chính */
         #main-content {
             display: none;
-            z-index: 10;
             text-align: center;
-            animation: fadeIn 1.5s;
+            z-index: 10;
         }
 
         .menu-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .menu-item {
             background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            padding: 20px 10px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid var(--soft-pink);
             color: var(--dark-pink);
             font-weight: bold;
+            font-size: 0.9em;
+            border: 1px solid var(--primary-pink);
         }
 
-        .menu-item:hover {
-            transform: translateY(-10px);
-            background: var(--primary-pink);
-            color: white;
-        }
-
-        /* Loa phát nhạc */
-        #music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 100;
-        }
-
-        .playing { animation: spin 3s linear infinite; }
-
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Trái tim bay */
-        .heart { position: absolute; color: var(--primary-pink); animation: float 4s ease-in infinite; z-index: 5; }
+        /* Hiệu ứng tim bay */
+        .heart { position: absolute; color: var(--primary-pink); animation: float 4s linear infinite; z-index: 5; pointer-events: none; }
         @keyframes float {
-            0% { transform: translateY(100vh) scale(0); opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        #music-btn {
+            position: fixed; bottom: 20px; right: 20px;
+            background: white; width: 50px; height: 50px;
+            border-radius: 50%; display: none; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 200; border: none; font-size: 20px;
         }
     </style>
 </head>
@@ -158,34 +133,82 @@
         </div>
         <div class="input-group">
             <input type="password" id="password" placeholder="Mật khẩu...">
-            <i class="fa-solid fa-eye toggle-password" id="eyeIcon" onclick="togglePass()"></i>
+            <span class="toggle-password" onclick="togglePass()">👁️</span>
         </div>
         <button onclick="checkLogin()">Mở Quà Ngay</button>
-        <p id="error-msg">VỢ IU NHẬP SAI ROIII ❌</p>
+        <div id="error-msg">VỢ IU NHẬP SAI ÒI ❌</div>
     </div>
 
     <div id="main-content">
-        <h1 style="color: var(--dark-pink);">Chào mừng Vợ Yêu đã quay lại!</h1>
+        <h1 style="color: var(--dark-pink);">Chào Vợ Yêu của Anh!</h1>
         <div class="menu-container">
-            <div class="menu-item">CHUYỆN QUÁ KHỨ</div>
-            <div class="menu-item">CHUYỆN HIỆN TẠI</div>
-            <div class="menu-item">LỜI HỨA CỦA TƯƠNG LAI</div>
-            <div class="menu-item">LÝ DO ANH YÊU EM VÀ LỜI NHẮN NHỦ</div>
+            <div class="menu-item" onclick="alert('Bạn sẽ thêm nội dung Quá khứ sau')">CHUYỆN QUÁ KHỨ</div>
+            <div class="menu-item" onclick="alert('Bạn sẽ thêm nội dung Hiện tại sau')">CHUYỆN HIỆN TẠI</div>
+            <div class="menu-item" onclick="alert('Bạn sẽ thêm nội dung Tương lai sau')">LỜI HỨA CỦA TƯƠNG LAI</div>
+            <div class="menu-item" onclick="alert('Bạn sẽ thêm lời nhắn sau')">LÝ DO ANH YÊU EM VÀ LỜI NHẮN NHỦ</div>
         </div>
     </div>
 
-    <div id="music-control" onclick="toggleMusic()">
-        <i class="fa-solid fa-compact-disc" id="music-icon"></i>
-    </div>
+    <button id="music-btn" onclick="toggleMusic()">🎵</button>
 
     <audio id="bg-music" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        </audio>
+    </audio>
 
     <script>
         const CORRECT_USER = "anhyeuemlamdonha";
         const CORRECT_PASS = "xindungboroianh";
 
-        // Ẩn hiện mật khẩu
         function togglePass() {
-            const passField = document.getElementById('
+            const passField = document.getElementById('password');
+            const eyeIcon = document.querySelector('.toggle-password');
+            if (passField.type === "password") {
+                passField.type = "text";
+                eyeIcon.innerText = "🔒";
+            } else {
+                passField.type = "password";
+                eyeIcon.innerText = "👁️";
+            }
+        }
+
+        function checkLogin() {
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value.trim();
+            const err = document.getElementById('error-msg');
+
+            if (u === CORRECT_USER && p === CORRECT_PASS) {
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('music-btn').style.display = 'block';
+                
+                // Chạy nhạc
+                const music = document.getElementById('bg-music');
+                music.play().catch(e => console.log("Cần tương tác để phát nhạc"));
+                
+                startHearts();
+            } else {
+                err.style.display = 'block';
+                document.getElementById('password').value = "";
+            }
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            if (music.paused) music.play(); else music.pause();
+        }
+
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);
+            }, 400);
+        }
+    </script>
+</body>
+</html>
