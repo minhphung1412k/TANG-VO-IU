@@ -42,4 +42,97 @@
 
         h2 { font-family: 'Dancing Script', cursive; color: #fff; font-size: 2.5rem; margin-bottom: 25px; }
         input {
-            width: 100%; padding:
+            width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px;
+            border: none; background: rgba(255,255,255,0.2); color: #fff;
+            outline: none; text-align: center; font-size: 16px;
+        }
+        .btn {
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            background: linear-gradient(45deg, #ff4d6d, #ff758c);
+            color: white; font-weight: bold; cursor: pointer; font-size: 16px;
+        }
+
+        /* HIỆU ỨNG LÁ RƠI */
+        .leaf { position: absolute; pointer-events: none; animation: leafFall linear forwards; color: #adff2f; opacity: 0.6; }
+        @keyframes leafFall { to { transform: translateY(105vh) rotate(360deg) translateX(50px); } }
+
+        /* GIỮ NHẠC CHẠY NGẦM */
+        #music-container { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-nature" id="main-bg"></div>
+
+    <div id="intro" onclick="initGarden()">
+        <div class="rose-icon">🌹</div>
+        <p style="color: white; margin-top: 20px; letter-spacing: 4px; font-size: 12px;">CHẠM ĐỂ VÀO KHU VƯỜN</p>
+    </div>
+
+    <div id="music-container">
+        <iframe id="yt-player" width="100" height="100" 
+            src="https://www.youtube.com/embed/QEuOu_SDtLo?enablejsapi=1&loop=1&playlist=QEuOu_SDtLo" 
+            frameborder="0" allow="autoplay"></iframe>
+    </div>
+
+    <div class="glass-box" id="login-form">
+        <h2>Vợ Yêu ❤️</h2>
+        <input type="text" id="user" placeholder="Tên tài khoản..." autocomplete="off">
+        <input type="password" id="pass" placeholder="Mật mã yêu thương..." autocomplete="off">
+        <button class="btn" onclick="unlock()">KHÁM PHÁ ✨</button>
+    </div>
+
+    <div class="glass-box" id="final-card">
+        <h2>Rừng Anh Đào</h2>
+        <p style="color: white; font-size: 14px; line-height: 1.6;">"Giữa thiên nhiên hùng vĩ, tình yêu anh dành cho em vẫn là điều đẹp nhất."</p>
+        <button class="btn" style="margin-top: 15px;" onclick="location.reload()">QUAY LẠI</button>
+    </div>
+
+    <script>
+        // Hàm bắt đầu khi click bông hồng
+        function initGarden() {
+            // Phát nhạc bằng cách gửi lệnh đến Iframe YouTube
+            const player = document.getElementById('yt-player').contentWindow;
+            player.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+
+            // Hiệu ứng biến mất màn hình chờ
+            const intro = document.getElementById('intro');
+            intro.style.opacity = '0';
+            setTimeout(() => { 
+                intro.style.display = 'none'; 
+                document.getElementById('login-form').style.display = 'block';
+            }, 1000);
+
+            // Phóng to nhẹ hình nền tạo cảm giác sống động
+            document.getElementById('main-bg').style.transform = 'scale(1.1)';
+
+            // Bắt đầu tạo lá rơi
+            setInterval(createLeaf, 600);
+        }
+
+        function unlock() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            // Thay đổi tài khoản/mật khẩu tại đây nếu muốn
+            if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('final-card').style.display = 'block';
+            } else {
+                alert("Mật mã chưa đúng rồi vợ ơi!");
+            }
+        }
+
+        function createLeaf() {
+            const leaf = document.createElement('div');
+            leaf.className = 'leaf';
+            leaf.innerHTML = '🍃';
+            leaf.style.left = Math.random() * 100 + "vw";
+            leaf.style.top = "-5vh";
+            leaf.style.fontSize = Math.random() * 15 + 10 + "px";
+            leaf.style.animationDuration = Math.random() * 5 + 5 + "s";
+            document.body.appendChild(leaf);
+            setTimeout(() => leaf.remove(), 10000);
+        }
+    </script>
+</body>
+</html>
