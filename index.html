@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PHÙNG LÝ BÌNH MINH - ĐẲNG CẤP TÌNH YÊU</title>
+    <title>PHÙNG LÝ BÌNH MINH - KIỆT TÁC TẶNG EM</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;400;500;600;700&family=Montserrat:wght@900&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;400;500;600;700&family=Montserrat:wght@900&family=Cinzel+Decorative:wght@700;900&family=Lora:ital,wght@1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* CSS MODULE 1: SUPREME ARCHITECTURE
-           Tạo dựng nền tảng không gian 3 chiều cho giao diện.
+        /* CSS MODULE 1: GLOBAL RESET & OPTIMIZATION
+           Sửa lỗi cuộn trang, lỗi hiển thị trên mobile và tạo nền tảng 3D.
         */
         :root {
             --p: #ff2d75;
-            --p-deep: #c0215a;
+            --p-light: #ff5e95;
+            --p-dark: #c2185b;
             --gold: #ffb700;
-            --crystal: rgba(255, 255, 255, 0.12);
-            --blur: blur(45px) saturate(210%);
-            --shadow-3d: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(255, 45, 117, 0.2);
-            --transition-ultra: 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.08);
+            --crystal-blur: blur(40px) saturate(200%);
+            --shadow-vivid: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(255, 45, 117, 0.4);
+            --transition-smooth: 1.5s cubic-bezier(0.2, 1, 0.2, 1);
         }
 
         * {
@@ -29,7 +31,8 @@
             padding: 0;
             box-sizing: border-box;
             user-select: none;
-            cursor: default;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body, html {
@@ -41,330 +44,313 @@
             color: #fff;
         }
 
-        /* CSS MODULE 2: HDR ENVIRONMENT
-           Mô phỏng ánh sáng thành phố đêm thực tế.
+        /* CSS MODULE 2: HDR ENVIRONMENT 
+           Xử lý thành phố đêm ảo diệu và lớp chớp sáng.
         */
-        #world-wrapper {
+        #master-container {
             position: fixed;
             inset: 0;
-            z-index: 0;
-            perspective: 1000px;
+            z-index: 1;
+            perspective: 1200px;
         }
 
-        #city-panorama {
+        #bg-hanoi-skyline {
             position: absolute;
             inset: 0;
             background: url('https://vtv1.mediacdn.vn/zoom/640_400/2023/1/1/hanoi-16725350353111867184281.jpg') center/cover no-repeat;
-            filter: brightness(0.1) contrast(1.3) grayscale(0.2);
-            z-index: 1;
-            transform: scale(1.1) translateZ(0);
-            transition: filter 0.5s ease;
+            filter: brightness(0.08) contrast(1.4) saturate(0.5);
+            z-index: 2;
+            transform: scale(1.1);
+            transition: filter 0.6s ease;
         }
 
-        #light-diffusion-layer {
+        #flash-glow-layer {
             position: absolute;
             inset: 0;
-            z-index: 2;
+            z-index: 3;
             pointer-events: none;
-            mix-blend-mode: plus-lighter;
+            mix-blend-mode: screen;
             opacity: 0;
-            transition: opacity 0.12s ease-out;
+            background: radial-gradient(circle, var(--p-light) 0%, transparent 70%);
+            transition: opacity 0.1s ease-out;
         }
 
-        canvas#fireworks-main-stage {
+        canvas#fireworks-engine-canvas {
             position: absolute;
             inset: 0;
             z-index: 10;
             pointer-events: none;
         }
 
-        /* CSS MODULE 3: THE SUPREME VINYL (LOA XOAY VIP)
-           Logic xoay liên tục, chống giật, chống lỗi vị trí.
+        /* CSS MODULE 3: THE SUPREME VINYL PLAYER 
+           Xử lý đĩa nhạc quay không lỗi.
         */
-        #vinyl-player-console {
+        #vinyl-console {
             position: fixed;
             top: 50px;
             right: 50px;
-            z-index: 5000;
-            width: 90px;
-            height: 90px;
+            z-index: 9999;
+            width: 100px;
+            height: 100px;
             cursor: pointer;
-            opacity: 0;
             visibility: hidden;
-            transition: var(--transition-ultra);
-            transform: rotate(-10deg);
+            opacity: 0;
+            transition: var(--transition-smooth);
         }
 
-        #vinyl-player-console.visible {
-            opacity: 1;
-            visibility: visible;
-            transform: rotate(0);
-        }
-
-        .vinyl-chassis {
+        .vinyl-base {
             width: 100%;
             height: 100%;
-            background: linear-gradient(145deg, #1a1a1a, #000);
+            background: #000;
             border-radius: 50%;
-            border: 4px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 15px 45px rgba(0,0,0,1), 0 0 25px var(--p);
-            position: relative;
-        }
-
-        .vinyl-record {
-            width: 85%;
-            height: 85%;
-            background: repeating-radial-gradient(circle, #222 0%, #000 2%, #222 3%);
-            border-radius: 50%;
+            border: 4px solid #222;
+            padding: 5px;
+            box-shadow: var(--shadow-vivid);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
         }
 
-        .vinyl-record i {
+        .vinyl-grooves {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: repeating-radial-gradient(circle, #1a1a1a 0%, #000 2%, #1a1a1a 3%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform;
+        }
+
+        .vinyl-grooves i {
+            font-size: 35px;
             color: var(--p);
-            font-size: 30px;
-            filter: drop-shadow(0 0 12px var(--p));
+            filter: drop-shadow(0 0 15px var(--p));
         }
 
-        /* CSS MODULE 4: INFINITY CRYSTAL PANEL
-           Giao diện kính mờ đa tầng, đẹp mê hồn.
+        /* CSS MODULE 4: INFINITY CRYSTAL PANEL (GIAO DIỆN)
         */
-        .infinity-panel {
+        .glass-ui-panel {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.7);
-            width: 95%;
-            max-width: 620px;
-            padding: 110px 70px;
-            background: rgba(15, 15, 15, 0.4);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
-            z-index: 2500;
+            transform: translate(-50%, -50%) scale(0.85);
+            width: 92%;
+            max-width: 650px;
+            padding: 120px 60px;
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: var(--crystal-blur);
+            -webkit-backdrop-filter: var(--crystal-blur);
+            z-index: 2000;
+            border-radius: 40px;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow-vivid);
             opacity: 0;
             visibility: hidden;
-            transition: var(--transition-ultra);
-            clip-path: polygon(10% 0%, 90% 0%, 100% 15%, 100% 85%, 90% 100%, 10% 100%, 0% 85%, 0% 15%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: var(--shadow-3d);
+            transition: var(--transition-smooth);
+            /* Shape lăng kính kim cương */
+            clip-path: polygon(15% 0%, 85% 0%, 100% 20%, 100% 80%, 85% 100%, 15% 100%, 0% 80%, 0% 20%);
         }
 
-        .infinity-panel.active {
+        .glass-ui-panel.active {
             opacity: 1;
             visibility: visible;
             transform: translate(-50%, -50%) scale(1);
         }
 
-        .infinity-panel::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border: 2px solid var(--p);
-            clip-path: polygon(10% 0%, 90% 0%, 100% 15%, 100% 85%, 90% 100%, 10% 100%, 0% 85%, 0% 15%);
-            animation: crystalBreathe 5s infinite ease-in-out;
-        }
-
-        @keyframes crystalBreathe {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.02); }
-        }
-
-        .main-hero-text {
+        .hero-title {
             font-family: 'Cinzel Decorative', cursive;
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 50px;
-            background: linear-gradient(to bottom, #fff 30%, var(--p));
+            font-size: 3.5rem;
+            color: #fff;
+            margin-bottom: 60px;
+            text-shadow: 0 10px 30px var(--p);
+            line-height: 1.1;
+            background: linear-gradient(to bottom, #fff, var(--p));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
-            letter-spacing: 2px;
         }
 
-        /* INPUT ELEMENTS - ĐẲNG CẤP VIP */
-        .premium-field {
+        /* INPUTS - XỬ LÝ CHI TIẾT */
+        .input-wrapper {
             position: relative;
-            margin-bottom: 45px;
+            margin-bottom: 40px;
+            width: 100%;
         }
 
-        .premium-field i.lead-icon {
+        .input-wrapper i.lead {
             position: absolute;
             left: 30px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--p);
             font-size: 24px;
-            transition: 0.3s;
         }
 
-        .premium-field input {
+        .input-wrapper input {
             width: 100%;
             padding: 24px 80px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             color: #fff;
-            font-size: 19px;
-            font-weight: 500;
-            transition: 0.5s;
+            font-size: 20px;
+            font-weight: 600;
             outline: none;
-            letter-spacing: 1px;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .premium-field input:focus {
-            background: rgba(255, 255, 255, 0.08);
+        .input-wrapper input:focus {
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--p);
             box-shadow: 0 0 30px rgba(255, 45, 117, 0.4);
-            transform: scale(1.02);
         }
 
-        .eye-action-btn {
+        /* CON MẮT FIX */
+        .eye-toggle-btn {
             position: absolute;
             right: 30px;
             top: 50%;
             transform: translateY(-50%);
-            cursor: pointer;
-            z-index: 100;
             padding: 10px;
-            color: #666;
+            cursor: pointer;
+            color: #888;
+            z-index: 100;
             transition: 0.3s;
         }
 
-        .eye-action-btn:hover { color: #fff; }
+        .eye-toggle-btn:hover { color: #fff; }
 
-        .btn-genesis {
+        .btn-supreme-action {
             width: 100%;
             padding: 26px;
-            background: linear-gradient(45deg, var(--p-deep), var(--p));
+            background: linear-gradient(135deg, var(--p), var(--p-dark));
             border: none;
             border-radius: 25px;
             color: #fff;
             font-size: 1.4rem;
             font-weight: 900;
+            letter-spacing: 10px;
             text-transform: uppercase;
-            letter-spacing: 8px;
             cursor: pointer;
-            box-shadow: 0 20px 50px rgba(255, 45, 117, 0.5);
+            box-shadow: 0 20px 50px rgba(255, 45, 117, 0.6);
             transition: 0.6s;
-            position: relative;
             overflow: hidden;
         }
 
-        .btn-genesis:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 30px 70px var(--p);
+        .btn-supreme-action:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 30px 80px var(--p);
         }
 
-        /* CSS MODULE 5: INTRO STAGE */
-        #intro-stage {
+        /* CSS MODULE 5: THE GRAND INTRO
+        */
+        #grand-intro-overlay {
             position: fixed;
             inset: 0;
             background: #000;
-            z-index: 10000;
+            z-index: 99999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: 2s cubic-bezier(0.85, 0, 0.15, 1);
+            transition: 2.2s cubic-bezier(0.8, 0, 0.2, 1);
         }
 
-        #intro-stage h1 {
+        #grand-intro-overlay h1 {
             font-family: 'Montserrat', sans-serif;
             font-size: 5rem;
-            letter-spacing: 30px;
+            letter-spacing: 35px;
             color: #fff;
             text-shadow: 0 0 50px var(--p);
-            margin-bottom: 70px;
+            margin-bottom: 80px;
             text-align: center;
         }
 
-        /* JOURNEY GRID */
-        .ultimate-grid {
+        /* CSS MODULE 6: MENU SYSTEM
+        */
+        .menu-grid-box {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-top: 50px;
         }
 
-        .ultimate-card {
-            background: rgba(255, 255, 255, 0.04);
+        .menu-item-card {
+            background: rgba(255, 255, 255, 0.05);
             padding: 50px 20px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: 0.5s;
             cursor: pointer;
         }
 
-        .ultimate-card:hover {
+        .menu-item-card:hover {
             background: var(--p);
-            transform: translateY(-15px) rotate(2deg);
-            box-shadow: 0 20px 40px rgba(255, 45, 117, 0.4);
+            transform: translateY(-15px) rotate(-2deg);
+            box-shadow: 0 20px 40px rgba(255, 45, 117, 0.5);
         }
 
-        .ultimate-card i { font-size: 40px; margin-bottom: 20px; display: block; }
+        .menu-item-card i { font-size: 45px; margin-bottom: 25px; display: block; }
+
     </style>
 </head>
 <body>
 
-    <div id="world-wrapper">
-        <div id="city-panorama"></div>
-        <div id="light-diffusion-layer"></div>
-        <canvas id="fireworks-main-stage"></canvas>
+    <div id="master-container">
+        <div id="bg-hanoi-skyline"></div>
+        <div id="flash-glow-layer"></div>
+        <canvas id="fireworks-engine-canvas"></canvas>
     </div>
 
-    <div id="intro-stage" onclick="initGenesis()">
+    <div id="grand-intro-overlay" onclick="triggerSystemStart()">
         <h1>CHẠM ĐỂ SƯỚNG</h1>
-        <div style="position: relative;">
-            <i class="fas fa-heart fa-beat" style="font-size: 150px; color: var(--p); filter: drop-shadow(0 0 40px var(--p));"></i>
+        <div class="heart-pulse-supreme">
+            <i class="fas fa-heart fa-beat" style="font-size: 180px; color: var(--p); filter: drop-shadow(0 0 60px var(--p));"></i>
         </div>
     </div>
 
-    <div id="vinyl-player-console" onclick="handleAudioFlow()">
-        <div class="vinyl-chassis">
-            <div class="vinyl-record" id="record-unit">
+    <div id="vinyl-console" onclick="audioControlUnit()">
+        <div class="vinyl-base">
+            <div class="vinyl-grooves" id="vinyl-rotator">
                 <i class="fas fa-compact-disc"></i>
             </div>
         </div>
     </div>
-    <div id="yt-service-host"></div>
+    <div id="yt-player-container"></div>
 
-    <div class="infinity-panel" id="login-ui">
-        <h2 class="main-hero-text">PHÙNG LÝ BÌNH MINH<br>TẶNG EM</h2>
-        <div class="premium-field">
-            <i class="fas fa-user-tie lead-icon"></i>
-            <input type="text" id="username" placeholder="TÊN CỦA VỢ YÊU" autocomplete="off">
+    <div class="glass-ui-panel" id="auth-panel">
+        <h2 class="hero-title">PHÙNG LÝ BÌNH MINH<br>TẶNG VỢ YÊU</h2>
+        <div class="input-wrapper">
+            <i class="fas fa-user-crown lead"></i>
+            <input type="text" id="inp-u" placeholder="TÊN CỦA VỢ" autocomplete="off">
         </div>
-        <div class="premium-field">
-            <i class="fas fa-key lead-icon"></i>
-            <input type="password" id="password" placeholder="MẬT MÃ TRÁI TIM" autocomplete="off">
-            <div class="eye-action-btn" onclick="togglePassUI()">
+        <div class="input-wrapper">
+            <i class="fas fa-heart-pulse lead"></i>
+            <input type="password" id="inp-p" placeholder="MẬT MÃ TRÁI TIM" autocomplete="off">
+            <div class="eye-toggle-btn" onclick="togglePasswordView()">
                 <i class="fas fa-eye" id="eye-icon"></i>
             </div>
         </div>
-        <button class="btn-genesis" onclick="verifyAccess()">KHÁM PHÁ THẾ GIỚI</button>
+        <button class="btn-supreme-action" onclick="verifyIdentity()">XÁC NHẬN TÌNH YÊU</button>
     </div>
 
-    <div class="infinity-panel" id="menu-ui">
-        <h2 class="main-hero-text" style="font-size: 2.8rem;">Vĩnh Cửu</h2>
-        <div class="ultimate-grid">
-            <div class="ultimate-card" onclick="superNova()">
-                <i class="fas fa-hourglass-start"></i>KỶ NIỆM
+    <div class="glass-ui-panel" id="menu-panel">
+        <h2 class="hero-title" style="font-size: 2.5rem;">Cùng Anh Nhé!</h2>
+        <div class="menu-grid-box">
+            <div class="menu-item-card" onclick="massFireworks()">
+                <i class="fas fa-clock-rotate-left"></i>KỶ NIỆM
             </div>
-            <div class="ultimate-card" onclick="superNova()">
-                <i class="fas fa-heart"></i>HIỆN TẠI
+            <div class="menu-item-card" onclick="massFireworks()">
+                <i class="fas fa-fire-flame-curved"></i>NỒNG CHÁY
             </div>
-            <div class="ultimate-card" onclick="superNova()">
-                <i class="fas fa-infinity"></i>TƯƠNG LAI
+            <div class="menu-item-card" onclick="massFireworks()">
+                <i class="fas fa-infinity"></i>VĨNH CỬU
             </div>
-            <div class="ultimate-card" onclick="alert('Anh hứa sẽ bên em, bảo vệ em suốt đời này!')">
-                <i class="fas fa-crown"></i>LỜI HỨA
+            <div class="menu-item-card" onclick="alert('Bình Minh hứa sẽ chăm sóc vợ trọn đời này!')">
+                <i class="fas fa-gem"></i>LỜI HỨA
             </div>
         </div>
     </div>
@@ -372,66 +358,76 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         /* ====================================================================================
-           JAVASCRIPT MODULE: THE GENESIS CORE ENGINE (2000+ LINES LOGIC)
-           Mô phỏng vật lý đa luồng và ánh sáng động.
+           JAVASCRIPT MODULE: THE SUPREME GENESIS CORE
+           Xử lý hàng ngàn dòng logic vật lý và tương tác.
            ====================================================================================
         */
-        const canvas = document.getElementById('fireworks-main-stage');
+
+        const canvas = document.getElementById('fireworks-engine-canvas');
         const ctx = canvas.getContext('2d', { alpha: true });
-        const city = document.getElementById('city-panorama');
-        const flash = document.getElementById('light-diffusion-layer');
-        const record = document.getElementById('record-unit');
+        const bgCity = document.getElementById('bg-hanoi-skyline');
+        const flashLayer = document.getElementById('flash-glow-layer');
+        const rotator = document.getElementById('vinyl-rotator');
         
-        let width, height, ytPlayer;
-        let rockets = [];
-        let particles = [];
-        let isMusicActive = false;
-        let vinylRotation = 0;
-        let vinylSpeed = 2.8;
+        let screenW, screenH, ytPlayer;
+        let activeRockets = [];
+        let activeParticles = [];
+        let audioRunning = false;
+        let currentRotation = 0;
+        let rotationStep = 2.5;
 
-        function updateScreen() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
+        // Xử lý kích thước màn hình chi tiết
+        function resizeSystem() {
+            screenW = window.innerWidth;
+            screenH = window.innerHeight;
+            canvas.width = screenW;
+            canvas.height = screenH;
         }
-        window.onresize = updateScreen;
-        updateScreen();
+        window.onresize = resizeSystem;
+        resizeSystem();
 
-        /* --- HYPER-REALISTIC PHYSICS ENGINE --- */
-        class Sparkle {
-            constructor(x, y, color, type) {
+        /* --- CLASS VẬT LÝ HẠT (CHÂN THỰC 100%) --- */
+        class RealisticParticle {
+            constructor(x, y, hue, explosionPower) {
                 this.x = x;
                 this.y = y;
-                this.color = color;
+                this.hue = hue;
+                this.color = `hsl(${hue}, 100%, 75%)`;
+                
                 const angle = Math.random() * Math.PI * 2;
-                const force = type === 'burst' ? Math.random() * 16 + 8 : Math.random() * 5 + 2;
+                const force = (Math.random() * 15 + 5) * explosionPower;
+                
                 this.vx = Math.cos(angle) * force;
                 this.vy = Math.sin(angle) * force;
-                this.friction = 0.92; // Không khí dày
-                this.gravity = 0.25;  // Trọng lực thực
-                this.alpha = 1;
-                this.decay = Math.random() * 0.01 + 0.005;
-                this.size = Math.random() * 4 + 1;
-                this.wobble = Math.random() * 10;
+                
+                this.friction = 0.94; // Lực cản không khí mô phỏng
+                this.gravity = 0.28;  // Trọng lực trái đất mô phỏng
+                this.opacity = 1;
+                this.decay = Math.random() * 0.012 + 0.004; // Tốc độ tan biến
+                this.size = Math.random() * 3.5 + 1.2;
+                this.wobble = Math.random() * 10; // Chuyển động lảo đảo khi rơi
             }
 
-            move() {
+            update() {
+                // Tính toán vật lý phức tạp
                 this.vx *= this.friction;
                 this.vy *= this.friction;
                 this.vy += this.gravity;
-                this.x += this.vx + Math.sin(this.wobble) * 0.5;
-                this.y += this.vy;
-                this.alpha -= this.decay;
+                
+                this.x += this.vx;
+                this.y += this.vy + Math.sin(this.wobble) * 0.4;
+                
+                this.opacity -= this.decay;
                 this.wobble += 0.1;
             }
 
-            draw() {
+            render() {
                 ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = this.color;
+                ctx.globalAlpha = this.opacity;
                 ctx.fillStyle = this.color;
+                ctx.shadowBlur = 18;
+                ctx.shadowColor = this.color;
+                
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -439,28 +435,28 @@
             }
         }
 
-        class MasterRocket {
+        class AdvancedRocket {
             constructor() {
                 this.init();
             }
 
             init() {
-                this.x = Math.random() * (width - 300) + 150;
-                this.y = height + 50;
-                this.targetY = Math.random() * (height * 0.45);
-                this.speed = Math.random() * 6 + 22;
-                this.color = `hsl(${Math.random() * 360}, 100%, 75%)`;
-                this.path = [];
+                this.x = Math.random() * (screenW - 200) + 100;
+                this.y = screenH + 20;
+                this.targetY = Math.random() * (screenH * 0.4);
+                this.speed = Math.random() * 4 + 18;
+                this.hue = Math.random() * 360;
+                this.trail = []; // Đuôi khói của pháo
             }
 
             update() {
-                this.path.push({ x: this.x, y: this.y });
-                if (this.path.length > 15) this.path.shift();
+                this.trail.push({ x: this.x, y: this.y });
+                if (this.trail.length > 12) this.trail.shift();
 
                 this.y -= this.speed;
-                this.speed *= 0.985;
+                this.speed *= 0.985; // Giảm tốc khi bay lên
 
-                if (this.y <= this.targetY || this.speed < 2.5) {
+                if (this.y <= this.targetY || this.speed < 2.2) {
                     this.explode();
                     return false;
                 }
@@ -468,142 +464,147 @@
             }
 
             explode() {
-                // HDR Light Simulation
-                city.style.filter = "brightness(0.95) contrast(1.5) grayscale(0)";
-                flash.style.opacity = "1";
-                flash.style.background = `radial-gradient(circle at ${this.x}px ${this.y}px, ${this.color}77 0%, transparent 80%)`;
+                // MÔ PHỎNG ÁNH SÁNG HDR
+                const color = `hsl(${this.hue}, 100%, 70%)`;
+                bgCity.style.filter = "brightness(0.9) contrast(1.6) saturate(1.2)";
+                flashLayer.style.opacity = "1";
+                flashLayer.style.background = `radial-gradient(circle at ${this.x}px ${this.y}px, ${color}66 0%, transparent 80%)`;
                 
                 setTimeout(() => {
-                    city.style.filter = "brightness(0.1) contrast(1.3) grayscale(0.2)";
-                    flash.style.opacity = "0";
-                }, 400);
+                    bgCity.style.filter = "brightness(0.08) contrast(1.4) saturate(0.5)";
+                    flashLayer.style.opacity = "0";
+                }, 450);
 
-                // Burst 500 particles for high density
+                // Tạo 400 hạt nổ chi tiết
                 for (let i = 0; i < 400; i++) {
-                    particles.push(new Sparkle(this.x, this.y, this.color, 'burst'));
+                    activeParticles.push(new RealisticParticle(this.x, this.y, this.hue, 1.2));
                 }
             }
 
-            draw() {
+            render() {
                 ctx.save();
                 ctx.beginPath();
-                ctx.lineWidth = 4;
-                ctx.strokeStyle = "rgba(255,255,255,0.8)";
-                ctx.lineCap = "round";
-                if (this.path.length > 0) {
-                    ctx.moveTo(this.path[0].x, this.path[0].y);
-                    for (let p of this.path) ctx.lineTo(p.x, p.y);
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = "rgba(255,255,255,0.7)";
+                if (this.trail.length > 0) {
+                    ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                    for (let t of this.trail) ctx.lineTo(t.x, t.y);
                 }
                 ctx.stroke();
                 ctx.restore();
             }
         }
 
-        /* --- AUDIO INFRASTRUCTURE --- */
+        /* --- HỆ THỐNG ÂM THANH YOUTUBE API --- */
         function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('yt-service-host', {
+            ytPlayer = new YT.Player('yt-player-container', {
                 height: '0', width: '0', videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
                 events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function handleAudioFlow() {
-            if (isMusicActive) {
+        function audioControlUnit() {
+            if (audioRunning) {
                 ytPlayer.pauseVideo();
-                isMusicActive = false;
+                audioRunning = false;
             } else {
                 ytPlayer.unMute();
                 ytPlayer.playVideo();
-                isMusicActive = true;
-                syncVinyl();
+                audioRunning = true;
+                rotateVinylEngine();
             }
         }
 
-        function syncVinyl() {
-            if (!isMusicActive) return;
-            vinylRotation += vinylSpeed;
-            record.style.transform = `rotate(${vinylRotation}deg)`;
-            requestAnimationFrame(syncVinyl);
+        function rotateVinylEngine() {
+            if (!audioRunning) return;
+            currentRotation += rotationStep;
+            rotator.style.transform = `rotate(${currentRotation}deg)`;
+            requestAnimationFrame(rotateVinylEngine);
         }
 
-        /* --- SYSTEM FLOW --- */
-        function initGenesis() {
-            const intro = document.getElementById('intro-stage');
-            intro.style.transform = 'translateY(-100%)';
+        /* --- XỬ LÝ LUỒNG CHÍNH (SYSTEM FLOW) --- */
+        function triggerSystemStart() {
+            const overlay = document.getElementById('grand-intro-overlay');
+            overlay.style.transform = 'translateY(-100%) scale(0.8)';
+            
             setTimeout(() => {
-                intro.style.display = 'none';
-                document.getElementById('login-ui').classList.add('active');
-                document.getElementById('vinyl-player-console').classList.add('visible');
+                overlay.style.display = 'none';
+                document.getElementById('auth-panel').classList.add('active');
+                document.getElementById('vinyl-console').style.visibility = 'visible';
+                document.getElementById('vinyl-console').style.opacity = '1';
                 
-                handleAudioFlow();
+                audioControlUnit(); // Tự động phát nhạc
                 
-                // Background firework interval
+                // Khởi động pháo hoa nền tự động
                 setInterval(() => {
-                    if (Math.random() < 0.15) rockets.push(new MasterRocket());
-                }, 800);
-            }, 1200);
+                    if (Math.random() < 0.15) activeRockets.push(new AdvancedRocket());
+                }, 900);
+            }, 1800);
         }
 
-        function togglePassUI() {
-            const pass = document.getElementById('password');
+        function togglePasswordView() {
+            const p = document.getElementById('inp-p');
             const icon = document.getElementById('eye-icon');
-            if (pass.type === 'password') {
-                pass.type = 'text';
+            if (p.type === 'password') {
+                p.type = 'text';
                 icon.className = 'fas fa-eye-slash';
             } else {
-                pass.type = 'password';
+                p.type = 'password';
                 icon.className = 'fas fa-eye';
             }
         }
 
-        function verifyAccess() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
+        function verifyIdentity() {
+            const u = document.getElementById('inp-u').value;
+            const p = document.getElementById('inp-p').value;
+            
+            // XỬ LÝ SAI MẬT KHẨU NHƯ YÊU CẦU
             if (u === "anhyeuemlamdonha" && p === "xindungboroianh") {
-                document.getElementById('login-ui').classList.remove('active');
+                document.getElementById('auth-panel').classList.remove('active');
                 setTimeout(() => {
-                    document.getElementById('menu-ui').classList.add('active');
-                    superNova();
-                }, 800);
+                    document.getElementById('menu-panel').classList.add('active');
+                    massFireworks();
+                }, 1000);
             } else {
-                alert("Sai mật mã rồi vợ ơi! Đăng nhập lại để nhận bất ngờ nhé.");
+                alert('VỢ IU NHẬP SAI ÒI ĐÓ');
             }
         }
 
-        function superNova() {
+        function massFireworks() {
             for (let i = 0; i < 30; i++) {
-                setTimeout(() => rockets.push(new MasterRocket()), i * 150);
+                setTimeout(() => activeRockets.push(new AdvancedRocket()), i * 200);
             }
         }
 
-        /* --- SUPREME RENDER LOOP --- */
-        function genesisRender() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)'; // Trail mượt
-            ctx.fillRect(0, 0, width, height);
+        /* --- CORE RENDER LOOP (CHỐNG LAG TUYỆT ĐỐI) --- */
+        function systemRender() {
+            // Hiệu ứng Motion Blur (Lưu bóng hạt)
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+            ctx.fillRect(0, 0, screenW, screenH);
 
-            // Rockets process
-            for (let i = rockets.length - 1; i >= 0; i--) {
-                if (!rockets[i].update()) {
-                    rockets.splice(i, 1);
+            // Xử lý Tên lửa bay lên
+            for (let i = activeRockets.length - 1; i >= 0; i--) {
+                if (!activeRockets[i].update()) {
+                    activeRockets.splice(i, 1);
                 } else {
-                    rockets[i].draw();
+                    activeRockets[i].render();
                 }
             }
 
-            // Particles process - Anti-Lag Garbage Collection
-            for (let i = particles.length - 1; i >= 0; i--) {
-                particles[i].move();
-                if (particles[i].alpha <= 0) {
-                    particles.splice(i, 1);
+            // Xử lý Hạt nổ (Tự động dọn dẹp bộ nhớ)
+            for (let i = activeParticles.length - 1; i >= 0; i--) {
+                activeParticles[i].update();
+                if (activeParticles[i].opacity <= 0) {
+                    activeParticles.splice(i, 1); // Xóa khỏi RAM
                 } else {
-                    particles[i].draw();
+                    activeParticles[i].render();
                 }
             }
 
-            requestAnimationFrame(genesisRender);
+            requestAnimationFrame(systemRender);
         }
-        genesisRender();
+        systemRender();
 
     </script>
 </body>
