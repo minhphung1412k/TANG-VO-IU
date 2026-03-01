@@ -3,182 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quà Tặng Vợ Yêu ❤️</title>
+    <title>Gửi Vợ Yêu ❤️</title>
     <style>
+        :root {
+            --primary-color: #ff4d6d;
+            --bg-color: #fff0f3;
+        }
+
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
-            background: #ffebee;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            color: #d32f2f;
         }
 
         /* Màn hình đăng nhập */
         #login-box {
             background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(255, 77, 109, 0.2);
             text-align: center;
-            width: 300px;
+            width: 320px;
             z-index: 100;
-            border: 2px solid #ff85a2;
+            border: 3px solid #ffb3c1;
+            transition: all 0.5s ease;
         }
 
-        .input-group {
-            position: relative;
-            margin-bottom: 15px;
-        }
+        h2 { color: var(--primary-color); margin-bottom: 30px; font-size: 1.2rem; }
+
+        .input-group { position: relative; margin-bottom: 20px; }
 
         input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            box-sizing: border-box;
+            padding: 14px 15px;
+            border: 2px solid #eee;
+            border-radius: 50px;
             outline: none;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: 0.3s;
         }
 
-        /* Nút con mắt đơn giản bằng text để không bao giờ lỗi */
+        input:focus { border-color: var(--primary-color); }
+
         #toggleEye {
-            position: absolute;
-            right: 15px;
-            top: 10px;
-            cursor: pointer;
-            font-size: 1.2em;
+            position: absolute; right: 20px; top: 12px;
+            cursor: pointer; font-size: 1.3rem;
         }
 
         button#btnSubmit {
-            background: #ff85a2;
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
+            background: var(--primary-color);
+            color: white; border: none; padding: 14px;
+            width: 100%; border-radius: 50px;
+            font-weight: bold; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            transition: 0.3s;
         }
 
-        #error-msg {
-            color: red;
-            font-weight: bold;
-            margin-top: 10px;
-            display: none;
-        }
+        button#btnSubmit:hover { transform: translateY(-3px); }
 
-        /* Nội dung sau khi đăng nhập */
+        #error-msg { color: #ff0000; font-weight: bold; margin-top: 15px; display: none; }
+
+        /* Màn hình nội dung */
         #main-content {
-            display: none;
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
+            display: none; text-align: center; width: 90%;
+            max-width: 500px; animation: fadeIn 2s ease;
         }
+
+        h1 { color: var(--primary-color); font-size: 1.8rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
 
         .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 20px; margin-top: 40px;
         }
 
         .menu-btn {
-            background: white;
-            padding: 20px 10px;
-            border-radius: 15px;
-            border: 2px solid #ff85a2;
-            color: #f73378;
-            font-weight: bold;
-            cursor: pointer;
+            background: white; padding: 25px 15px;
+            border-radius: 20px; border: 2px solid #ffb3c1;
+            color: var(--primary-color); font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        /* Nhạc và Tim */
+        .menu-btn:hover { background: var(--primary-color); color: white; transform: scale(1.05); }
+
+        /* Nút loa điều khiển nhạc */
         #music-btn {
-            position: fixed; bottom: 20px; right: 20px;
-            background: white; width: 50px; height: 50px;
-            border-radius: 50%; display: none; cursor: pointer;
-            border: 1px solid #ff85a2; font-size: 20px;
+            position: fixed; bottom: 30px; right: 30px;
+            background: white; width: 60px; height: 60px;
+            border-radius: 50%; border: 2px solid var(--primary-color);
+            font-size: 25px; cursor: pointer; display: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            z-index: 1000; transition: 0.3s;
         }
 
-        .heart { position: absolute; color: #ff85a2; animation: fly 4s linear infinite; z-index: -1; }
-        @keyframes fly {
-            0% { transform: translateY(100vh); opacity: 1; }
-            100% { transform: translateY(-10vh); opacity: 0; }
+        /* Hiệu ứng trái tim */
+        .heart {
+            position: absolute; color: var(--primary-color);
+            animation: fly 5s linear infinite; pointer-events: none;
         }
+
+        @keyframes fly {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="login-box">
-        <h2 style="font-size: 1.1em;">VỢ YÊU ĐĂNG NHẬP MỚI ĐƯỢC XEM</h2>
+        <h2>VỢ YÊU ĐĂNG NHẬP MỚI ĐƯỢC XEM ❤️</h2>
         <div class="input-group">
-            <input type="text" id="user" placeholder="Tài khoản...">
+            <input type="text" id="user" placeholder="Tài khoản của vợ...">
         </div>
         <div class="input-group">
-            <input type="password" id="pass" placeholder="Mật khẩu...">
+            <input type="password" id="pass" placeholder="Mật khẩu bí mật...">
             <span id="toggleEye">👁️</span>
         </div>
-        <button id="btnSubmit">Mở Quà Ngay</button>
-        <p id="error-msg">VỢ IU NHẬP SAI ÒI</p>
+        <button id="btnSubmit">Mở Quà Ngay ✨</button>
+        <p id="error-msg">VỢ IU NHẬP SAI ÒI ❌</p>
     </div>
 
     <div id="main-content">
-        <h1>Gửi Vợ Yêu ❤️</h1>
+        <h1>Gửi Vợ Yêu Của Anh ❤️</h1>
         <div class="menu-grid">
-            <div class="menu-btn">CHUYỆN QUÁ KHỨ</div>
-            <div class="menu-btn">CHUYỆN HIỆN TẠI</div>
-            <div class="menu-btn">LỜI HỨA CỦA TƯƠNG LAI</div>
-            <div class="menu-btn">LÝ DO ANH YÊU EM VÀ LỜI NHẮN NHỦ</div>
+            <div class="menu-btn" onclick="alert('Phần này do bạn tự viết nha!')">CHUYỆN QUÁ KHỨ</div>
+            <div class="menu-btn" onclick="alert('Phần này do bạn tự viết nha!')">CHUYỆN HIỆN TẠI</div>
+            <div class="menu-btn" onclick="alert('Phần này do bạn tự viết nha!')">LỜI HỨA CỦA TƯƠNG LAI</div>
+            <div class="menu-btn" onclick="alert('Phần này do bạn tự viết nha!')">LÝ DO ANH YÊU EM</div>
         </div>
     </div>
 
-    <button id="music-btn">🎵</button>
+    <button id="music-btn">🔇</button>
     <audio id="mySong" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+        <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Kevin_MacLeod/Impact_Andante/Kevin_MacLeod_-_Impact_Andante.mp3" type="audio/mpeg">
+        </audio>
 
     <script>
-        // Fix lỗi con mắt
+        // Tài khoản & Mật khẩu
+        const CORRECT_USER = "anhyeuemlamdonha";
+        const CORRECT_PASS = "xindungboroianh";
+
         const passInput = document.getElementById('pass');
         const eyeBtn = document.getElementById('toggleEye');
-        
-        eyeBtn.addEventListener('click', function() {
+        const musicBtn = document.getElementById('music-btn');
+        const song = document.getElementById('mySong');
+
+        // Hiện ẩn mật khẩu
+        eyeBtn.addEventListener('click', () => {
             if (passInput.type === 'password') {
                 passInput.type = 'text';
-                this.innerText = '🔒';
+                eyeBtn.innerText = '🔒';
             } else {
                 passInput.type = 'password';
-                this.innerText = '👁️';
+                eyeBtn.innerText = '👁️';
             }
         });
 
-        // Fix lỗi nút đăng nhập bị đơ
-        document.getElementById('btnSubmit').addEventListener('click', function() {
+        // Đăng nhập
+        document.getElementById('btnSubmit').addEventListener('click', () => {
             const u = document.getElementById('user').value.trim();
             const p = document.getElementById('pass').value.trim();
-            const error = document.getElementById('error-msg');
 
-            if (u === "anhyeuemlamdonha" && p === "xindungboroianh") {
+            if (u === CORRECT_USER && p === CORRECT_PASS) {
                 document.getElementById('login-box').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
-                document.getElementById('music-btn').style.display = 'block';
+                musicBtn.style.display = 'block';
                 
-                // Chạy nhạc và tim
-                document.getElementById('mySong').play();
+                // Phát nhạc & Đổi icon loa sang KHÔNG có dấu x
+                song.play();
+                musicBtn.innerText = '🔊';
                 startHearts();
             } else {
-                error.style.display = 'block';
-                document.getElementById('pass').value = "";
+                document.getElementById('error-msg').style.display = 'block';
+                passInput.value = "";
             }
         });
 
-        // Điều khiển nhạc
-        document.getElementById('music-btn').addEventListener('click', function() {
-            const s = document.getElementById('mySong');
-            if (s.paused) s.play(); else s.pause();
+        // Bật/Tắt loa (Loa hiện dấu X khi tắt)
+        musicBtn.addEventListener('click', () => {
+            if (song.paused) {
+                song.play();
+                musicBtn.innerText = '🔊';
+            } else {
+                song.pause();
+                musicBtn.innerText = '🔇';
+            }
         });
 
         function startHearts() {
@@ -187,10 +205,11 @@
                 h.classList.add('heart');
                 h.innerHTML = '❤️';
                 h.style.left = Math.random() * 100 + 'vw';
-                h.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                h.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                h.style.animationDuration = (Math.random() * 2 + 3) + 's';
                 document.body.appendChild(h);
-                setTimeout(() => h.remove(), 4000);
-            }, 400);
+                setTimeout(() => h.remove(), 5000);
+            }, 300);
         }
     </script>
 </body>
