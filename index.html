@@ -3,112 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THUÝ VÂN ❤️ BÌNH MINH - VIP 70</title>
+    <title>BÌNH MINH YÊU THUÝ VÂN</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&family=Cinzel+Decorative:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Cinzel+Decorative:wght@900&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #ff2d75; --g: #ffcf5e; --b: #00e5ff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        :root { --p: #ff2d75; --g: #ffcf5e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; }
 
-        /* --- CÔNG NGHỆ ÁNH SÁNG THÀNH PHỐ 7.0 --- */
-        #city-canvas { position: fixed; inset: 0; z-index: 1; opacity: 0.4; transition: 0.3s; }
-        #firework-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
-        #overlay-glow { position: fixed; inset: 0; z-index: 2; pointer-events: none; mix-blend-mode: overlay; opacity: 0; transition: 0.1s; }
+        /* --- FIX NỀN THÀNH PHỐ: DÙNG THẺ IMG TRỰC TIẾP --- */
+        .city-bg {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: 1;
+            filter: brightness(0.2) contrast(1.2); /* Luôn hiện le lói */
+            transition: filter 0.2s ease;
+        }
 
-        /* --- GIAO DIỆN VIP 70: VIỀN LASER --- */
-        .supreme-container {
+        /* Lớp phủ lóe sáng khi pháo nổ */
+        #flash-layer {
+            position: fixed; inset: 0; z-index: 2;
+            background: white; opacity: 0; pointer-events: none;
+            mix-blend-mode: overlay; transition: opacity 0.2s;
+        }
+
+        canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+
+        /* --- GIAO DIỆN KHUNG TRÁI TIM VIP --- */
+        .heart-box {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 550px; padding: 3px; border-radius: 40px;
-            background: linear-gradient(var(--angle, 0deg), var(--p), var(--g), var(--b), var(--p));
-            z-index: 100; opacity: 0; visibility: hidden; transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 50px rgba(255, 45, 117, 0.4);
+            width: 90%; max-width: 480px; z-index: 100;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(25px);
+            padding: 50px 30px; border-radius: 40px; text-align: center;
+            border: 2px solid var(--p); box-shadow: 0 0 50px rgba(255, 45, 117, 0.5);
+            opacity: 0; visibility: hidden; transition: 1s all;
         }
-        @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
-        @keyframes rotate-laser { to { --angle: 360deg; } }
-        .supreme-container { animation: rotate-laser 3s linear infinite; }
+        .heart-box.active { opacity: 1; visibility: visible; }
 
-        .inner-box {
-            background: rgba(10, 10, 15, 0.95); border-radius: 38px; padding: 50px 30px;
-            backdrop-filter: blur(20px); text-align: center; overflow: hidden; position: relative;
-        }
+        .title { font-family: 'Cinzel Decorative', cursive; color: #fff; font-size: 2rem; margin-bottom: 35px; text-shadow: 0 0 15px var(--p); }
 
-        .supreme-container.active { opacity: 1; visibility: visible; }
-
-        .title { font-family: 'Cinzel Decorative', cursive; font-size: 2.2rem; color: #fff; text-shadow: 0 0 20px var(--p); margin-bottom: 35px; }
-
-        /* --- INPUT & ICON FIX --- */
-        .input-row { position: relative; margin-bottom: 25px; }
-        .input-row i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--p); font-size: 20px; }
-        .input-row input {
+        .input-wrap { position: relative; margin-bottom: 25px; }
+        .input-wrap i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--p); font-size: 20px; }
+        .input-wrap input {
             width: 100%; padding: 18px 55px; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; color: #fff; font-size: 16px; outline: none;
+            border: 1px solid #444; border-radius: 20px; color: #fff; outline: none; transition: 0.3s;
         }
-        .input-row input:focus { border-color: var(--g); background: rgba(255,255,255,0.1); }
-        .eye { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #777; transition: 0.3s; }
-        .eye:hover { color: #fff; }
+        .input-wrap input:focus { border-color: var(--p); background: rgba(255,255,255,0.1); }
 
-        .btn-glow {
+        .eye { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #777; }
+
+        .btn-heart {
             width: 100%; padding: 18px; background: linear-gradient(45deg, var(--p), #ff5e3a);
-            border: none; border-radius: 20px; color: #fff; font-weight: 900; letter-spacing: 3px; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 45, 117, 0.4); transition: 0.4s;
+            border: none; border-radius: 20px; color: #fff; font-weight: 900; 
+            letter-spacing: 2px; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 20px rgba(255,45,117,0.4);
         }
-        .btn-glow:hover { transform: translateY(-5px); box-shadow: 0 15px 50px var(--p); }
+        .btn-heart:hover { transform: scale(1.03); box-shadow: 0 10px 40px var(--p); }
 
         /* --- MENU 4 MỤC VIP --- */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
         .menu-item {
-            background: rgba(255,255,255,0.04); padding: 25px 10px; border-radius: 25px;
-            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.4s; position: relative;
+            background: rgba(255,255,255,0.03); padding: 25px 10px; border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.4s;
         }
-        .menu-item:hover { background: var(--p); transform: scale(1.05) rotate(2deg); border-color: #fff; }
-        .menu-item i { font-size: 28px; margin-bottom: 10px; display: block; color: var(--g); }
-        .menu-item span { color: #fff; font-size: 14px; font-weight: 700; display: block; }
+        .menu-item:hover { background: var(--p); transform: translateY(-10px); }
+        .menu-item i { font-size: 25px; margin-bottom: 10px; display: block; color: var(--g); }
+        .menu-item span { color: #fff; font-size: 13px; font-weight: bold; display: block; }
 
-        /* --- NOTIFICATION & MISC --- */
-        #notif { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #fff; color: var(--p); padding: 15px 40px; border-radius: 50px; font-weight: 900; z-index: 10000; transition: 0.5s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* --- NOTIF & INTRO --- */
+        #notif { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #fff; color: var(--p); padding: 15px 40px; border-radius: 50px; font-weight: 900; z-index: 1000; transition: 0.5s; }
         #notif.active { top: 30px; }
-        #intro { position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; cursor: pointer; }
+        #intro { position: fixed; inset: 0; background: #000; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <canvas id="city-canvas"></canvas>
-    <div id="overlay-glow"></div>
-    <canvas id="firework-canvas"></canvas>
+    <img src="https://vtv1.mediacdn.vn/zoom/640_400/2023/1/1/hanoi-16725350353111867184281.jpg" class="city-bg" id="city-img">
+    <div id="flash-layer"></div>
+    <canvas id="fw"></canvas>
 
     <div id="notif">VỢ IU NHẬP SAI ÒI ĐÓ</div>
 
-    <div id="intro" onclick="startVIP70()">
-        <i class="fas fa-heart-pulse fa-beat" style="font-size: 80px; color: var(--p);"></i>
-        <h1 style="margin-top: 30px; letter-spacing: 10px;">CHẠM ĐỂ BẮT ĐẦU VIP 70</h1>
+    <div id="intro" onclick="startApp()">
+        <i class="fas fa-heart fa-beat" style="font-size: 70px; color: var(--p);"></i>
+        <p style="margin-top: 20px; letter-spacing: 5px;">CHẠM VÀO ĐỂ MỞ</p>
     </div>
 
-    <div class="supreme-container" id="auth-panel">
-        <div class="inner-box">
-            <h2 class="title">BÌNH MINH ❤️ THUÝ VÂN</h2>
-            <div class="input-row">
-                <i class="fas fa-user-crown"></i>
-                <input type="text" id="user" placeholder="Nhập tài khoản đi baby">
-            </div>
-            <div class="input-row">
-                <i class="fas fa-lock-hashtag"></i>
-                <input type="password" id="pass" placeholder="Nhập mật khẩu nha bé iu">
-                <i class="fas fa-eye eye" onclick="toggleView()"></i>
-            </div>
-            <button class="btn-glow" onclick="checkAuth()">XÁC NHẬN DANH TÍNH</button>
+    <div class="heart-box" id="auth-panel">
+        <h2 class="title">BÌNH MINH ❤️ THUÝ VÂN</h2>
+        <div class="input-wrap">
+            <i class="fas fa-envelope-heart"></i>
+            <input type="text" id="user" placeholder="Nhập tài khoản đi baby">
         </div>
+        <div class="input-wrap">
+            <i class="fas fa-lock-heart"></i>
+            <input type="password" id="pass" placeholder="Nhập mật khẩu nha bé iu">
+            <i class="fas fa-eye eye" onclick="togglePass()"></i>
+        </div>
+        <button class="btn-heart" onclick="check()">ĐĂNG NHẬP VÀO TRÁI TIM</button>
     </div>
 
-    <div class="supreme-container" id="menu-panel">
-        <div class="inner-box">
-            <h2 class="title" style="font-size: 1.6rem;">ĐIỀU ANH MUỐN NÓI</h2>
-            <div class="menu-grid">
-                <div class="menu-item" onclick="boom(15)"><i class="fas fa-history"></i><span>Kỉ niệm</span></div>
-                <div class="menu-item" onclick="boom(15)"><i class="fas fa-clock"></i><span>Hiện tại</span></div>
-                <div class="menu-item" onclick="boom(15)"><i class="fas fa-hourglass-start"></i><span>Lời hứa ở tương lai</span></div>
-                <div class="menu-item" onclick="specialGift()"><i class="fas fa-face-smile-heart"></i><span>Nếu em đang buồn...</span></div>
-            </div>
+    <div class="heart-box" id="menu-panel">
+        <h2 class="title">GỬI THUÝ VÂN</h2>
+        <div class="menu-grid">
+            <div class="menu-item" onclick="boom(12)"><i class="fas fa-history"></i><span>Kỉ niệm</span></div>
+            <div class="menu-item" onclick="boom(12)"><i class="fas fa-clock"></i><span>Hiện tại</span></div>
+            <div class="menu-item" onclick="boom(12)"><i class="fas fa-hourglass-start"></i><span>Lời hứa ở tương lai</span></div>
+            <div class="menu-item" onclick="sad()"><i class="fas fa-face-smile-wink"></i><span>Nếu em đang buồn...</span></div>
         </div>
     </div>
 
@@ -116,46 +115,29 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const cCanvas = document.getElementById('city-canvas');
-        const cCtx = cCanvas.getContext('2d');
-        const fCanvas = document.getElementById('firework-canvas');
-        const fCtx = fCanvas.getContext('2d');
-        const overlay = document.getElementById('overlay-glow');
+        const canvas = document.getElementById('fw');
+        const ctx = canvas.getContext('2d');
+        const city = document.getElementById('city-img');
+        const flash = document.getElementById('flash-layer');
         
-        let w, h, player, playing = false;
-        let rockets = [], particles = [], cityImg = new Image();
-        cityImg.src = 'https://vtv1.mediacdn.vn/zoom/640_400/2023/1/1/hanoi-16725350353111867184281.jpg';
+        let w, h, player;
+        let rockets = [], particles = [];
 
-        function resize() {
-            w = cCanvas.width = fCanvas.width = window.innerWidth;
-            h = cCanvas.height = fCanvas.height = window.innerHeight;
-        }
+        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
-
-        cityImg.onload = () => { drawCity(0.4); };
-
-        function drawCity(bright) {
-            cCtx.clearRect(0, 0, w, h);
-            cCtx.globalAlpha = bright;
-            cCtx.drawImage(cityImg, 0, 0, w, h);
-            // Thêm lớp màu đêm Hà Nội
-            cCtx.fillStyle = "rgba(10, 10, 30, 0.5)";
-            cCtx.fillRect(0, 0, w, h);
-        }
 
         class Particle {
             constructor(x, y, color) {
                 this.x = x; this.y = y; this.color = color;
                 const a = Math.random() * Math.PI * 2;
-                const s = Math.random() * 10 + 2;
+                const s = Math.random() * 8 + 2;
                 this.vx = Math.cos(a) * s; this.vy = Math.sin(a) * s;
-                this.alpha = 1; this.decay = Math.random() * 0.015 + 0.005;
+                this.alpha = 1; this.decay = Math.random() * 0.02 + 0.01;
             }
-            update() { this.vx *= 0.96; this.vy *= 0.96; this.vy += 0.15; this.x += this.vx; this.y += this.vy; this.alpha -= this.decay; }
+            update() { this.vx *= 0.95; this.vy *= 0.95; this.vy += 0.12; this.x += this.vx; this.y += this.vy; this.alpha -= this.decay; }
             draw() {
-                fCtx.globalAlpha = this.alpha; fCtx.fillStyle = this.color;
-                fCtx.shadowBlur = 10; fCtx.shadowColor = this.color;
-                fCtx.beginPath(); fCtx.arc(this.x, this.y, 2, 0, Math.PI * 2); fCtx.fill();
+                ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fill();
             }
         }
 
@@ -163,45 +145,39 @@
             constructor() {
                 this.x = Math.random() * w; this.y = h;
                 this.targetY = Math.random() * (h * 0.4);
-                this.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                this.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
             }
             update() {
-                this.y -= 12;
+                this.y -= 10;
                 if(this.y <= this.targetY) { this.explode(); return false; }
                 return true;
             }
             explode() {
-                // FIX NỀN ĐEN: BỪNG SÁNG VẬT LÝ
-                drawCity(1.2);
-                overlay.style.opacity = "1";
-                overlay.style.background = `radial-gradient(circle at ${this.x}px ${this.targetY}px, ${this.color}66 0%, transparent 70%)`;
-                setTimeout(() => { drawCity(0.4); overlay.style.opacity = "0"; }, 300);
-                for(let i=0; i<200; i++) particles.push(new Particle(this.x, this.y, this.color));
+                // HIỆU ỨNG CHIẾU SÁNG VIP: LÀM SÁNG THẺ IMG VÀ LỚP PHỦ
+                city.style.filter = "brightness(1.5) contrast(1.5)";
+                flash.style.opacity = "0.4";
+                setTimeout(() => { city.style.filter = "brightness(0.2) contrast(1.2)"; flash.style.opacity = "0"; }, 300);
+                for(let i=0; i<150; i++) particles.push(new Particle(this.x, this.y, this.color));
             }
-            draw() { fCtx.fillStyle = "#fff"; fCtx.beginPath(); fCtx.arc(this.x, this.y, 3, 0, Math.PI * 2); fCtx.fill(); }
+            draw() { ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(this.x, this.y, 3, 0, Math.PI * 2); ctx.fill(); }
         }
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt', { height: '0', width: '0', videoId: 'iXaw-jwmjjA', playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' }, events: { 'onReady': e => e.target.mute() } });
         }
 
-        function checkAuth() {
+        function togglePass() { const p = document.getElementById('pass'); p.type = p.type === 'password' ? 'text' : 'password'; }
+
+        function check() {
             const u = document.getElementById('user').value;
             const p = document.getElementById('pass').value;
             if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
                 document.getElementById('auth-panel').classList.remove('active');
                 setTimeout(() => document.getElementById('menu-panel').classList.add('active'), 800);
-            } else { fireNotif('VỢ IU NHẬP SAI ÒI ĐÓ'); }
+            } else { const n = document.getElementById('notif'); n.classList.add('active'); setTimeout(() => n.classList.remove('active'), 3000); }
         }
 
-        function toggleView() {
-            const i = document.getElementById('pass');
-            i.type = i.type === 'password' ? 'text' : 'password';
-        }
-
-        function fireNotif(m) { const n = document.getElementById('notif'); n.innerText = m; n.classList.add('active'); setTimeout(() => n.classList.remove('active'), 3000); }
-
-        function startVIP70() {
+        function startApp() {
             document.getElementById('intro').style.display = 'none';
             document.getElementById('auth-panel').classList.add('active');
             player.unMute(); player.playVideo();
@@ -209,10 +185,10 @@
         }
 
         function boom(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*200); }
-        function specialGift() { fireNotif('Cười lên nhé, anh luôn ở đây bên Thuý Vân!'); boom(20); }
+        function sad() { alert('Dù có chuyện gì, Bình Minh vẫn luôn yêu Thuý Vân nhất!'); boom(20); }
 
         function loop() {
-            fCtx.fillStyle = 'rgba(0,0,0,0.2)'; fCtx.fillRect(0,0,w,h);
+            ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.fillRect(0,0,w,h);
             rockets = rockets.filter(r => { r.draw(); return r.update(); });
             particles = particles.filter(p => { p.draw(); p.update(); return p.alpha > 0; });
             requestAnimationFrame(loop);
