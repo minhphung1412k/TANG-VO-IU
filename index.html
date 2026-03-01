@@ -3,203 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PHÙNG LÝ BÌNH MINH YÊU EM</title>
+    <title>BÌNH MINH ❤️ THUÝ VÂN</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Cinzel+Decorative:wght@900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&family=Cinzel+Decorative:wght@900&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --p: #ff2d75;
-            --p-glow: 0 0 30px rgba(255, 45, 117, 0.8);
-            --glass: rgba(0, 0, 0, 0.85);
+            --gold: #ffcf5e;
+            --glass: rgba(0, 0, 0, 0.7);
+            --border-anim: linear-gradient(90deg, transparent, #ff2d75, #ffcf5e, transparent);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-        body, html { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; }
+        body, html { width: 100%; height: 100%; background: #020205; overflow: hidden; font-family: 'Quicksand', sans-serif; }
 
-        /* --- LAYER 1: THÀNH PHỐ ĐÊM (DÙNG ẢNH CỦA BẠN) --- */
-        #city-viewport {
+        /* --- CÔNG NGHỆ NỀN THÀNH PHỐ CHIẾU SÁNG --- */
+        #city-layer {
             position: fixed; inset: 0; z-index: 1;
-            background: url('https://vtv1.mediacdn.vn/zoom/640_400/2023/1/1/hanoi-16725350353111867184281.jpg') center/cover no-repeat;
-            filter: brightness(0.02) contrast(1.8) saturate(0.5); /* Tối tối le lói cực thực */
-            transition: filter 0.1s ease;
-            transform: scale(1.1);
+            background: linear-gradient(to bottom, #050510, #101025), 
+                        url('https://vtv1.mediacdn.vn/zoom/640_400/2023/1/1/hanoi-16725350353111867184281.jpg');
+            background-blend-mode: overlay;
+            background-size: cover; background-position: center;
+            filter: brightness(0.15) contrast(1.2) saturate(0.8); /* Tăng độ sáng nền mặc định để không bị đen */
+            transition: filter 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+            transform: scale(1.05);
         }
 
-        /* Lớp ánh sáng loang màu trên thành phố */
-        #light-diffusion {
-            position: fixed; inset: 0; z-index: 2;
-            pointer-events: none; mix-blend-mode: screen;
-            opacity: 0; transition: opacity 0.1s;
+        /* Lớp phủ động khi pháo nổ */
+        #aura-glow {
+            position: fixed; inset: 0; z-index: 2; pointer-events: none;
+            mix-blend-mode: color-dodge; opacity: 0; transition: 0.1s;
         }
 
-        canvas#fireworks-engine { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
+        canvas#particle-engine { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
 
-        /* --- LAYER 2: NOTIFICATION (FIX LỖI ALERT TRẮNG) --- */
-        #custom-alert {
-            position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(45deg, #ff2d75, #ff5e3a);
-            padding: 20px 45px; border-radius: 100px; z-index: 100000;
-            color: #fff; font-weight: 700; font-size: 1.1rem;
-            box-shadow: 0 20px 50px rgba(255, 45, 117, 0.6);
-            transition: 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-            display: flex; align-items: center; gap: 15px;
+        /* --- KHUNG ĐĂNG NHẬP VIP (ANIMATED BORDER) --- */
+        .glass-master {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 500px; padding: 3px; /* Độ dày viền chạy */
+            background: var(--border-anim); background-size: 200% 200%;
+            border-radius: 45px; animation: rotateBorder 4s linear infinite;
+            z-index: 5000; opacity: 0; visibility: hidden;
+            transition: 1.5s var(--elastic); box-shadow: 0 0 50px rgba(255, 45, 117, 0.3);
         }
-        #custom-alert.show { top: 40px; }
+        @keyframes rotateBorder { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
-        /* --- LAYER 3: LOGIN PANEL (GIAO DIỆN VŨ TRỤ) --- */
-        .cosmic-card {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0.7);
-            width: 90%; max-width: 500px; padding: 70px 40px;
-            background: var(--glass); backdrop-filter: blur(40px);
-            border-radius: 60px; border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center; opacity: 0; visibility: hidden;
-            transition: 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 5000; box-shadow: 0 0 100px rgba(0,0,0,1);
+        .inner-content {
+            background: #0a0a0f; border-radius: 42px; padding: 60px 40px;
+            position: relative; overflow: hidden;
         }
-        .cosmic-card.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+        .inner-content::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,45,117,0.1) 0%, transparent 70%);
+            animation: pulseBg 6s infinite alternate;
+        }
+        @keyframes pulseBg { from { transform: translate(0,0); } to { transform: translate(10%, 10%); } }
 
-        .hero-text {
-            font-family: 'Cinzel Decorative', cursive; font-size: 2.8rem;
-            background: linear-gradient(to bottom, #fff, var(--p));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 40px; animation: glowPulse 3s infinite;
-        }
-        @keyframes glowPulse { 0%, 100% { filter: drop-shadow(0 0 5px var(--p)); } 50% { filter: drop-shadow(0 0 25px var(--p)); } }
+        .glass-master.active { opacity: 1; visibility: visible; }
 
-        /* --- INPUTS & ICONS (FIX HOÀN TOÀN) --- */
-        .input-group { position: relative; margin-bottom: 25px; }
-        .input-group i.main-icon {
-            position: absolute; left: 25px; top: 50%; transform: translateY(-50%);
-            color: var(--p); font-size: 22px; z-index: 10;
+        .title-supreme {
+            font-family: 'Cinzel Decorative', cursive; font-size: 2.5rem; color: #fff;
+            text-shadow: 0 0 15px var(--p); margin-bottom: 40px; line-height: 1.2;
         }
-        .input-group input {
-            width: 100%; padding: 22px 65px; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 25px;
-            color: #fff; font-size: 17px; outline: none; transition: 0.4s;
-        }
-        .input-group input:focus { border-color: var(--p); background: rgba(255,255,255,0.08); }
 
-        /* Mắt ẩn hiện mật khẩu - Đã Fix */
-        .eye-btn {
-            position: absolute; right: 25px; top: 50%; transform: translateY(-50%);
-            cursor: pointer; color: #777; z-index: 100; padding: 5px; transition: 0.3s;
+        /* --- INPUTS & ICONS --- */
+        .field { position: relative; margin-bottom: 25px; z-index: 5; }
+        .field i.icon-main {
+            position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+            color: var(--p); font-size: 20px; filter: drop-shadow(0 0 5px var(--p));
         }
-        .eye-btn:hover { color: #fff; transform: translateY(-50%) scale(1.2); }
+        .field input {
+            width: 100%; padding: 20px 60px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+            color: #fff; font-size: 16px; outline: none; transition: 0.3s;
+        }
+        .field input:focus { border-color: var(--gold); background: rgba(255,255,255,0.1); box-shadow: 0 0 20px rgba(255,207,94,0.2); }
 
-        .btn-supreme {
-            width: 100%; padding: 22px; background: linear-gradient(45deg, #ff2d75, #ff5e3a);
-            border: none; border-radius: 25px; color: #fff; font-size: 1.3rem;
+        .eye-toggle {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; color: #888; transition: 0.3s; padding: 5px;
+        }
+        .eye-toggle:hover { color: var(--gold); }
+
+        .btn-vip {
+            width: 100%; padding: 20px; background: linear-gradient(45deg, #ff2d75, #ffcf5e);
+            border: none; border-radius: 20px; color: #fff; font-size: 1.2rem;
             font-weight: 900; letter-spacing: 5px; cursor: pointer; transition: 0.5s;
-            box-shadow: 0 10px 30px rgba(255, 45, 117, 0.4);
+            position: relative; z-index: 5; overflow: hidden;
         }
-        .btn-supreme:hover { transform: translateY(-8px); box-shadow: 0 20px 60px var(--p); }
+        .btn-vip:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(255,45,117,0.5); }
 
-        /* --- MENU (GIAO DIỆN SỐNG) --- */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
-        .menu-item {
-            background: rgba(255,255,255,0.03); padding: 30px 15px; border-radius: 30px;
-            cursor: pointer; transition: 0.5s; border: 1px solid transparent;
+        /* --- MENU - NHỮNG ĐIỀU ANH MUỐN NÓI --- */
+        .menu-list { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .menu-card {
+            background: rgba(255,255,255,0.03); padding: 25px 15px; border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.4s;
+            position: relative;
         }
-        .menu-item:hover { background: var(--p); transform: translateY(-15px) rotate(3deg); border-color: #fff; }
-        .menu-item i { font-size: 35px; margin-bottom: 15px; display: block; animation: swing 3s infinite ease-in-out; }
-        @keyframes swing { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+        .menu-card:hover { 
+            background: var(--p); transform: scale(1.05) rotate(2deg); 
+            border-color: #fff; box-shadow: 0 10px 30px rgba(255,45,117,0.4);
+        }
+        .menu-card i { font-size: 30px; margin-bottom: 10px; display: block; color: var(--gold); transition: 0.3s; }
+        .menu-card:hover i { color: #fff; transform: scale(1.3) rotate(-10deg); }
 
-        /* --- VINYL PLAYER --- */
-        #music-box {
-            position: fixed; top: 35px; right: 35px; z-index: 9999;
-            width: 85px; height: 85px; cursor: pointer; opacity: 0; transition: 2s;
+        /* --- SYSTEM COMPONENTS --- */
+        #custom-notif {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: #fff; color: var(--p); padding: 18px 40px; border-radius: 50px;
+            font-weight: 900; z-index: 99999; transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px;
         }
-        .disc-wrap {
+        #custom-notif.active { top: 30px; }
+
+        #music-vinyl {
+            position: fixed; top: 30px; right: 30px; z-index: 10000;
+            width: 80px; height: 80px; cursor: pointer; opacity: 0; transition: 1s;
+        }
+        .vinyl-body {
             width: 100%; height: 100%; border-radius: 50%; background: #111;
-            border: 4px solid #333; box-shadow: 0 0 30px var(--p);
+            border: 4px solid #333; box-shadow: 0 0 20px var(--p);
             display: flex; align-items: center; justify-content: center;
         }
-        .disc-inner { width: 90%; height: 90%; border-radius: 50%; background: repeating-radial-gradient(#222, #000 6px); display: flex; align-items: center; justify-content: center; }
-        .disc-inner i { color: var(--p); font-size: 30px; }
 
-        /* --- INTRO --- */
-        #intro {
-            position: fixed; inset: 0; background: #000; z-index: 100000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer;
+        #intro-wall {
+            position: fixed; inset: 0; background: #000; z-index: 999999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        #intro h1 { font-family: 'Montserrat', sans-serif; font-size: 5rem; letter-spacing: 30px; color: #fff; }
+        .heart-loader { font-size: 80px; color: var(--p); animation: beat 0.8s infinite; }
+        @keyframes beat { to { transform: scale(1.3); filter: drop-shadow(0 0 20px var(--p)); } }
     </style>
 </head>
 <body>
 
-    <div id="city-viewport"></div>
-    <div id="light-diffusion"></div>
-    <canvas id="fireworks-engine"></canvas>
+    <div id="city-layer"></div>
+    <div id="aura-glow"></div>
+    <canvas id="particle-engine"></canvas>
 
-    <div id="custom-alert">
-        <i class="fas fa-heart-circle-exclamation fa-beat"></i>
-        <span id="alert-text">VỢ IU NHẬP SAI ÒI ĐÓ</span>
+    <div id="custom-notif">
+        <i class="fas fa-ghost"></i> <span id="notif-msg">VỢ IU NHẬP SAI ÒI ĐÓ</span>
     </div>
 
-    <div id="intro" onclick="startUniverse()">
-        <h1 class="fa-beat">CHẠM</h1>
-        <i class="fas fa-heart-pulse fa-beat" style="font-size: 100px; color: var(--p); margin-top: 40px;"></i>
+    <div id="intro-wall" onclick="initGenesis()">
+        <div class="heart-loader"><i class="fas fa-heart"></i></div>
+        <h1 style="color: #fff; margin-top: 30px; letter-spacing: 15px;">CHẠM ĐỂ BẮT ĐẦU</h1>
     </div>
 
-    <div id="music-box" onclick="toggleAudio()">
-        <div class="disc-wrap"><div class="disc-inner" id="disc-ui"><i class="fas fa-compact-disc"></i></div></div>
+    <div id="music-vinyl" onclick="handleMusic()">
+        <div class="vinyl-body"><div id="v-rotate" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; border-radius:50%; background:repeating-radial-gradient(#222, #000 7px);">
+            <i class="fas fa-music" style="color:var(--p); font-size:25px;"></i>
+        </div></div>
     </div>
-    <div id="youtube-target"></div>
+    <div id="yt-player"></div>
 
-    <div class="cosmic-card" id="auth-box">
-        <h2 class="hero-text">PHÙNG LÝ BÌNH MINH<br>YÊU EM</h2>
-        <div class="input-group">
-            <i class="fas fa-user-astronaut main-icon"></i>
-            <input type="text" id="u-in" placeholder="Nhập tài khoản đi baby" autocomplete="off">
-        </div>
-        <div class="input-group">
-            <i class="fas fa-shuttle-space main-icon"></i>
-            <input type="password" id="p-in" placeholder="Nhập mật khẩu nha bé iu" autocomplete="off">
-            <div class="eye-btn" onclick="toggleView()">
-                <i class="fas fa-eye" id="eye-icon"></i>
+    <div class="glass-master" id="auth-box">
+        <div class="inner-content">
+            <h2 class="title-supreme">BÌNH MINH ❤️ THUÝ VÂN</h2>
+            <div class="field">
+                <i class="fas fa-user-tie icon-main"></i>
+                <input type="text" id="user-input" placeholder="Nhập tài khoản đi baby" autocomplete="off">
             </div>
+            <div class="field">
+                <i class="fas fa-key-skeleton icon-main"></i>
+                <input type="password" id="pass-input" placeholder="Nhập mật khẩu nha bé iu" autocomplete="off">
+                <div class="eye-toggle" onclick="togglePass()">
+                    <i class="fas fa-eye" id="eye-icon"></i>
+                </div>
+            </div>
+            <button class="btn-vip" onclick="verifyLogic()">ĐĂNG NHẬP VŨ TRỤ</button>
         </div>
-        <button class="btn-supreme" onclick="verify()">KHÁM PHÁ NGAY</button>
     </div>
 
-    <div class="cosmic-card" id="menu-box">
-        <h2 class="hero-text" style="font-size: 2.2rem;">ĐIỀU ANH MUỐN NÓI</h2>
-        <div class="menu-grid">
-            <div class="menu-item" onclick="boom(12)"><i class="fas fa-meteor" style="color:#ffeb3b"></i>KỶ NIỆM</div>
-            <div class="menu-item" onclick="boom(12)"><i class="fas fa-heart-circle-check" style="color:#ff5252"></i>CẢM XÚC</div>
-            <div class="menu-item" onclick="boom(12)"><i class="fas fa-infinity" style="color:#00e5ff"></i>VĨNH CỬU</div>
-            <div class="menu-item" onclick="fireNotif('Anh sẽ yêu em đến tận cùng vũ trụ!')"><i class="fas fa-crown" style="color:#e1bee7"></i>LỜI HỨA</div>
+    <div class="glass-master" id="menu-box">
+        <div class="inner-content">
+            <h2 class="title-supreme" style="font-size: 1.8rem;">NHỮNG ĐIỀU ANH MUỐN NÓI</h2>
+            <div class="menu-list">
+                <div class="menu-card" onclick="spawnFire(15)"><i class="fas fa-camera-retro"></i>KỶ NIỆM</div>
+                <div class="menu-card" onclick="spawnFire(15)"><i class="fas fa-heart-pulse"></i>CẢM XÚC</div>
+                <div class="menu-card" onclick="spawnFire(15)"><i class="fas fa-infinity"></i>VĨNH CỬU</div>
+                <div class="menu-card" onclick="showNotif('Anh sẽ thương Thuý Vân suốt cuộc đời này!')"><i class="fas fa-crown"></i>LỜI HỨA</div>
+            </div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const canvas = document.getElementById('fireworks-engine');
+        const canvas = document.getElementById('particle-engine');
         const ctx = canvas.getContext('2d');
-        const city = document.getElementById('city-viewport');
-        const diffusion = document.getElementById('light-diffusion');
+        const city = document.getElementById('city-layer');
+        const aura = document.getElementById('aura-glow');
         
-        let w, h, player, isMusic = false, rotation = 0;
+        let w, h, player, playing = false, rot = 0;
         let rockets = [], particles = [];
 
-        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-        window.onresize = resize; resize();
+        function setSize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+        window.onresize = setSize; setSize();
 
         /* --- ENGINE PHÁO HOA & ÁNH SÁNG HDR --- */
         class Particle {
             constructor(x, y, color) {
                 this.x = x; this.y = y; this.color = color;
-                const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 12 + 4;
-                this.vx = Math.cos(angle) * speed;
-                this.vy = Math.sin(angle) * speed;
-                this.alpha = 1; this.decay = Math.random() * 0.01 + 0.006;
+                const a = Math.random() * Math.PI * 2;
+                const s = Math.random() * 12 + 3;
+                this.vx = Math.cos(a) * s;
+                this.vy = Math.sin(a) * s;
+                this.alpha = 1; this.decay = Math.random() * 0.01 + 0.005;
             }
             update() {
-                this.vx *= 0.95; this.vy *= 0.95; this.vy += 0.2;
+                this.vx *= 0.94; this.vy *= 0.94; this.vy += 0.18;
                 this.x += this.vx; this.y += this.vy; this.alpha -= this.decay;
             }
             draw() {
@@ -214,92 +227,93 @@
             constructor() {
                 this.x = Math.random() * w; this.y = h;
                 this.targetY = Math.random() * (h * 0.4);
-                this.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                this.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
             }
             update() {
-                this.y -= 14;
+                this.y -= 15;
                 if (this.y <= this.targetY) { this.explode(); return false; }
                 return true;
             }
             explode() {
-                // ĐIỂM NHẤN: THÀNH PHỐ BỪNG SÁNG THEO MÀU PHÁO
-                city.style.filter = `brightness(1) contrast(2) saturate(1.5)`;
-                diffusion.style.opacity = "1";
-                diffusion.style.background = `radial-gradient(circle at ${this.x}px ${this.y}px, ${this.color}55 0%, transparent 75%)`;
+                // ĐIỂM NHẤN: LÀM SÁNG THÀNH PHỐ
+                city.style.filter = `brightness(1.2) contrast(1.5) saturate(1.5)`;
+                aura.style.opacity = "1";
+                aura.style.background = `radial-gradient(circle at ${this.x}px ${this.targetY}px, ${this.color}55 0%, transparent 70%)`;
                 
                 setTimeout(() => {
-                    city.style.filter = `brightness(0.02) contrast(1.8) saturate(0.5)`;
-                    diffusion.style.opacity = "0";
-                }, 350);
+                    city.style.filter = `brightness(0.15) contrast(1.2) saturate(0.8)`;
+                    aura.style.opacity = "0";
+                }, 400);
 
-                for(let i=0; i<350; i++) particles.push(new Particle(this.x, this.y, this.color));
+                for(let i=0; i<300; i++) particles.push(new Particle(this.x, this.y, this.color));
             }
             draw() {
                 ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(this.x, this.y, 3, 0, Math.PI * 2); ctx.fill();
             }
         }
 
-        /* --- HỆ THỐNG ĐIỀU KHIỂN --- */
+        /* --- LOGIC CẬP NHẬT --- */
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-target', {
+            player = new YT.Player('yt-player', {
                 height: '0', width: '0', videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
                 events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function toggleAudio() {
-            if(isMusic) { player.pauseVideo(); isMusic = false; }
-            else { player.unMute(); player.playVideo(); isMusic = true; rotateDisc(); }
+        function handleMusic() {
+            if(playing) { player.pauseVideo(); playing = false; }
+            else { player.unMute(); player.playVideo(); playing = true; discSpin(); }
         }
 
-        function rotateDisc() { if(!isMusic) return; rotation += 4; document.getElementById('disc-ui').style.transform = `rotate(${rotation}deg)`; requestAnimationFrame(rotateDisc); }
+        function discSpin() { if(!playing) return; rot += 3; document.getElementById('v-rotate').style.transform = `rotate(${rot}deg)`; requestAnimationFrame(discSpin); }
 
-        function fireNotif(txt) {
-            const el = document.getElementById('custom-alert');
-            document.getElementById('alert-text').innerText = txt;
-            el.classList.add('show');
-            setTimeout(() => el.classList.remove('show'), 3500);
-        }
-
-        function toggleView() {
-            const f = document.getElementById('p-in');
+        function togglePass() {
+            const p = document.getElementById('pass-input');
             const i = document.getElementById('eye-icon');
-            f.type = f.type === 'password' ? 'text' : 'password';
-            i.className = f.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+            p.type = p.type === 'password' ? 'text' : 'password';
+            i.className = p.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
         }
 
-        function startUniverse() {
-            document.getElementById('intro').style.transform = "translateY(-100%)";
+        function showNotif(msg) {
+            const n = document.getElementById('custom-notif');
+            document.getElementById('notif-msg').innerText = msg;
+            n.classList.add('active');
+            setTimeout(() => n.classList.remove('active'), 3500);
+        }
+
+        function initGenesis() {
+            document.getElementById('intro-wall').style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('intro').style.display = "none";
+                document.getElementById('intro-wall').style.display = 'none';
                 document.getElementById('auth-box').classList.add('active');
-                document.getElementById('music-box').style.opacity = "1";
-                toggleAudio();
-                setInterval(() => { if(Math.random() < 0.15) rockets.push(new Rocket()); }, 800);
+                document.getElementById('music-vinyl').style.opacity = '1';
+                handleMusic();
+                setInterval(() => { if(Math.random() < 0.2) rockets.push(new Rocket()); }, 800);
             }, 1000);
         }
 
-        function verify() {
-            const u = document.getElementById('u-in').value;
-            const p = document.getElementById('p-in').value;
-            if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
+        function verifyLogic() {
+            const u = document.getElementById('user-input').value;
+            const p = document.getElementById('pass-input').value;
+            // TÀI KHOẢN VÀ MẬT KHẨU MỚI SIÊU CẤP
+            if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
                 document.getElementById('auth-box').classList.remove('active');
                 setTimeout(() => document.getElementById('menu-box').classList.add('active'), 1000);
             } else {
-                fireNotif('VỢ IU NHẬP SAI ÒI ĐÓ');
+                showNotif('VỢ IU NHẬP SAI ÒI ĐÓ');
             }
         }
 
-        function boom(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*250); }
+        function spawnFire(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*200); }
 
-        function loop() {
-            ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.fillRect(0,0,w,h);
+        function render() {
+            ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.fillRect(0,0,w,h);
             rockets = rockets.filter(r => { r.draw(); return r.update(); });
             particles = particles.filter(p => { p.draw(); p.update(); return p.alpha > 0; });
-            requestAnimationFrame(loop);
+            requestAnimationFrame(render);
         }
-        loop();
+        render();
     </script>
 </body>
 </html>
