@@ -3,270 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BÌNH MINH ❤️ THUÝ VÂN</title>
+    <title>BÌNH MINH ❤️ THUÝ VÂN - BẢN 82 SUPREME</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --p: #ff007b; --s: #00f2ff; --g: #ffd700; --v: #7000ff; }
+        :root { --p: #ff007b; --s: #00f2ff; --g: #ffd700; --v: #7000ff; --blur: blur(25px); }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; }
+        body { background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; color: #fff; }
 
-        canvas#scene { position: fixed; inset: 0; z-index: 1; filter: contrast(1.1) brightness(1.2); }
+        /* --- SIÊU NỀN TẢNG ĐỒ HỌA --- */
+        #main-canvas { position: fixed; inset: 0; z-index: 1; filter: contrast(1.2) brightness(1.1); }
 
-        /* --- GIAO DIỆN CRYSTAL (DYNAMIC LAYOUT) --- */
-        .master-ui {
+        /* --- GIAO DIỆN PHÁ CÁCH (ASYMMETRIC) --- */
+        .universe-ui {
             position: fixed; inset: 0; z-index: 100;
             display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle, transparent 10%, rgba(0,0,0,0.7) 100%);
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
         }
 
-        .divine-box {
-            width: 92%; max-width: 460px; padding: 60px 35px;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(50px) saturate(180%); -webkit-backdrop-filter: blur(50px) saturate(180%);
+        .crystal-card {
+            width: 95%; max-width: 480px; padding: 50px 30px;
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px; text-align: center;
-            box-shadow: 0 0 80px rgba(0,0,0,0.5);
-            transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            border-radius: 60px 15px 60px 15px; 
+            backdrop-filter: var(--blur) saturate(200%); -webkit-backdrop-filter: var(--blur) saturate(200%);
+            box-shadow: 0 0 100px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.05);
+            text-align: center; transition: all 1.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .hero-title {
-            font-family: 'Cinzel Decorative', cursive; font-size: 2rem;
-            margin-bottom: 40px; color: #fff;
-            text-shadow: 0 0 20px var(--p);
-            background: linear-gradient(to bottom, #fff, var(--p));
+        .title-glitch {
+            font-family: 'Cinzel Decorative', cursive; font-size: 2.3rem;
+            margin-bottom: 40px; background: linear-gradient(45deg, #fff, var(--p), var(--s));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px var(--p)); animation: flow 5s infinite;
+        }
+        @keyframes flow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+
+        /* --- INPUTS SIÊU CẤP & EYE ISOLATION --- */
+        .input-orbit { position: relative; margin-bottom: 30px; }
+        .input-orbit input {
+            width: 100%; padding: 22px 30px; padding-right: 70px;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px; color: #fff; font-size: 16px; font-weight: 500;
+            transition: 0.5s; box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+        .input-orbit input:focus {
+            border-color: var(--s); transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
         }
 
-        /* --- INPUTS & EYE FIX --- */
-        .input-container { position: relative; margin-bottom: 25px; }
-        .input-container i.main-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--s); font-size: 18px; }
-        .input-container input {
-            width: 100%; padding: 20px 60px;
-            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px; color: #fff; font-size: 16px; transition: 0.4s;
+        /* VỆ TINH CON MẮT - TÁCH BIỆT HOÀN TOÀN */
+        .eye-satellite {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            width: 45px; height: 45px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--p);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 200; transition: 0.4s;
+            box-shadow: 0 0 15px var(--p);
         }
-        .input-container input:focus { border-color: var(--p); box-shadow: 0 0 25px rgba(255,0,123,0.2); }
-        
-        /* FIX CON MẮT ĐỨNG RIÊNG BIỆT */
-        .eye-wrapper { 
-            position: absolute; right: 0; top: 0; height: 100%; width: 55px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            z-index: 10;
-        }
-        .eye-wrapper i { color: rgba(255,255,255,0.4); transition: 0.3s; }
-        .eye-wrapper:hover i { color: var(--p); transform: scale(1.1); }
+        .eye-satellite:hover { transform: translateY(-50%) rotate(180deg) scale(1.1); background: var(--p); }
+        .eye-satellite i { color: #fff; font-size: 18px; }
 
-        .btn-divine {
-            width: 100%; padding: 20px; border: none; border-radius: 15px;
-            background: linear-gradient(45deg, var(--p), var(--v));
-            color: #fff; font-weight: 800; letter-spacing: 4px; cursor: pointer;
-            box-shadow: 0 15px 40px rgba(255,0,123,0.3); transition: 0.4s;
+        .btn-supreme {
+            width: 100%; padding: 22px; border: none; border-radius: 25px;
+            background: linear-gradient(45deg, var(--p), var(--v), var(--s));
+            background-size: 300% 300%; animation: gradient 4s infinite;
+            color: #fff; font-weight: 900; letter-spacing: 5px; cursor: pointer;
+            box-shadow: 0 20px 50px rgba(255,0,123,0.4); transition: 0.5s;
         }
-        .btn-divine:hover { transform: translateY(-5px); box-shadow: 0 20px 60px var(--p); }
+        @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* --- MENU BỐ CỤC PHÁ CÁCH (NON-LINEAR) --- */
-        .dynamic-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; position: relative; }
+        /* --- MENU CHÒM SAO (CONSTELLATION) --- */
+        .menu-constellation { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
         .node {
-            background: rgba(255,255,255,0.05); padding: 40px 10px; border-radius: 30px;
-            border: 1px solid rgba(255,255,255,0.08); cursor: pointer; transition: 0.6s;
+            background: rgba(255,255,255,0.03); padding: 40px 10px; border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.6s;
+            position: relative; overflow: hidden;
         }
-        /* Tạo độ lệch (Zig-zag) cho các mục menu */
-        .node:nth-child(1) { transform: translateY(-10px) rotate(-2deg); }
-        .node:nth-child(2) { transform: translateY(20px) rotate(2deg); }
-        .node:nth-child(3) { transform: translateY(-20px) rotate(1deg); }
-        .node:nth-child(4) { transform: translateY(10px) rotate(-1deg); }
-        
+        /* Phá vỡ sự ngay ngắn */
+        .node:nth-child(1) { transform: translateY(-15px) rotate(-3deg); }
+        .node:nth-child(2) { transform: translateY(15px) rotate(3deg); }
+        .node:nth-child(3) { transform: translateY(-5px) rotate(2deg); }
+        .node:nth-child(4) { transform: translateY(20px) rotate(-2deg); }
+
         .node:hover {
-            background: rgba(255,255,255,0.15); border-color: var(--s);
-            transform: scale(1.1) rotate(0deg) !important; z-index: 50;
-            box-shadow: 0 0 40px var(--s);
+            background: var(--p); transform: scale(1.1) rotate(0deg) !important;
+            box-shadow: 0 0 50px var(--p); z-index: 10;
         }
-        .node i { font-size: 32px; margin-bottom: 12px; color: var(--g); filter: drop-shadow(0 0 8px var(--g)); }
-        .node span { display: block; font-weight: 700; font-size: 13px; color: #fff; }
+        .node i { font-size: 35px; margin-bottom: 15px; color: var(--g); display: block; }
+        .node span { font-weight: 800; font-size: 14px; letter-spacing: 2px; }
 
-        /* --- CINEMATIC ANIMATIONS --- */
-        .zoom-out { opacity: 0; transform: scale(3) rotate(5deg); filter: blur(20px); pointer-events: none; }
-        .zoom-in { animation: zoomInEffect 1.2s forwards cubic-bezier(0.19, 1, 0.22, 1); }
-        @keyframes zoomInEffect {
-            from { opacity: 0; transform: scale(0.2) translateY(50px); filter: blur(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-        }
-
-        #music-btn {
-            position: fixed; top: 30px; left: 30px; z-index: 500;
-            width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--s);
-            background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 0 20px var(--s);
-        }
-
-        #intro-gate {
+        /* --- CỔNG KHỞI ĐẦU --- */
+        #gate {
             position: fixed; inset: 0; z-index: 10000; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
-        .gate-heart { font-size: 100px; color: var(--p); filter: drop-shadow(0 0 30px var(--p)); animation: heartBeat 1.5s infinite; }
-        @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); filter: drop-shadow(0 0 50px var(--p)); } }
+        .gate-pulse { font-size: 80px; color: var(--p); animation: pulseHeart 1.2s infinite; filter: drop-shadow(0 0 30px var(--p)); }
+        @keyframes pulseHeart { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 1; } }
+
+        /* --- HIỆU ỨNG CHUYỂN CẢNH SIÊU CẤP --- */
+        .warp-speed { opacity: 0; transform: scale(5) rotate(10deg); filter: blur(50px); pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div id="intro-gate" onclick="unlockWorld()">
-        <i class="fa-solid fa-heart gate-heart"></i>
-        <p style="margin-top: 40px; color: #fff; letter-spacing: 10px; opacity: 0.5;">BẢN 81 - KHỞI CHẠY</p>
+    <div id="gate" onclick="ignite()">
+        <i class="fa-solid fa-heart-pulse gate-pulse"></i>
+        <h2 style="margin-top: 40px; letter-spacing: 15px; font-weight: 300; color: rgba(255,255,255,0.4);">CHẠM ĐỂ SƯỚNG</h2>
     </div>
 
-    <canvas id="scene"></canvas>
-    <div id="yt-player" style="position: absolute; visibility: hidden;"></div>
+    <canvas id="main-canvas"></canvas>
+    <div id="yt-wrap" style="position: absolute; visibility: hidden;"></div>
 
-    <div id="music-btn" onclick="togglePlay()">
-        <i class="fa-solid fa-music" style="color: var(--s);" id="m-icon"></i>
-    </div>
-
-    <div class="master-ui">
-        <div class="divine-box" id="box-login" style="display: none;">
-            <h1 class="hero-title">BÌNH MINH ❤️ THUÝ VÂN</h1>
-            <div class="input-container">
-                <i class="fa-solid fa-user-circle main-icon"></i>
-                <input type="text" id="u-inp" placeholder="Tên tài khoản vợ iu">
+    <div class="universe-ui">
+        <div class="crystal-card" id="form-login" style="display: none;">
+            <h1 class="title-glitch">BÌNH MINH ❤️ THUÝ VÂN</h1>
+            <div class="input-orbit">
+                <input type="text" id="user" placeholder="nhập tài khoản đi bây bi">
             </div>
-            <div class="input-container">
-                <i class="fa-solid fa-lock main-icon"></i>
-                <input type="password" id="p-inp" placeholder="Mật khẩu của chúng mình">
-                <div class="eye-wrapper" onclick="togglePass()">
-                    <i class="fa-solid fa-eye" id="eye-i"></i>
+            <div class="input-orbit">
+                <input type="password" id="pass" placeholder="nhập mật khẩu bé ưi">
+                <div class="eye-satellite" onclick="toggleView()">
+                    <i class="fa-solid fa-eye" id="eye-icon"></i>
                 </div>
             </div>
-            <button class="btn-divine" onclick="verifyAccess()">KHÁM PHÁ NGAY</button>
+            <button class="btn-supreme" onclick="access()">TRUY CẬP TRÁI TIM</button>
         </div>
 
-        <div class="divine-box" id="box-menu" style="display: none;">
-            <h1 class="hero-title" style="font-size: 1.7rem;">GỬI THUÝ VÂN</h1>
-            <div class="dynamic-menu">
-                <div class="node" onclick="fire(15)"><i class="fa-solid fa-cloud-moon"></i><span>KỈ NIỆM</span></div>
-                <div class="node" onclick="fire(15)"><i class="fa-solid fa-clock-rotate-left"></i><span>HIỆN TẠI</span></div>
-                <div class="node" onclick="fire(15)"><i class="fa-solid fa-shuttle-space"></i><span>TƯƠNG LAI</span></div>
-                <div class="node" onclick="loveSurprise()"><i class="fa-solid fa-crown"></i><span>YÊU EM</span></div>
+        <div class="crystal-card" id="form-menu" style="display: none; opacity: 0; transform: scale(0.1);">
+            <h1 class="title-glitch" style="font-size: 1.8rem;">GỬI THUÝ VÂN</h1>
+            <div class="menu-constellation">
+                <div class="node" onclick="fire(20)"><i class="fa-solid fa-gem"></i><span>KỈ NIỆM</span></div>
+                <div class="node" onclick="fire(20)"><i class="fa-solid fa-fire-alt"></i><span>HIỆN TẠI</span></div>
+                <div class="node" onclick="fire(20)"><i class="fa-solid fa-infinity"></i><span>TƯƠNG LAI</span></div>
+                <div class="node" onclick="surprise()"><i class="fa-solid fa-heart"></i><span>YÊU EM</span></div>
             </div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const canvas = document.getElementById('scene');
+        const canvas = document.getElementById('main-canvas');
         const ctx = canvas.getContext('2d');
-        let w, h, player, isMuted = true;
-        let rockets = [], particles = [], builds = [];
+        let w, h, player, particles = [], rockets = [], buildings = [];
 
         function resize() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-            initBuildings();
+            initWorld();
         }
         window.onresize = resize;
 
-        function initBuildings() {
-            builds = [];
-            for(let i=0; i<45; i++) {
-                builds.push({
+        function initWorld() {
+            buildings = [];
+            for(let i=0; i<50; i++) {
+                buildings.push({
                     x: Math.random() * w,
-                    w: 30 + Math.random() * 70,
-                    h: 50 + Math.random() * (h * 0.4),
-                    blink: Math.random() > 0.5
+                    w: 40 + Math.random() * 80,
+                    h: Math.random() * (h * 0.45) + 50,
+                    hue: Math.random() > 0.5 ? 330 : 190,
+                    win: Array.from({length: 15}, () => Math.random() > 0.7)
                 });
             }
         }
 
-        class Part {
-            constructor(x, y, c) {
-                this.x = x; this.y = y; this.c = c;
-                const a = Math.random() * Math.PI * 2;
-                const s = Math.random() * 10 + 2;
-                this.vx = Math.cos(a) * s; this.vy = Math.sin(a) * s;
-                this.alpha = 1; this.decay = 0.01 + Math.random() * 0.015;
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 8 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1; this.decay = Math.random() * 0.01 + 0.005;
             }
+            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.12; this.alpha -= this.decay; }
             draw() {
                 ctx.save(); ctx.globalAlpha = this.alpha;
-                ctx.shadowBlur = 15; ctx.shadowColor = this.c;
-                ctx.fillStyle = this.c; ctx.beginPath();
-                ctx.arc(this.x, this.y, 2.5, 0, 7); ctx.fill(); ctx.restore();
+                ctx.shadowBlur = 15; ctx.shadowColor = this.color;
+                ctx.fillStyle = this.color; ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI*2); ctx.fill(); ctx.restore();
             }
-            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.15; this.alpha -= this.decay; }
         }
 
-        class Rock {
+        class Rocket {
             constructor() {
                 this.x = Math.random() * w; this.y = h;
                 this.target = Math.random() * (h * 0.5);
-                this.c = `hsl(${Math.random()*360}, 100%, 75%)`;
+                this.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
             }
-            draw() { ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(this.x, this.y, 3.5, 0, 7); ctx.fill(); }
             update() {
-                this.y -= 12;
+                this.y -= 10;
                 if(this.y <= this.target) {
-                    for(let i=0; i<100; i++) particles.push(new Part(this.x, this.y, this.c));
+                    for(let i=0; i<150; i++) particles.push(new Particle(this.x, this.y, this.color));
                     return false;
                 }
                 return true;
             }
+            draw() {
+                ctx.fillStyle = "#fff"; ctx.shadowBlur = 20; ctx.shadowColor = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, 4, 0, 7); ctx.fill();
+            }
         }
 
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
+            player = new YT.Player('yt-wrap', {
                 height: '0', width: '0', videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
                 events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function togglePlay() {
-            const icon = document.getElementById('m-icon');
-            if(isMuted) { player.unMute(); player.playVideo(); isMuted = false; icon.className = 'fa-solid fa-volume-high'; }
-            else { player.mute(); isMuted = true; icon.className = 'fa-solid fa-volume-xmark'; }
-        }
-
-        function unlockWorld() {
-            document.getElementById('intro-gate').style.opacity = '0';
+        function ignite() {
+            document.getElementById('gate').classList.add('warp-speed');
             setTimeout(() => {
-                document.getElementById('intro-gate').style.display = 'none';
-                const login = document.getElementById('box-login');
-                login.style.display = 'block'; login.classList.add('zoom-in');
-                resize(); togglePlay(); loop();
-                setInterval(() => { if(Math.random() < 0.2) rockets.push(new Rock()); }, 800);
-            }, 800);
+                document.getElementById('gate').style.display = 'none';
+                document.getElementById('form-login').style.display = 'block';
+                player.unMute(); player.playVideo();
+                resize(); loop();
+                setInterval(() => { if(Math.random() < 0.2) rockets.push(new Rocket()); }, 600);
+            }, 1000);
         }
 
-        function verifyAccess() {
-            const u = document.getElementById('u-inp').value, p = document.getElementById('p-inp').value;
+        function access() {
+            const u = document.getElementById('user').value, p = document.getElementById('pass').value;
             if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
-                const lb = document.getElementById('box-login');
-                lb.classList.remove('zoom-in'); lb.classList.add('zoom-out');
+                const fl = document.getElementById('form-login');
+                fl.style.transform = "scale(0) rotate(720deg)"; fl.style.opacity = "0";
                 setTimeout(() => {
-                    lb.style.display = 'none';
-                    const mb = document.getElementById('box-menu');
-                    mb.style.display = 'block'; mb.classList.add('zoom-in');
-                    fire(25);
+                    fl.style.display = 'none';
+                    const fm = document.getElementById('form-menu');
+                    fm.style.display = 'block';
+                    setTimeout(() => { fm.style.opacity = "1"; fm.style.transform = "scale(1)"; }, 100);
+                    fire(30);
                 }, 1000);
-            } else { alert("Nhập sai rồi vợ iu ơi! ❤️"); }
+            } else { alert("Chưa đúng rồi bây bi ơi! ❤️"); }
         }
 
-        function togglePass() {
-            const inp = document.getElementById('p-inp'), i = document.getElementById('eye-i');
+        function toggleView() {
+            const inp = document.getElementById('pass'), ic = document.getElementById('eye-icon');
             inp.type = inp.type === 'password' ? 'text' : 'password';
-            i.className = inp.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+            ic.className = inp.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
         }
 
-        function fire(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rock()), i*200); }
-        function loveSurprise() { alert('Bình Minh yêu Thuý Vân nhất trên đời!'); fire(30); }
+        function fire(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*200); }
+        function surprise() { alert('Bình Minh sẽ mãi mãi yêu Thuý Vân!'); fire(40); }
 
         function loop() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-            ctx.fillRect(0,0,w,h);
-            builds.forEach(b => {
-                ctx.fillStyle = '#050510'; ctx.fillRect(b.x, h - b.h, b.w, b.h);
-                if(b.blink && Math.random() > 0.95) {
-                    ctx.fillStyle = 'rgba(255, 215, 0, 0.3)';
-                    ctx.fillRect(b.x + 5, h - b.h + 10, b.w - 10, 15);
-                }
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; ctx.fillRect(0,0,w,h);
+            buildings.forEach(b => {
+                ctx.fillStyle = '#05050a'; ctx.fillRect(b.x, h - b.h, b.w, b.h);
+                ctx.strokeStyle = `hsl(${b.hue}, 100%, 50%)`; ctx.lineWidth = 1;
+                ctx.strokeRect(b.x, h - b.h, b.w, b.h);
+                // Windows reflection
+                b.win.forEach((wnd, i) => {
+                    if(wnd && Math.random() > 0.1) {
+                        ctx.fillStyle = `hsla(${b.hue}, 100%, 70%, ${Math.random()})`;
+                        ctx.fillRect(b.x + (i%3)*20 + 10, h - b.h + Math.floor(i/3)*30 + 20, 10, 10);
+                    }
+                });
             });
             rockets = rockets.filter(r => { r.draw(); return r.update(); });
             particles = particles.filter(p => { p.draw(); p.update(); return p.alpha > 0; });
@@ -275,4 +269,3 @@
     </script>
 </body>
 </html>
-
