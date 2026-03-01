@@ -3,124 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Khu Vườn Bí Mật ❤️</title>
+    <title>Khu Vườn Tình Yêu ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Quicksand', sans-serif; background: #000; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Quicksand', sans-serif; }
 
-        /* HÌNH NỀN ĐỘC BẢN - CẶP ĐÔI LÃNG MẠN */
+        /* HÌNH NỀN THIÊN NHIÊN CẶP ĐÔI - ĐẢM BẢO HIỂN THỊ */
         .bg-nature {
             position: fixed; inset: 0;
-            /* Đây là link ảnh tôi đã tạo riêng cho bạn */
-            background: url('https://r.jina.ai/i/6f9087597148483f94646487e91409f5') center/cover no-repeat;
+            background-image: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -2;
+            transition: all 1s ease;
+        }
+
+        /* Lớp phủ để làm nổi bật khung chữ */
+        .overlay {
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.3);
             z-index: -1;
-            transition: all 1.5s ease;
         }
 
         #intro {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            z-index: 1000; display: flex; flex-direction: column;
+            position: fixed; inset: 0; background: #000;
+            z-index: 2000; display: flex; flex-direction: column;
             justify-content: center; align-items: center; cursor: pointer;
         }
-        
-        /* TẠO HÌNH MỚI CHO NÚT BẮT ĐẦU */
-        .heart-btn { font-size: 60px; filter: drop-shadow(0 0 15px #ff4d6d); animation: heartbeat 1.2s infinite; }
-        @keyframes heartbeat { 0% { transform: scale(1); } 20% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        /* KHUNG CHÍNH */
         .glass-card {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 85%; max-width: 380px; padding: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.3);
             border-radius: 25px; text-align: center;
-            display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        h2 { font-family: 'Dancing Script', cursive; color: #ffb3c1; font-size: 2.2rem; margin-bottom: 20px; }
+        h2 { font-family: 'Dancing Script', cursive; color: #fff; font-size: 2.2rem; margin-bottom: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        
         input {
             width: 100%; padding: 15px; margin-bottom: 12px; border-radius: 12px;
-            border: none; background: rgba(255,255,255,0.2); color: #fff;
-            outline: none; text-align: center;
+            border: none; background: rgba(255,255,255,0.8); color: #333;
+            outline: none; text-align: center; font-weight: bold;
         }
+
         .btn {
             width: 100%; padding: 14px; border-radius: 12px; border: none;
             background: #ff4d6d; color: white; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
         }
 
-        /* 4 MỤC MENU SAU KHI ĐĂNG NHẬP */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .menu-item { background: rgba(255,255,255,0.15); padding: 15px 5px; border-radius: 10px; color: #fff; font-size: 13px; font-weight: bold; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .menu-item { 
+            background: rgba(255,255,255,0.25); padding: 18px 5px; border-radius: 12px; 
+            color: #fff; font-size: 13px; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); 
+            cursor: pointer; transition: 0.3s;
+        }
+        .menu-item:active { background: #ff4d6d; }
 
-        /* NÚT LOA ĐIỀU KHIỂN NHẠC */
-        #music-toggle {
+        /* NÚT LOA ĐIỀU KHIỂN */
+        #music-btn {
             position: fixed; top: 20px; right: 20px;
-            width: 45px; height: 45px; background: rgba(255,255,255,0.2);
+            width: 50px; height: 50px; background: rgba(255,255,255,0.3);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: white; font-size: 20px; cursor: pointer; z-index: 2000;
-            display: none; border: 1px solid rgba(255,255,255,0.3);
+            color: white; font-size: 24px; cursor: pointer; z-index: 3000;
+            display: none; border: 2px solid #fff;
         }
     </style>
 </head>
 <body>
 
     <div class="bg-nature" id="bg"></div>
+    <div class="overlay"></div>
 
     <div id="intro" onclick="startApp()">
-        <div class="heart-btn">💖</div>
-        <p style="color: white; margin-top: 15px; letter-spacing: 2px;">CHẠM ĐỂ MỞ CỬA TRÁI TIM</p>
+        <div style="font-size: 70px; animation: pulse 1.5s infinite;">❤️</div>
+        <p style="color: white; margin-top: 15px; letter-spacing: 3px;">CHẠM ĐỂ BẮT ĐẦU</p>
     </div>
 
-    <div id="music-toggle" onclick="toggleMusic()">🔊</div>
+    <div id="music-btn" onclick="toggleMusic()">🔊</div>
 
-    <iframe id="yt-player" width="0" height="0" 
-        src="https://www.youtube.com/embed/QEuOu_SDtLo?enablejsapi=1&loop=1&playlist=QEuOu_SDtLo" 
-        frameborder="0" style="display:none;"></iframe>
+    <audio id="myAudio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="glass-card" id="login-box">
-        <h2>Vợ Yêu ❤️</h2>
-        <input type="text" id="u" placeholder="Tên tài khoản..." autocomplete="off">
-        <input type="password" id="p" placeholder="Mật mã..." autocomplete="off">
-        <button class="btn" onclick="check()">ĐĂNG NHẬP</button>
+        <h2>Xin chào Vợ Yêu ❤️</h2>
+        <input type="text" id="u" placeholder="Tên tài khoản...">
+        <input type="password" id="p" placeholder="Mật mã...">
+        <button class="btn" onclick="check()">MỞ CỬA TRÁI TIM</button>
     </div>
 
     <div class="glass-card" id="menu-box">
-        <h2>Khu Vườn Của Em</h2>
+        <h2>Hạnh Phúc Là Có Em</h2>
         <div class="menu-grid">
-            <div class="menu-item" onclick="alert('Mọi kỉ niệm đều được trân trọng...')">KỶ NIỆM</div>
-            <div class="menu-item" onclick="alert('Tương lai chỉ cần có em...')">TƯƠNG LAI</div>
-            <div class="menu-item" onclick="alert('Anh hứa sẽ bên em mãi mãi...')">HỨA HẸN</div>
-            <div class="menu-item" onclick="alert('Anh yêu em rất nhiều!')">YÊU EM</div>
+            <div class="menu-item" onclick="alert('Kỷ niệm của chúng ta là vô giá!')">KỶ NIỆM</div>
+            <div class="menu-item" onclick="alert('Tương lai sẽ có anh và em!')">TƯƠNG LAI</div>
+            <div class="menu-item" onclick="alert('Lời hứa mãi không thay đổi.')">HỨA HẸN</div>
+            <div class="menu-item" onclick="alert('Yêu em hơn tất cả!')">YÊU EM</div>
         </div>
     </div>
 
     <script>
-        let isPlaying = true;
-        const player = document.getElementById('yt-player').contentWindow;
+        const audio = document.getElementById("myAudio");
+        let playing = true;
 
         function startApp() {
-            // Phát nhạc
-            player.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            // Phát nhạc ngay khi chạm
+            audio.play().catch(e => console.log("Cần tương tác để phát nhạc"));
             
-            // Chuyển cảnh
             document.getElementById('intro').style.display = 'none';
             document.getElementById('login-box').style.display = 'block';
-            document.getElementById('music-toggle').style.display = 'flex';
-            document.getElementById('bg').style.filter = "brightness(0.6) blur(2px)";
+            document.getElementById('music-btn').style.display = 'flex';
         }
 
         function toggleMusic() {
-            const btn = document.getElementById('music-toggle');
-            if(isPlaying) {
-                player.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            const btn = document.getElementById('music-btn');
+            if (playing) {
+                audio.pause();
                 btn.innerText = "🔈";
             } else {
-                player.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                audio.play();
                 btn.innerText = "🔊";
             }
-            isPlaying = !isPlaying;
+            playing = !playing;
         }
 
         function check() {
@@ -129,11 +139,18 @@
             if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
                 document.getElementById('login-box').style.display = 'none';
                 document.getElementById('menu-box').style.display = 'block';
-                document.getElementById('bg').style.filter = "brightness(0.8) blur(0px)";
             } else {
-                alert("Sai mật mã rồi vợ ơi!");
+                alert("Mật mã sai rồi bé ơi!");
             }
         }
     </script>
+
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
 </body>
 </html>
