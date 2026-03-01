@@ -3,268 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BÌNH MINH ❤️ THUÝ VÂN - BẢN 82 SUPREME</title>
+    <title>BÌNH MINH ❤️ THUÝ VÂN - BẢN 82 ASCENSION PROTOCOL</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --p: #ff007b; --s: #00f2ff; --g: #ffd700; --v: #7000ff; --blur: blur(25px); }
+        :root { --p: #ff007b; --s: #00f2ff; --g: #ffd700; --v: #7000ff; --blur-intense: blur(40px); }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; color: #fff; }
 
-        /* --- SIÊU NỀN TẢNG ĐỒ HỌA --- */
-        #main-canvas { position: fixed; inset: 0; z-index: 1; filter: contrast(1.2) brightness(1.1); }
+        /* --- SIÊU NỀN TẢNG ĐỒ HỌA GLSL --- */
+        #glsl-canvas { position: fixed; inset: 0; z-index: 1; filter: contrast(1.3) brightness(1.2); }
 
-        /* --- GIAO DIỆN PHÁ CÁCH (ASYMMETRIC) --- */
-        .universe-ui {
+        /* --- GIAO DIỆN HÌNH HỌC LƯỢNG TỬ --- */
+        .quantum-ui {
             position: fixed; inset: 0; z-index: 100;
             display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.9) 100%);
         }
 
-        .crystal-card {
-            width: 95%; max-width: 480px; padding: 50px 30px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 60px 15px 60px 15px; 
-            backdrop-filter: var(--blur) saturate(200%); -webkit-backdrop-filter: var(--blur) saturate(200%);
-            box-shadow: 0 0 100px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.05);
-            text-align: center; transition: all 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+        .singularity-card {
+            width: 98%; max-width: 500px; padding: 55px 35px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 70px 20px 70px 20px;
+            backdrop-filter: var(--blur-intense) saturate(250%); -webkit-backdrop-filter: var(--blur-intense) saturate(250%);
+            box-shadow: 0 0 120px rgba(0,0,0,0.9), inset 0 0 50px rgba(255,255,255,0.02);
+            text-align: center; transition: all 1.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .title-glitch {
-            font-family: 'Cinzel Decorative', cursive; font-size: 2.3rem;
-            margin-bottom: 40px; background: linear-gradient(45deg, #fff, var(--p), var(--s));
+        .title-plasma {
+            font-family: 'Cinzel Decorative', cursive; font-size: 2.5rem;
+            margin-bottom: 45px; background: linear-gradient(45deg, #fff, var(--p), var(--s), var(--v));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px var(--p)); animation: flow 5s infinite;
+            filter: drop_shadow(0 0 20px var(--p)); animation: plasma-flow 8s infinite alternate;
+            letter-spacing: 2px;
         }
-        @keyframes flow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+        @keyframes plasma-flow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
 
-        /* --- INPUTS SIÊU CẤP & EYE ISOLATION --- */
-        .input-orbit { position: relative; margin-bottom: 30px; }
-        .input-orbit input {
-            width: 100%; padding: 22px 30px; padding-right: 70px;
-            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 25px; color: #fff; font-size: 16px; font-weight: 500;
-            transition: 0.5s; box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        /* --- INPUTS PORTAL & ORBITAL EYE --- */
+        .input-portal { position: relative; margin-bottom: 35px; }
+        .input-portal input {
+            width: 100%; padding: 25px 30px; padding-right: 80px;
+            background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px; color: #fff; font-size: 17px; font-weight: 500;
+            transition: 0.6s; box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
         }
-        .input-orbit input:focus {
-            border-color: var(--s); transform: scale(1.02);
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+        .input-portal input:focus {
+            border-color: var(--v); transform: scale(1.03);
+            box-shadow: 0 0 60px rgba(112, 0, 255, 0.3);
         }
 
-        /* VỆ TINH CON MẮT - TÁCH BIỆT HOÀN TOÀN */
-        .eye-satellite {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            width: 45px; height: 45px; border-radius: 50%;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--p);
+        /* ORBITAL EYE 4D */
+        .orbital-eye {
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%) rotateY(0deg);
+            width: 50px; height: 50px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.4) 100%);
+            border: 2px solid var(--s);
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 200; transition: 0.4s;
-            box-shadow: 0 0 15px var(--p);
+            cursor: pointer; z-index: 200; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 0 25px var(--s);
         }
-        .eye-satellite:hover { transform: translateY(-50%) rotate(180deg) scale(1.1); background: var(--p); }
-        .eye-satellite i { color: #fff; font-size: 18px; }
+        .orbital-eye:hover { transform: translateY(-50%) rotateY(360deg) scale(1.1); background: var(--s); }
+        .orbital-eye i { color: #fff; font-size: 20px; text-shadow: 0 0 10px #fff; }
 
-        .btn-supreme {
-            width: 100%; padding: 22px; border: none; border-radius: 25px;
-            background: linear-gradient(45deg, var(--p), var(--v), var(--s));
-            background-size: 300% 300%; animation: gradient 4s infinite;
-            color: #fff; font-weight: 900; letter-spacing: 5px; cursor: pointer;
-            box-shadow: 0 20px 50px rgba(255,0,123,0.4); transition: 0.5s;
+        .btn-cosmic {
+            width: 100%; padding: 25px; border: none; border-radius: 30px;
+            background: linear-gradient(45deg, var(--p), var(--g), var(--v), var(--s));
+            background-size: 400% 400%; animation: cosmic-gradient 6s infinite;
+            color: #fff; font-weight: 900; letter-spacing: 6px; cursor: pointer;
+            box-shadow: 0 25px 60px rgba(255,0,123,0.5); transition: 0.6s;
         }
-        @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes cosmic-gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .btn-cosmic:hover { transform: translateY(-7px) scale(1.03); box-shadow: 0 35px 80px var(--p); }
 
-        /* --- MENU CHÒM SAO (CONSTELLATION) --- */
-        .menu-constellation { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
-        .node {
-            background: rgba(255,255,255,0.03); padding: 40px 10px; border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.6s;
+        /* --- MENU MA TRẬN LƯỢNG TỬ --- */
+        .quantum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 25px; }
+        .grid-node {
+            background: rgba(255,255,255,0.01); padding: 45px 15px; border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.08); cursor: pointer; transition: 0.7s;
             position: relative; overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
-        /* Phá vỡ sự ngay ngắn */
-        .node:nth-child(1) { transform: translateY(-15px) rotate(-3deg); }
-        .node:nth-child(2) { transform: translateY(15px) rotate(3deg); }
-        .node:nth-child(3) { transform: translateY(-5px) rotate(2deg); }
-        .node:nth-child(4) { transform: translateY(20px) rotate(-2deg); }
+        /* Bố cục phá vỡ mọi quy tắc */
+        .grid-node:nth-child(1) { transform: translate(-20px, -10px) rotate(-5deg); }
+        .grid-node:nth-child(2) { transform: translate(20px, 15px) rotate(5deg); }
+        .grid-node:nth-child(3) { transform: translate(-10px, 20px) rotate(3deg); }
+        .grid-node:nth-child(4) { transform: translate(15px, -10px) rotate(-3deg); }
 
-        .node:hover {
-            background: var(--p); transform: scale(1.1) rotate(0deg) !important;
-            box-shadow: 0 0 50px var(--p); z-index: 10;
+        .grid-node:hover {
+            background: var(--v); transform: scale(1.15) rotate(0deg) !important;
+            box-shadow: 0 0 70px var(--v); z-index: 10;
         }
-        .node i { font-size: 35px; margin-bottom: 15px; color: var(--g); display: block; }
-        .node span { font-weight: 800; font-size: 14px; letter-spacing: 2px; }
+        .grid-node i { font-size: 40px; margin-bottom: 18px; color: var(--g); display: block; filter: drop-shadow(0 0 12px var(--g)); }
+        .grid-node span { font-weight: 900; font-size: 15px; letter-spacing: 3px; color: #fff; }
 
-        /* --- CỔNG KHỞI ĐẦU --- */
-        #gate {
+        /* --- CỔNG ĐỘC NHẤT --- */
+        #singularity-gate {
             position: fixed; inset: 0; z-index: 10000; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
-        .gate-pulse { font-size: 80px; color: var(--p); animation: pulseHeart 1.2s infinite; filter: drop-shadow(0 0 30px var(--p)); }
-        @keyframes pulseHeart { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 1; } }
+        .gate-core { font-size: 90px; color: var(--s); animation: core-pulse 1s infinite alternate; filter: drop-shadow(0 0 40px var(--s)); }
+        @keyframes core-pulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.4); opacity: 1; } }
 
-        /* --- HIỆU ỨNG CHUYỂN CẢNH SIÊU CẤP --- */
-        .warp-speed { opacity: 0; transform: scale(5) rotate(10deg); filter: blur(50px); pointer-events: none; }
+        /* --- CHUYỂN CẢNH VẾT NỨT VŨ TRỤ --- */
+        .cosmic-rift { opacity: 0; transform: scale(0.01) rotateZ(360deg); filter: blur(100px); pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div id="gate" onclick="ignite()">
-        <i class="fa-solid fa-heart-pulse gate-pulse"></i>
-        <h2 style="margin-top: 40px; letter-spacing: 15px; font-weight: 300; color: rgba(255,255,255,0.4);">CHẠM ĐỂ SƯỚNG</h2>
+    <div id="singularity-gate" onclick="initiate()">
+        <i class="fa-solid fa-atom gate-core"></i>
+        <h2 style="margin-top: 50px; letter-spacing: 18px; font-weight: 300; color: rgba(255,255,255,0.6);">CHẠM ĐỂ SƯỚNG</h2>
     </div>
 
-    <canvas id="main-canvas"></canvas>
-    <div id="yt-wrap" style="position: absolute; visibility: hidden;"></div>
+    <canvas id="glsl-canvas"></canvas>
+    <div id="yt-container" style="position: absolute; visibility: hidden;"></div>
 
-    <div class="universe-ui">
-        <div class="crystal-card" id="form-login" style="display: none;">
-            <h1 class="title-glitch">BÌNH MINH ❤️ THUÝ VÂN</h1>
-            <div class="input-orbit">
-                <input type="text" id="user" placeholder="nhập tài khoản đi bây bi">
+    <div class="quantum-ui">
+        <div class="singularity-card" id="login-module" style="display: none;">
+            <h1 class="title-plasma">BÌNH MINH ❤️ THUÝ VÂN</h1>
+            <div class="input-portal">
+                <input type="text" id="username" placeholder="nhập tài khoản đi bây bi">
             </div>
-            <div class="input-orbit">
-                <input type="password" id="pass" placeholder="nhập mật khẩu bé ưi">
-                <div class="eye-satellite" onclick="toggleView()">
+            <div class="input-portal">
+                <input type="password" id="password" placeholder="nhập mật khẩu bé ưi">
+                <div class="orbital-eye" onclick="togglePasswordView()">
                     <i class="fa-solid fa-eye" id="eye-icon"></i>
                 </div>
             </div>
-            <button class="btn-supreme" onclick="access()">TRUY CẬP TRÁI TIM</button>
+            <button class="btn-cosmic" onclick="authenticate()">TRUY CẬP TRÁI TIM</button>
         </div>
 
-        <div class="crystal-card" id="form-menu" style="display: none; opacity: 0; transform: scale(0.1);">
-            <h1 class="title-glitch" style="font-size: 1.8rem;">GỬI THUÝ VÂN</h1>
-            <div class="menu-constellation">
-                <div class="node" onclick="fire(20)"><i class="fa-solid fa-gem"></i><span>KỈ NIỆM</span></div>
-                <div class="node" onclick="fire(20)"><i class="fa-solid fa-fire-alt"></i><span>HIỆN TẠI</span></div>
-                <div class="node" onclick="fire(20)"><i class="fa-solid fa-infinity"></i><span>TƯƠNG LAI</span></div>
-                <div class="node" onclick="surprise()"><i class="fa-solid fa-heart"></i><span>YÊU EM</span></div>
+        <div class="singularity-card" id="menu-module" style="display: none; opacity: 0; transform: scale(0.05);">
+            <h1 class="title-plasma" style="font-size: 2rem;">GỬI THUÝ VÂN</h1>
+            <div class="quantum-grid">
+                <div class="grid-node" onclick="spawnFire(25)"><i class="fa-solid fa-star"></i><span>KỈ NIỆM</span></div>
+                <div class="grid-node" onclick="spawnFire(25)"><i class="fa-solid fa-meteor"></i><span>HIỆN TẠI</span></div>
+                <div class="grid-node" onclick="spawnFire(25)"><i class="fa-solid fa-galaxy"></i><span>TƯƠNG LAI</span></div>
+                <div class="grid-node" onclick="showLove()"><i class="fa-solid fa-heart-crack"></i><span>YÊU EM</span></div>
             </div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const canvas = document.getElementById('main-canvas');
+        const canvas = document.getElementById('glsl-canvas');
         const ctx = canvas.getContext('2d');
-        let w, h, player, particles = [], rockets = [], buildings = [];
+        let W, H, ytPlayer, particles = [], rockets = [], buildings = [];
 
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-            initWorld();
+        function resizeCanvas() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+            initCityEnvironment();
         }
-        window.onresize = resize;
+        window.onresize = resizeCanvas;
 
-        function initWorld() {
+        function initCityEnvironment() {
             buildings = [];
-            for(let i=0; i<50; i++) {
+            for(let i=0; i<60; i++) {
                 buildings.push({
-                    x: Math.random() * w,
-                    w: 40 + Math.random() * 80,
-                    h: Math.random() * (h * 0.45) + 50,
-                    hue: Math.random() > 0.5 ? 330 : 190,
-                    win: Array.from({length: 15}, () => Math.random() > 0.7)
+                    x: Math.random() * W,
+                    w: 50 + Math.random() * 90,
+                    h: Math.random() * (H * 0.5) + 60,
+                    colorHue: Math.random() * 360,
+                    windows: Array.from({length: 20}, () => Math.random() > 0.8)
                 });
             }
         }
 
-        class Particle {
+        class Spark {
             constructor(x, y, color) {
                 this.x = x; this.y = y; this.color = color;
                 const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 8 + 2;
+                const speed = Math.random() * 10 + 3;
                 this.vx = Math.cos(angle) * speed;
                 this.vy = Math.sin(angle) * speed;
-                this.alpha = 1; this.decay = Math.random() * 0.01 + 0.005;
+                this.alpha = 1; this.decay = Math.random() * 0.01 + 0.007;
             }
-            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.12; this.alpha -= this.decay; }
+            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.15; this.alpha -= this.decay; }
             draw() {
                 ctx.save(); ctx.globalAlpha = this.alpha;
-                ctx.shadowBlur = 15; ctx.shadowColor = this.color;
+                ctx.shadowBlur = 20; ctx.shadowColor = this.color;
                 ctx.fillStyle = this.color; ctx.beginPath();
-                ctx.arc(this.x, this.y, 2, 0, Math.PI*2); ctx.fill(); ctx.restore();
+                ctx.arc(this.x, this.y, 2.5, 0, Math.PI*2); ctx.fill(); ctx.restore();
             }
         }
 
-        class Rocket {
+        class RocketEntity {
             constructor() {
-                this.x = Math.random() * w; this.y = h;
-                this.target = Math.random() * (h * 0.5);
-                this.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
+                this.x = Math.random() * W; this.y = H;
+                this.targetY = Math.random() * (H * 0.4);
+                this.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
             }
             update() {
-                this.y -= 10;
-                if(this.y <= this.target) {
-                    for(let i=0; i<150; i++) particles.push(new Particle(this.x, this.y, this.color));
+                this.y -= 15;
+                if(this.y <= this.targetY) {
+                    for(let i=0; i<200; i++) particles.push(new Spark(this.x, this.y, this.color));
                     return false;
                 }
                 return true;
             }
             draw() {
-                ctx.fillStyle = "#fff"; ctx.shadowBlur = 20; ctx.shadowColor = this.color;
-                ctx.beginPath(); ctx.arc(this.x, this.y, 4, 0, 7); ctx.fill();
+                ctx.fillStyle = "#fff"; ctx.shadowBlur = 25; ctx.shadowColor = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, 5, 0, Math.PI*2); ctx.fill();
             }
         }
 
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-wrap', {
+            ytPlayer = new YT.Player('yt-container', {
                 height: '0', width: '0', videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
                 events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function ignite() {
-            document.getElementById('gate').classList.add('warp-speed');
+        function initiate() {
+            document.getElementById('singularity-gate').classList.add('cosmic-rift');
             setTimeout(() => {
-                document.getElementById('gate').style.display = 'none';
-                document.getElementById('form-login').style.display = 'block';
-                player.unMute(); player.playVideo();
-                resize(); loop();
-                setInterval(() => { if(Math.random() < 0.2) rockets.push(new Rocket()); }, 600);
-            }, 1000);
+                document.getElementById('singularity-gate').style.display = 'none';
+                document.getElementById('login-module').style.display = 'block';
+                ytPlayer.unMute(); ytPlayer.playVideo();
+                resizeCanvas(); gameLoop();
+                setInterval(() => { if(Math.random() < 0.25) rockets.push(new RocketEntity()); }, 500);
+            }, 1200);
         }
 
-        function access() {
-            const u = document.getElementById('user').value, p = document.getElementById('pass').value;
-            if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
-                const fl = document.getElementById('form-login');
-                fl.style.transform = "scale(0) rotate(720deg)"; fl.style.opacity = "0";
+        function authenticate() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if(user === "thuyvanchithuongbminh" && pass === "bminhcungchicuoithvanthoi") {
+                const loginMod = document.getElementById('login-module');
+                loginMod.style.transform = "scale(0.1) rotate(1080deg)"; loginMod.style.opacity = "0";
                 setTimeout(() => {
-                    fl.style.display = 'none';
-                    const fm = document.getElementById('form-menu');
-                    fm.style.display = 'block';
-                    setTimeout(() => { fm.style.opacity = "1"; fm.style.transform = "scale(1)"; }, 100);
-                    fire(30);
-                }, 1000);
+                    loginMod.style.display = 'none';
+                    const menuMod = document.getElementById('menu-module');
+                    menuMod.style.display = 'block';
+                    setTimeout(() => { menuMod.style.opacity = "1"; menuMod.style.transform = "scale(1)"; }, 200);
+                    spawnFire(40);
+                }, 1500);
             } else { alert("Chưa đúng rồi bây bi ơi! ❤️"); }
         }
 
-        function toggleView() {
-            const inp = document.getElementById('pass'), ic = document.getElementById('eye-icon');
+        function togglePasswordView() {
+            const inp = document.getElementById('password'), icon = document.getElementById('eye-icon');
             inp.type = inp.type === 'password' ? 'text' : 'password';
-            ic.className = inp.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+            icon.className = inp.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
         }
 
-        function fire(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*200); }
-        function surprise() { alert('Bình Minh sẽ mãi mãi yêu Thuý Vân!'); fire(40); }
+        function spawnFire(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new RocketEntity()), i*150); }
+        function showLove() { alert('Bình Minh yêu Thuý Vân hơn cả vũ trụ!'); spawnFire(50); }
 
-        function loop() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; ctx.fillRect(0,0,w,h);
+        function gameLoop() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0,0,W,H); // Light trail effect
+
             buildings.forEach(b => {
-                ctx.fillStyle = '#05050a'; ctx.fillRect(b.x, h - b.h, b.w, b.h);
-                ctx.strokeStyle = `hsl(${b.hue}, 100%, 50%)`; ctx.lineWidth = 1;
-                ctx.strokeRect(b.x, h - b.h, b.w, b.h);
-                // Windows reflection
-                b.win.forEach((wnd, i) => {
-                    if(wnd && Math.random() > 0.1) {
-                        ctx.fillStyle = `hsla(${b.hue}, 100%, 70%, ${Math.random()})`;
-                        ctx.fillRect(b.x + (i%3)*20 + 10, h - b.h + Math.floor(i/3)*30 + 20, 10, 10);
+                ctx.fillStyle = '#080815'; ctx.fillRect(b.x, H - b.h, b.w, b.h);
+                // Advanced Neon glow
+                ctx.strokeStyle = `hsl(${b.colorHue}, 100%, 60%)`; ctx.lineWidth = 2;
+                ctx.shadowBlur = 10; ctx.shadowColor = `hsl(${b.colorHue}, 100%, 70%)`;
+                ctx.strokeRect(b.x, H - b.h, b.w, b.h);
+                // Dynamic windows
+                b.windows.forEach((wnd, i) => {
+                    if(wnd && Math.random() > 0.05) {
+                        ctx.fillStyle = `hsla(${b.colorHue + 60}, 100%, 80%, ${Math.random() * 0.7 + 0.3})`;
+                        ctx.fillRect(b.x + (i%4)*15 + 10, H - b.h + Math.floor(i/4)*25 + 15, 8, 8);
                     }
                 });
+                ctx.shadowBlur = 0; // Reset shadow for other elements
             });
+
             rockets = rockets.filter(r => { r.draw(); return r.update(); });
             particles = particles.filter(p => { p.draw(); p.update(); return p.alpha > 0; });
-            requestAnimationFrame(loop);
+            requestAnimationFrame(gameLoop);
         }
     </script>
 </body>
