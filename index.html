@@ -2,295 +2,153 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiệt Tác Tình Yêu - 2026 Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hanoi Romance Crystal - Final Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* HỆ THỐNG CSS CHI TIẾT - CRYSTAL UI FRAMEWORK 
-           Mục tiêu: Tạo khung hình đa giác pha lê trong suốt
-        */
+        /* ============================================================
+           CSS MODULE: CRYSTAL NEON UI (FIXED & OPTIMIZED)
+           ============================================================ */
         :root {
-            --neon-pink: #ff2d55;
-            --crystal-white: rgba(255, 255, 255, 0.15);
-            --crystal-border: rgba(255, 255, 255, 0.3);
-            --glow: 0 0 25px rgba(255, 45, 85, 0.6);
+            --neon: #ff2d75;
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 0 30px rgba(255, 45, 117, 0.5);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body, html { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; }
 
-        /* NỀN THÀNH PHỐ TĨNH */
-        #city-bg {
+        /* NỀN THÀNH PHỐ - FIX LỖI HIỂN THỊ TRÀN VIỀN */
+        #city-canvas {
             position: fixed; inset: 0;
             background: url('https://vtv1.mediacdn.vn/zoom/640_400/2023/1/1/hanoi-16725350353111867184281.jpg') center/cover no-repeat;
-            z-index: 1; filter: brightness(0.15) contrast(1.2) blur(1px);
-            transform: scale(1.05); transition: 0.5s;
+            z-index: 1; filter: brightness(0.12) contrast(1.1) blur(1px);
+            transform: scale(1.05); transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* ENGINE PHÁO HOA */
-        canvas#firework-engine { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+        /* ENGINE PHÁO HOA - TÁCH BIỆT LAYER ĐỂ KHÔNG ĐÈ LÊN UI */
+        canvas#firework-layer { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
 
-        /* HIỆU ỨNG ÁNH SÁNG KHI NỔ */
-        #flash-overlay {
-            position: fixed; inset: 0; z-index: 2; pointer-events: none;
-            mix-blend-mode: overlay; opacity: 0; transition: 0.1s;
-        }
-
-        /* KHUNG ĐĂNG NHẬP PHA LÊ ĐA GIÁC (CRYSTAL AUTH) */
-        .crystal-panel {
+        /* KHUNG ĐĂNG NHẬP PHA LÊ ĐA GIÁC (FIXED) */
+        .crystal-box {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
-            width: 90%; max-width: 500px; padding: 60px 40px;
-            background: rgba(0, 0, 0, 0.4); /* Độ trong suốt để thấy pháo hoa */
-            backdrop-filter: blur(20px) saturate(150%);
-            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            width: 90%; max-width: 480px; padding: 70px 40px;
+            background: rgba(10, 10, 10, 0.45); /* Trong suốt để pháo hoa nổ xuyên qua */
+            backdrop-filter: blur(25px) saturate(160%);
+            -webkit-backdrop-filter: blur(25px) saturate(160%);
             
-            /* Tạo hình đa giác pha lê bằng clip-path */
-            clip-path: polygon(10% 0%, 90% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 90%, 0% 10%);
+            /* Clip-path đa giác kim cương */
+            clip-path: polygon(15% 0%, 85% 0%, 100% 20%, 100% 80%, 85% 100%, 15% 100%, 0% 80%, 0% 20%);
             
-            border: 1px solid var(--crystal-border);
-            box-shadow: 0 0 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
             z-index: 1000; text-align: center; opacity: 0; visibility: hidden;
-            transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: inset 0 0 40px rgba(255,255,255,0.05);
         }
 
-        .crystal-panel::before {
+        .crystal-box.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+
+        /* VIỀN NEON CHẠY QUANH KHUNG PHA LÊ */
+        .crystal-box::after {
             content: ''; position: absolute; inset: 0;
-            border: 2px solid var(--neon-pink);
-            clip-path: polygon(10% 0%, 90% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 90%, 0% 10%);
-            animation: borderGlow 3s infinite;
+            border: 2px solid var(--neon);
+            clip-path: polygon(15% 0%, 85% 0%, 100% 20%, 100% 80%, 85% 100%, 15% 100%, 0% 80%, 0% 20%);
+            animation: neonPulse 2.5s infinite alternate;
+            pointer-events: none;
         }
 
-        @keyframes borderGlow {
-            0%, 100% { opacity: 0.5; } 50% { opacity: 1; filter: drop-shadow(0 0 10px var(--neon-pink)); }
+        @keyframes neonPulse {
+            from { opacity: 0.3; filter: drop-shadow(0 0 5px var(--neon)); }
+            to { opacity: 1; filter: drop-shadow(0 0 20px var(--neon)); }
         }
 
-        .crystal-panel.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
-
-        .title-love {
-            font-family: 'Dancing Script', cursive; color: #fff; font-size: 3.8rem;
-            margin-bottom: 30px; text-shadow: var(--glow);
+        .love-title {
+            font-family: 'Dancing Script', cursive; color: #fff; font-size: 3.5rem;
+            margin-bottom: 35px; filter: drop-shadow(0 0 10px var(--neon));
         }
 
-        /* INPUT DESIGN */
-        .input-container { position: relative; margin-bottom: 25px; }
-        .input-container i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--neon-pink); }
-        .input-container input {
-            width: 100%; padding: 18px 50px; background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
-            color: #fff; font-size: 16px; transition: 0.3s;
+        /* INPUT STYLING - TRONG SUỐT VÀ TINH TẾ */
+        .input-wrap { position: relative; margin-bottom: 25px; }
+        .input-wrap i.lead-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--neon); font-size: 18px; }
+        .input-wrap input {
+            width: 100%; padding: 18px 55px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;
+            color: #fff; font-size: 16px; transition: 0.4s; outline: none;
         }
-        .input-container input:focus { border-color: var(--neon-pink); background: rgba(255,255,255,0.12); }
+        .input-wrap input:focus { border-color: var(--neon); background: rgba(255,255,255,0.1); box-shadow: 0 0 15px rgba(255,45,117,0.2); }
 
-        /* CON MẮT MẬT KHẨU */
-        .eye-toggle {
+        /* CON MẮT - FIX LỖI CLICK KHÔNG NHẠY */
+        .eye-icon {
             position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            color: #888; cursor: pointer; transition: 0.3s;
+            color: #777; cursor: pointer; padding: 5px; z-index: 10; transition: 0.3s;
         }
-        .eye-toggle:hover { color: #fff; }
+        .eye-icon:hover { color: #fff; }
 
-        .btn-neon {
-            width: 100%; padding: 18px; border: none; border-radius: 12px;
-            background: linear-gradient(45deg, #ff2d55, #ff512f);
-            color: #fff; font-weight: 800; font-size: 1.1rem; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 2px;
-            box-shadow: 0 10px 20px rgba(255, 45, 85, 0.4); transition: 0.3s;
+        .btn-premium {
+            width: 100%; padding: 18px; background: linear-gradient(45deg, #ff2d75, #ff5e3a);
+            border: none; border-radius: 15px; color: #fff; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 3px; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 45, 117, 0.4); transition: 0.4s;
         }
-        .btn-neon:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 45, 85, 0.6); }
+        .btn-premium:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 35px rgba(255, 45, 117, 0.6); }
 
-        /* MUSIC CONTROLLER */
-        #music-disc {
-            position: fixed; top: 20px; right: 20px; z-index: 2000;
-            width: 55px; height: 55px; background: #111; border-radius: 50%;
+        /* MUSIC DISC - FIX LỖI XOAY TRÊN MOBILE */
+        #music-trigger {
+            position: fixed; top: 25px; right: 25px; z-index: 5000;
+            width: 60px; height: 60px; background: #000; border-radius: 50%;
             border: 2px solid #333; display: flex; justify-content: center; align-items: center;
             cursor: pointer; opacity: 0; transition: 1s;
         }
-        .spin { animation: rotate 4s linear infinite; }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .disc-spin { animation: discRotate 5s linear infinite; }
+        @keyframes discRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* INTRO SCREEN */
-        #intro {
+        /* INTRO ENGINE */
+        #intro-engine {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; transition: 1.2s;
+            cursor: pointer; transition: 1.5s ease-in-out;
         }
     </style>
 </head>
 <body>
 
-    <div id="city-bg"></div>
-    <div id="flash-overlay"></div>
-    <canvas id="firework-engine"></canvas>
+    <div id="city-canvas"></div>
+    <canvas id="firework-layer"></canvas>
 
-    <div id="intro" onclick="boot()">
-        <h1 style="color:#fff; font-size:3rem; letter-spacing:10px; font-family:'Montserrat';">ENTER LOVE</h1>
-        <div style="margin-top:30px;"><i class="fas fa-heart-pulse fa-beat" style="font-size:70px; color:var(--neon-pink);"></i></div>
+    <div id="ambient-light" style="position:fixed; inset:0; z-index:2; pointer-events:none; transition:0.2s; opacity:0;"></div>
+
+    <div id="intro-engine" onclick="initApp()">
+        <h1 style="color:#fff; font-family:'Montserrat'; font-size:3rem; letter-spacing:15px; text-shadow: var(--shadow);">TOUCH HEART</h1>
+        <div style="margin-top:40px;"><i class="fas fa-heart-circle-bolt fa-beat" style="font-size:80px; color:var(--neon);"></i></div>
     </div>
 
-    <div id="music-disc" onclick="controlAudio()">
-        <i class="fas fa-music" id="music-icon" style="color: var(--neon-pink);"></i>
+    <div id="music-trigger" onclick="toggleAudio()">
+        <i class="fas fa-compact-disc fa-2x" id="disc-ui" style="color:var(--neon);"></i>
     </div>
 
-    <div id="yt-player"></div>
+    <div id="youtube-api-player"></div>
 
-    <div class="crystal-panel" id="login-box">
-        <h2 class="title-love">Vợ Yêu ❤️</h2>
-        <div class="input-container">
-            <i class="fas fa-user-heart"></i>
-            <input type="text" id="user" placeholder="Tên đăng nhập">
+    <div class="crystal-box" id="auth-panel">
+        <h2 class="love-title">Vợ Yêu ❤️</h2>
+        <div class="input-wrap">
+            <i class="fas fa-user-heart lead-icon"></i>
+            <input type="text" id="username" placeholder="Tên đăng nhập">
         </div>
-        <div class="input-container">
-            <i class="fas fa-key"></i>
-            <input type="password" id="pass" placeholder="Mật khẩu">
-            <i class="fas fa-eye eye-toggle" onclick="togglePass()"></i>
+        <div class="input-wrap">
+            <i class="fas fa-shield-heart lead-icon"></i>
+            <input type="password" id="password" placeholder="Mật khẩu">
+            <i class="fas fa-eye eye-icon" onclick="toggleEye()"></i>
         </div>
-        <button class="btn-neon" onclick="login()">BẮT ĐẦU</button>
+        <button class="btn-premium" onclick="verify()">KHÁM PHÁ NGAY</button>
     </div>
 
-    <div class="crystal-panel" id="menu-box">
-        <h2 class="title-love" style="font-size: 2.5rem;">The Journey</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
-            <div onclick="superFire()" style="background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--crystal-border);">QUÁ KHỨ</div>
-            <div onclick="superFire()" style="background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--crystal-border);">HIỆN TẠI</div>
-            <div onclick="superFire()" style="background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--crystal-border);">TƯƠNG LAI</div>
-            <div onclick="alert('Anh hứa!')" style="background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--crystal-border);">LỜI HỨA</div>
-        </div>
-    </div>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        /* HỆ THỐNG JAVASCRIPT CHI TIẾT 
-           Xử lý: Pháo hoa vật lý, Âm thanh, và Logic Login
-        */
-        const canvas = document.getElementById('firework-engine');
-        const ctx = canvas.getContext('2d');
-        const city = document.getElementById('city-bg');
-        const flash = document.getElementById('flash-overlay');
-        let rockets = [], particles = [], player;
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.onresize = resize;
-        resize();
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                height: '0', width: '0', videoId: 'iXaw-jwmjjA',
-                playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
-                events: { 'onReady': (e) => e.target.mute() }
-            });
-        }
-
-        class Particle {
-            constructor(x, y, color) {
-                this.x = x; this.y = y; this.color = color;
-                const angle = Math.random() * Math.PI * 2;
-                const force = Math.random() * 12 + 3;
-                this.vx = Math.cos(angle) * force;
-                this.vy = Math.sin(angle) * force;
-                this.alpha = 1;
-                this.decay = Math.random() * 0.01 + 0.005;
-                this.gravity = 0.2;
-            }
-            update() {
-                this.vx *= 0.95; this.vy *= 0.95; this.vy += this.gravity;
-                this.x += this.vx; this.y += this.vy;
-                this.alpha -= this.decay;
-            }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.fillStyle = this.color;
-                ctx.shadowBlur = 10; ctx.shadowColor = this.color;
-                ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI*2); ctx.fill();
-                ctx.restore();
-            }
-        }
-
-        class Rocket {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height;
-                this.targetY = Math.random() * (canvas.height * 0.45);
-                this.speed = Math.random() * 5 + 15;
-                this.color = `hsl(${Math.random()*360}, 100%, 75%)`;
-            }
-            update() {
-                this.y -= this.speed; this.speed *= 0.98;
-                if(this.y <= this.targetY || this.speed < 1.5) {
-                    this.explode(); return false;
-                }
-                return true;
-            }
-            draw() {
-                ctx.fillStyle = "#fff";
-                ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI*2); ctx.fill();
-            }
-            explode() {
-                // Flash effect
-                city.style.filter = "brightness(0.6) contrast(1.4) blur(0px)";
-                flash.style.opacity = "1";
-                flash.style.background = `radial-gradient(circle at ${this.x}px ${this.y}px, ${this.color}44 0%, transparent 70%)`;
-                setTimeout(() => {
-                    city.style.filter = "brightness(0.15) contrast(1.2) blur(1px)";
-                    flash.style.opacity = "0";
-                }, 300);
-
-                for(let i=0; i<150; i++) particles.push(new Particle(this.x, this.y, this.color));
-            }
-        }
-
-        function boot() {
-            document.getElementById('intro').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('intro').style.display = 'none';
-                document.getElementById('login-box').classList.add('active');
-                document.getElementById('music-disc').style.opacity = '1';
-                player.unMute(); player.playVideo();
-                setInterval(() => rockets.push(new Rocket()), 1500);
-            }, 1000);
-        }
-
-        function togglePass() {
-            const p = document.getElementById('pass');
-            p.type = p.type === 'password' ? 'text' : 'password';
-        }
-
-        function controlAudio() {
-            const disc = document.getElementById('music-disc');
-            if(player.getPlayerState() === 1) {
-                player.pauseVideo(); disc.classList.remove('spin');
-            } else {
-                player.playVideo(); disc.classList.add('spin');
-            }
-        }
-
-        function login() {
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
-            if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
-                document.getElementById('login-box').classList.remove('active');
-                setTimeout(() => {
-                    document.getElementById('menu-box').classList.add('active');
-                    superFire();
-                }, 800);
-            } else { alert("Sai mật khẩu rồi vợ ơi!"); }
-        }
-
-        function superFire() { for(let i=0; i<10; i++) setTimeout(() => rockets.push(new Rocket()), i*200); }
-
-        function render() {
-            ctx.fillStyle = 'rgba(0,0,0,0.15)';
-            ctx.fillRect(0,0,canvas.width,canvas.height);
-            rockets = rockets.filter(r => { r.draw(); return r.update(); });
-            particles = particles.filter(p => { p.update(); p.draw(); return p.alpha > 0; });
-            requestAnimationFrame(render);
-        }
-        render();
-    </script>
-</body>
-</html>
+    <div class="crystal-box" id="menu-panel">
+        <h2 class="love-title" style="font-size: 2.8rem;">Trọn Đời ❤️</h2>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px;">
+            <div onclick="massFire()" style="background:rgba(255,255,255,0.05); padding:25px 10px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--border); transition:0.3s;" onmouseover="this.style.background='var(--neon)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">KỶ NIỆM</div>
+            <div onclick="massFire()" style="background:rgba(255,255,255,0.05); padding:25px 10px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--border); transition:0.3s;" onmouseover="this.style.background='var(--neon)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">GẮN KẾT</div>
+            <div onclick="massFire()" style="background:rgba(255,255,255,0.05); padding:25px 10px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--border); transition:0.3s;" onmouseover="this.style.background='var(--neon)'" onmouseout="this.
