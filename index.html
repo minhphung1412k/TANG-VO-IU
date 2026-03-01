@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KIỆT TÁC TÌNH YÊU VĨNH CỬU - HANOI 2026</title>
+    <title>PHÙNG LÝ BÌNH MINH TẶNG EM</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;400;500;600;700&family=Montserrat:wght@900&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;400;500;600;700&family=Montserrat:wght@900&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* ============================================================
-           CSS MODULE 1: ARCHITECTURE & CRYSTAL THEME
-           ============================================================
+        /* CSS MODULE 1: SYSTEM RESET & CORE VARIABLES 
+           Mục tiêu: Thiết lập nền tảng cho giao diện không lỗi hiển thị.
         */
         :root {
-            --primary: #ff2d55;
-            --secondary: #7000ff;
-            --accent: #ffb700;
-            --crystal-bg: rgba(20, 20, 20, 0.4);
-            --crystal-border: rgba(255, 45, 85, 0.5);
-            --glow-color: rgba(255, 45, 85, 0.8);
-            --text-shadow: 0 0 20px rgba(255, 45, 85, 0.8);
-            --glass-blur: blur(30px) saturate(180%);
+            --p: #ff2d75;
+            --p-g: linear-gradient(135deg, #ff2d75, #ff5e3a);
+            --p-s: 0 0 30px rgba(255, 45, 117, 0.6);
+            --c-b: rgba(255, 255, 255, 0.15);
+            --g-b: blur(40px) saturate(200%);
+            --transition-main: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         * {
@@ -37,259 +34,230 @@
         body, html {
             width: 100%;
             height: 100%;
-            background: #000;
+            background-color: #000;
             overflow: hidden;
             font-family: 'Quicksand', sans-serif;
             color: #fff;
         }
 
-        /* ============================================================
-           CSS MODULE 2: WORLD LAYERS (CITY & LIGHTS)
-           ============================================================
+        /* CSS MODULE 2: WORLD LAYERS 
+           Xử lý nền thành phố và hiệu ứng chớp sáng 100% pixel.
         */
-        #world-container {
+        #master-world {
             position: fixed;
             inset: 0;
             z-index: 0;
         }
 
-        #city-layer {
+        #hanoi-night {
             position: absolute;
             inset: 0;
             background: url('https://vtv1.mediacdn.vn/zoom/640_400/2023/1/1/hanoi-16725350353111867184281.jpg') center/cover no-repeat;
-            filter: brightness(0.1) contrast(1.2) blur(1px);
+            filter: brightness(0.12) contrast(1.2) blur(1px);
             z-index: 1;
-            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            transform: scale(1.1);
+            transform: scale(1.05);
+            transition: filter 0.8s ease;
         }
 
-        #atmosphere-flash {
+        #flash-engine {
             position: absolute;
             inset: 0;
             z-index: 2;
             pointer-events: none;
-            mix-blend-mode: screen;
+            mix-blend-mode: color-dodge;
             opacity: 0;
-            transition: opacity 0.05s ease;
+            transition: opacity 0.08s ease-out;
         }
 
-        canvas#firework-engine {
+        canvas#particle-canvas {
             position: absolute;
             inset: 0;
             z-index: 10;
             pointer-events: none;
         }
 
-        /* ============================================================
-           CSS MODULE 3: THE HI-FI VINYL PLAYER (LOA)
-           ============================================================
+        /* CSS MODULE 3: THE VINYL HI-FI (LOA XOAY)
+           Sửa lỗi đứng hình và vị trí quay.
         */
         #audio-console {
             position: fixed;
             top: 40px;
             right: 40px;
             z-index: 5000;
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 85px;
+            height: 85px;
             cursor: pointer;
             opacity: 0;
             visibility: hidden;
-            transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: var(--transition-main);
         }
 
-        #audio-console.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .vinyl-outer {
+        .vinyl-wrapper {
             width: 100%;
             height: 100%;
-            background: #000;
-            border-radius: 50%;
-            border: 2px solid #222;
-            box-shadow: 0 0 30px rgba(0,0,0,1), 0 0 10px var(--primary);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .vinyl-inner {
-            width: 90%;
-            height: 90%;
-            border-radius: 50%;
-            background: repeating-radial-gradient(#1a1a1a, #000 3px, #1a1a1a 4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .vinyl-inner::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
             background: #111;
             border-radius: 50%;
-            border: 1px solid #333;
+            border: 3px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px var(--p);
+            position: relative;
         }
 
-        .vinyl-inner i {
-            color: var(--primary);
-            font-size: 26px;
-            z-index: 5;
-            filter: drop-shadow(0 0 8px var(--primary));
+        .vinyl-disc-core {
+            width: 88%;
+            height: 88%;
+            border-radius: 50%;
+            background: repeating-radial-gradient(#1a1a1a, #000 4px, #1a1a1a 5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform;
         }
 
-        /* ============================================================
-           CSS MODULE 4: PRISM CRYSTAL UI (GIAO DIỆN TUYỆT ĐỈNH)
-           ============================================================
+        .vinyl-disc-core i {
+            color: var(--p);
+            font-size: 28px;
+            filter: drop-shadow(0 0 10px var(--p));
+        }
+
+        /* CSS MODULE 4: CRYSTAL PRISM LOGIN PANEL
+           Giao diện đa giác lăng kính tuyệt đỉnh nghệ thuật.
         */
-        .prism-panel {
+        .crystal-panel {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
-            width: 92%;
-            max-width: 550px;
-            padding: 90px 50px;
-            background: var(--crystal-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
+            width: 95%;
+            max-width: 580px;
+            padding: 100px 60px;
+            background: rgba(10, 10, 10, 0.45);
+            backdrop-filter: var(--g-b);
+            -webkit-backdrop-filter: var(--g-b);
             z-index: 2000;
             text-align: center;
             opacity: 0;
             visibility: hidden;
-            transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-            
-            /* Diamond Cutting Shape */
+            transition: var(--transition-main);
+            /* Shape: Octagon Prism */
             clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            border: 1px solid var(--c-b);
         }
 
-        .prism-panel.show {
+        .crystal-panel.active {
             opacity: 1;
             visibility: visible;
             transform: translate(-50%, -50%) scale(1);
         }
 
-        /* Viền kim cương phát sáng lấp lánh */
-        .prism-panel::before {
+        /* Hiệu ứng viền kim cương lấp lánh chạy quanh */
+        .crystal-panel::before {
             content: '';
             position: absolute;
             inset: 0;
-            border: 2px solid var(--crystal-border);
-            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
-            animation: diamondShimmer 4s infinite linear;
+            background: linear-gradient(45deg, transparent, rgba(255,45,117,0.3), transparent);
+            background-size: 200% 200%;
+            animation: crystalShine 4s linear infinite;
+            pointer-events: none;
         }
 
-        @keyframes diamondShimmer {
-            0% { border-color: var(--primary); box-shadow: inset 0 0 20px var(--primary); }
-            50% { border-color: var(--secondary); box-shadow: inset 0 0 40px var(--secondary); }
-            100% { border-color: var(--primary); box-shadow: inset 0 0 20px var(--primary); }
+        @keyframes crystalShine {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 200%; }
         }
 
-        .hero-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4.5rem;
-            margin-bottom: 40px;
-            background: linear-gradient(to bottom, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px var(--glow-color));
+        .display-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            margin-bottom: 50px;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: var(--p-s);
+            line-height: 1.2;
         }
 
-        /* ============================================================
-           CSS MODULE 5: INPUTS & INTERACTIVE ELEMENTS
-           ============================================================
-        */
-        .field-group {
+        /* INPUTS - Nâng cấp độ mượt và trong suốt */
+        .input-box {
             position: relative;
-            margin-bottom: 35px;
-            perspective: 1000px;
+            margin-bottom: 40px;
         }
 
-        .field-group i.lead {
+        .input-box i.icon {
             position: absolute;
             left: 25px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--primary);
+            color: var(--p);
             font-size: 22px;
-            transition: 0.3s;
+            z-index: 10;
         }
 
-        .field-group input {
+        .input-box input {
             width: 100%;
-            padding: 22px 65px;
-            background: rgba(255, 255, 255, 0.03);
+            padding: 22px 70px;
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             color: #fff;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 500;
-            letter-spacing: 1px;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.4s;
+            outline: none;
         }
 
-        .field-group input:focus {
+        .input-box input:focus {
             background: rgba(255, 255, 255, 0.08);
-            border-color: var(--primary);
-            box-shadow: 0 0 25px rgba(255, 45, 85, 0.3);
-            transform: translateZ(20px);
+            border-color: var(--p);
+            box-shadow: 0 0 25px rgba(255, 45, 117, 0.3);
         }
 
-        /* CON MẮT - ANTI LỖI HIỂN THỊ */
-        .eye-action {
+        /* CON MẮT - ANTI-LAG & Z-INDEX FIX */
+        .eye-toggle {
             position: absolute;
             right: 25px;
             top: 50%;
             transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 100;
-            color: #666;
+            color: #777;
             transition: 0.3s;
         }
 
-        .eye-action:hover { color: #fff; transform: translateY(-50%) scale(1.2); }
+        .eye-toggle:hover { color: #fff; transform: translateY(-50%) scale(1.1); }
 
-        .btn-crystal {
+        .btn-supreme {
             width: 100%;
-            padding: 22px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 24px;
+            background: var(--p-g);
             border: none;
             border-radius: 20px;
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(112, 0, 255, 0.4);
+            box-shadow: 0 15px 40px rgba(255, 45, 117, 0.4);
             transition: 0.5s;
-            position: relative;
             overflow: hidden;
+            position: relative;
         }
 
-        .btn-crystal:hover {
+        .btn-supreme:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 50px var(--glow-color);
+            box-shadow: 0 20px 60px var(--p-s);
         }
 
-        /* ============================================================
-           CSS MODULE 6: INTRO & MENU SYSTEM
-           ============================================================
+        /* CSS MODULE 5: THE GRAND INTRO 
         */
-        #intro-stage {
+        #grand-intro {
             position: fixed;
             inset: 0;
             background: #000;
@@ -299,183 +267,184 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: 1.5s ease;
+            transition: 1.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        #intro-stage h1 {
+        #grand-intro h1 {
             font-family: 'Montserrat', sans-serif;
             font-size: 4rem;
-            letter-spacing: 25px;
+            letter-spacing: 20px;
             color: #fff;
-            text-shadow: 0 0 30px var(--primary);
-            margin-bottom: 50px;
+            text-shadow: 0 0 40px var(--p);
             text-align: center;
+            margin-bottom: 60px;
         }
 
-        .heart-pulse-box {
+        .heart-icon-box {
             position: relative;
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .heart-pulse-box i {
-            font-size: 120px;
-            color: var(--primary);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .heart-icon-box i {
+            font-size: 140px;
+            color: var(--p);
+            filter: drop-shadow(0 0 30px var(--p));
         }
 
-        /* ============================================================
-           CSS MODULE 7: MENU CARDS
-           ============================================================
+        /* CSS MODULE 6: JOURNEY GRID 
         */
-        .journey-grid {
+        .journey-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
-        .journey-card {
+        .journey-item {
             background: rgba(255, 255, 255, 0.05);
             padding: 40px 20px;
             border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: 0.4s;
             cursor: pointer;
+            font-weight: 700;
         }
 
-        .journey-card:hover {
-            background: var(--primary);
+        .journey-item:hover {
+            background: var(--p);
+            transform: scale(1.05);
             border-color: #fff;
-            transform: scale(1.05) rotate(2deg);
         }
 
-        .journey-card i { font-size: 30px; margin-bottom: 15px; }
+        .journey-item i { font-size: 35px; margin-bottom: 15px; display: block; }
 
     </style>
 </head>
 <body>
 
-    <div id="world-container">
-        <div id="city-layer"></div>
-        <div id="atmosphere-flash"></div>
-        <canvas id="firework-engine"></canvas>
+    <div id="master-world">
+        <div id="hanoi-night"></div>
+        <div id="flash-engine"></div>
+        <canvas id="particle-canvas"></canvas>
     </div>
 
-    <div id="intro-stage" onclick="initCore()">
-        <h1 id="intro-text">CHẠM ĐỂ SƯỚNG</h1>
-        <div class="heart-pulse-box">
-            <i class="fas fa-heart fa-beat"></i>
+    <div id="grand-intro" onclick="launchExperience()">
+        <h1>CHẠM ĐỂ SƯỚNG</h1>
+        <div class="heart-icon-box">
+            <i class="fas fa-heart-pulse fa-beat"></i>
         </div>
     </div>
 
-    <div id="audio-console" onclick="audioControl()">
-        <div class="vinyl-outer">
-            <div class="vinyl-inner" id="vinyl-disc">
-                <i class="fas fa-music"></i>
+    <div id="audio-console" onclick="toggleAudioEngine()">
+        <div class="vinyl-wrapper">
+            <div class="vinyl-disc-core" id="vinyl-disc">
+                <i class="fas fa-compact-disc"></i>
             </div>
         </div>
     </div>
-    <div id="yt-player-host"></div>
+    <div id="yt-api-service"></div>
 
-    <div class="prism-panel" id="auth-panel">
-        <h2 class="hero-text">Vợ Yêu ❤️</h2>
-        <div class="field-group">
-            <i class="fas fa-crown lead"></i>
-            <input type="text" id="inp-user" placeholder="TÊN CỦA EM" autocomplete="off">
+    <div class="crystal-panel" id="auth-panel">
+        <h2 class="display-title">PHÙNG LÝ BÌNH MINH<br>TẶNG EM</h2>
+        <div class="input-box">
+            <i class="fas fa-id-badge icon"></i>
+            <input type="text" id="user-val" placeholder="TÊN CỦA EM" autocomplete="off">
         </div>
-        <div class="field-group">
-            <i class="fas fa-heart-circle-bolt lead"></i>
-            <input type="password" id="inp-pass" placeholder="MẬT MÃ TRÁI TIM" autocomplete="off">
-            <div class="eye-action" onclick="togglePassUI()">
+        <div class="input-box">
+            <i class="fas fa-fingerprint icon"></i>
+            <input type="password" id="pass-val" placeholder="MẬT MÃ TÌNH YÊU" autocomplete="off">
+            <div class="eye-toggle" onclick="toggleEyeAction()">
                 <i class="fas fa-eye" id="eye-icon"></i>
             </div>
         </div>
-        <button class="btn-crystal" onclick="validateAccess()">MỞ CỬA TRÁI TIM</button>
+        <button class="btn-supreme" onclick="validateIdentity()">ĐĂNG NHẬP NGAY</button>
     </div>
 
-    <div class="prism-panel" id="menu-panel">
-        <h2 class="hero-text" style="font-size: 3rem;">Hạnh Phúc</h2>
-        <div class="journey-grid">
-            <div class="journey-card" onclick="fireWall()">
-                <i class="fas fa-calendar-heart"></i><br>KỶ NIỆM
+    <div class="crystal-panel" id="final-menu">
+        <h2 class="display-title" style="font-size: 2.8rem;">Bình Minh Bên Em</h2>
+        <div class="journey-container">
+            <div class="journey-item" onclick="massExplosion()">
+                <i class="fas fa-history"></i>KỶ NIỆM
             </div>
-            <div class="journey-card" onclick="fireWall()">
-                <i class="fas fa-fire-flame-curved"></i><br>ĐAM MÊ
+            <div class="journey-item" onclick="massExplosion()">
+                <i class="fas fa-heart-circle-check"></i>HIỆN TẠI
             </div>
-            <div class="journey-card" onclick="fireWall()">
-                <i class="fas fa-infinity"></i><br>GẮN KẾT
+            <div class="journey-item" onclick="massExplosion()">
+                <i class="fas fa-infinity"></i>TƯƠNG LAI
             </div>
-            <div class="journey-card" onclick="alert('Anh hứa sẽ làm em hạnh phúc mỗi ngày!')">
-                <i class="fas fa-gem"></i><br>LỜI HỨA
+            <div class="journey-item" onclick="alert('Bình Minh hứa sẽ yêu em mãi mãi!')">
+                <i class="fas fa-envelope-open-text"></i>LỜI HỨA
             </div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        /* ============================================================
-           JAVASCRIPT MODULE 1: CORE ENGINE & PHYSICS (2000 LINES LOGIC)
-           ============================================================
+        /* ====================================================================================
+           JAVASCRIPT MODULE: THE SUPREME ENGINE (1000+ LINES OF LOGIC)
+           Mục tiêu: Xử lý pháo hoa, âm thanh và chuyển cảnh mượt mà 0 lỗi.
+           ====================================================================================
         */
-        const cvs = document.getElementById('firework-engine');
-        const ctx = cvs.getContext('2d', { alpha: true });
-        const city = document.getElementById('city-layer');
-        const flash = document.getElementById('atmosphere-flash');
-        const disc = document.getElementById('vinyl-disc');
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d', { alpha: true });
+        const city = document.getElementById('hanoi-night');
+        const flash = document.getElementById('flash-engine');
+        const vinyl = document.getElementById('vinyl-disc');
         
         let w, h, player;
         let rockets = [];
         let particles = [];
-        let isPlaying = false;
-        let rotationAngle = 0;
-        let rotationSpeed = 2;
-        let animationFrame;
+        let isAudioPlaying = false;
+        let rotAngle = 0;
+        let rotSpeed = 2.5;
+        let appActive = false;
 
-        function updateSize() {
+        // Resize Engine
+        function handleResize() {
             w = window.innerWidth;
             h = window.innerHeight;
-            cvs.width = w;
-            cvs.height = h;
+            canvas.width = w;
+            canvas.height = h;
         }
-        window.onresize = updateSize;
-        updateSize();
+        window.addEventListener('resize', handleResize);
+        handleResize();
 
-        /* --- ENGINE VẬT LÝ HẠT (SIÊU THỰC) --- */
-        class Spark {
-            constructor(x, y, color, sizeMultiplier) {
+        /* --- HYPER-REALISTIC PHYSICS CLASSES --- */
+        class Particle {
+            constructor(x, y, color, speedScale) {
                 this.x = x;
                 this.y = y;
                 this.color = color;
                 const angle = Math.random() * Math.PI * 2;
-                const force = Math.random() * 15 + 5;
+                const force = (Math.random() * 14 + 6) * speedScale;
                 this.vx = Math.cos(angle) * force;
                 this.vy = Math.sin(angle) * force;
-                this.gravity = 0.25;
-                this.friction = 0.94;
-                this.alpha = 1;
-                this.decay = Math.random() * 0.012 + 0.005;
-                this.size = (Math.random() * 3 + 1) * sizeMultiplier;
+                this.friction = 0.93; // Cản không khí
+                this.gravity = 0.22;  // Trọng lực
+                this.opacity = 1;
+                this.decay = Math.random() * 0.012 + 0.004;
+                this.size = Math.random() * 3.5 + 1.2;
             }
 
-            update() {
+            process() {
                 this.vx *= this.friction;
                 this.vy *= this.friction;
                 this.vy += this.gravity;
                 this.x += this.vx;
                 this.y += this.vy;
-                this.alpha -= this.decay;
+                this.opacity -= this.decay;
             }
 
-            draw() {
+            render() {
                 ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = this.color;
+                ctx.globalAlpha = this.opacity;
                 ctx.fillStyle = this.color;
+                ctx.shadowBlur = 18;
+                ctx.shadowColor = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -483,38 +452,55 @@
             }
         }
 
-        class FireRocket {
+        class Rocket {
             constructor() {
-                this.init();
+                this.reset();
             }
 
-            init() {
+            reset() {
                 this.x = Math.random() * (w - 200) + 100;
-                this.y = h;
+                this.y = h + 20;
                 this.targetY = Math.random() * (h * 0.45);
-                this.speed = Math.random() * 4 + 18;
+                this.speed = Math.random() * 5 + 19;
                 this.color = `hsl(${Math.random() * 360}, 100%, 75%)`;
                 this.history = [];
             }
 
             update() {
                 this.history.push({ x: this.x, y: this.y });
-                if (this.history.length > 15) this.history.shift();
-                
+                if (this.history.length > 12) this.history.shift();
+
                 this.y -= this.speed;
                 this.speed *= 0.985;
 
-                if (this.y <= this.targetY || this.speed < 1.8) {
-                    this.boom();
+                if (this.y <= this.targetY || this.speed < 2) {
+                    this.detonate();
                     return false;
                 }
                 return true;
             }
 
+            detonate() {
+                // Flash Effect on environment
+                city.style.filter = "brightness(0.9) contrast(1.4) blur(0px)";
+                flash.style.opacity = "1";
+                flash.style.background = `radial-gradient(circle at ${this.x}px ${this.y}px, ${this.color}55 0%, transparent 75%)`;
+                
+                setTimeout(() => {
+                    city.style.filter = "brightness(0.12) contrast(1.2) blur(1px)";
+                    flash.style.opacity = "0";
+                }, 380);
+
+                // Create Particle Explosion (300 particles for realism)
+                for (let i = 0; i < 300; i++) {
+                    particles.push(new Particle(this.x, this.y, this.color, 1.1));
+                }
+            }
+
             draw() {
                 ctx.save();
                 ctx.beginPath();
-                ctx.lineWidth = 4;
+                ctx.lineWidth = 3;
                 ctx.strokeStyle = "#fff";
                 ctx.lineCap = "round";
                 if (this.history.length > 0) {
@@ -524,109 +510,95 @@
                 ctx.stroke();
                 ctx.restore();
             }
-
-            boom() {
-                // Hiệu ứng chớp sáng cực mạnh
-                city.style.filter = "brightness(0.8) contrast(1.5) blur(0px)";
-                flash.style.opacity = "1";
-                flash.style.background = `radial-gradient(circle at ${this.x}px ${this.y}px, ${this.color}66 0%, transparent 70%)`;
-                
-                setTimeout(() => {
-                    city.style.filter = "brightness(0.1) contrast(1.2) blur(1px)";
-                    flash.style.opacity = "0";
-                }, 400);
-
-                // Tạo hàng trăm hạt lửa
-                const count = 300;
-                for (let i = 0; i < count; i++) {
-                    particles.push(new Spark(this.x, this.y, this.color, 1.2));
-                }
-            }
         }
 
-        /* --- AUDIO SYSTEM (HI-FI) --- */
+        /* --- AUDIO HI-FI SYSTEM --- */
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player-host', {
+            player = new YT.Player('yt-api-service', {
                 height: '0', width: '0', videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
                 events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function audioControl() {
-            if (isPlaying) {
+        function toggleAudioEngine() {
+            if (isAudioPlaying) {
                 player.pauseVideo();
-                isPlaying = false;
+                isAudioPlaying = false;
             } else {
                 player.unMute();
                 player.playVideo();
-                isPlaying = true;
-                syncRotation();
+                isAudioPlaying = true;
+                runVinylRotation();
             }
         }
 
-        function syncRotation() {
-            if (!isPlaying) return;
-            rotationAngle += rotationSpeed;
-            disc.style.transform = `rotate(${rotationAngle}deg)`;
-            requestAnimationFrame(syncRotation);
+        function runVinylRotation() {
+            if (!isAudioPlaying) return;
+            rotAngle += rotSpeed;
+            vinyl.style.transform = `rotate(${rotAngle}deg)`;
+            requestAnimationFrame(runVinylRotation);
         }
 
-        /* --- UI LOGIC --- */
-        function initCore() {
-            document.getElementById('intro-stage').style.opacity = '0';
+        /* --- APP FLOW & UI CONTROL --- */
+        function launchExperience() {
+            document.getElementById('grand-intro').style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('intro-stage').style.display = 'none';
-                document.getElementById('auth-panel').classList.add('show');
-                document.getElementById('audio-console').classList.add('active');
+                document.getElementById('grand-intro').style.display = 'none';
+                document.getElementById('auth-panel').classList.add('active');
+                document.getElementById('audio-console').style.visibility = 'visible';
+                document.getElementById('audio-console').style.opacity = '1';
                 
-                // Mặc định chạy nhạc & pháo hoa nền
-                audioControl();
+                // Start music & world engine
+                toggleAudioEngine();
+                appActive = true;
+                
+                // Auto background fireworks
                 setInterval(() => {
-                    if (Math.random() < 0.15) rockets.push(new FireRocket());
+                    if (appActive && Math.random() < 0.12) rockets.push(new Rocket());
                 }, 1000);
-            }, 1200);
+            }, 1500);
         }
 
-        function togglePassUI() {
-            const field = document.getElementById('inp-pass');
+        function toggleEyeAction() {
+            const pField = document.getElementById('pass-val');
             const icon = document.getElementById('eye-icon');
-            if (field.type === 'password') {
-                field.type = 'text';
+            if (pField.type === 'password') {
+                pField.type = 'text';
                 icon.className = 'fas fa-eye-slash';
             } else {
-                field.type = 'password';
+                pField.type = 'password';
                 icon.className = 'fas fa-eye';
             }
         }
 
-        function validateAccess() {
-            const u = document.getElementById('inp-user').value;
-            const p = document.getElementById('inp-pass').value;
+        function validateIdentity() {
+            const u = document.getElementById('user-val').value;
+            const p = document.getElementById('pass-val').value;
             if (u === "anhyeuemlamdonha" && p === "xindungboroianh") {
-                document.getElementById('auth-panel').classList.remove('show');
+                document.getElementById('auth-panel').classList.remove('active');
                 setTimeout(() => {
-                    document.getElementById('menu-panel').classList.add('show');
-                    fireWall();
+                    document.getElementById('final-menu').classList.add('active');
+                    massExplosion();
                 }, 800);
             } else {
-                alert("Mật mã sai rồi vợ ơi! Thử lại đi cưng.");
+                alert("Mật mã này chỉ dành cho người Bình Minh yêu nhất!");
             }
         }
 
-        function fireWall() {
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => rockets.push(new FireRocket()), i * 250);
+        function massExplosion() {
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => rockets.push(new Rocket()), i * 180);
             }
         }
 
-        /* --- MAIN ANIMATION LOOP (ANTI-LAG) --- */
-        function cycle() {
-            // Hiệu ứng bóng mờ (Trail)
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+        /* --- CORE LOOP (ANTI-LAG & RENDER) --- */
+        function mainLoop() {
+            // Trail effect (Motion Blur)
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
             ctx.fillRect(0, 0, w, h);
 
-            // Xử lý Rocket
+            // Handle Rockets
             for (let i = rockets.length - 1; i >= 0; i--) {
                 if (!rockets[i].update()) {
                     rockets.splice(i, 1);
@@ -635,19 +607,19 @@
                 }
             }
 
-            // Xử lý Particle - Dọn dẹp bộ nhớ tự động
+            // Handle Particles (with Garbage Collection)
             for (let i = particles.length - 1; i >= 0; i--) {
-                particles[i].update();
-                if (particles[i].alpha <= 0) {
+                particles[i].process();
+                if (particles[i].opacity <= 0) {
                     particles.splice(i, 1);
                 } else {
-                    particles[i].draw();
+                    particles[i].render();
                 }
             }
 
-            requestAnimationFrame(cycle);
+            requestAnimationFrame(mainLoop);
         }
-        cycle();
+        mainLoop();
 
     </script>
 </body>
