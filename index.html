@@ -13,169 +13,169 @@
             font-family: 'Quicksand', sans-serif;
         }
 
-        /* NỀN THIÊN NHIÊN HUYỀN ẢO */
-        #bg-effect {
+        /* PHONG CẢNH THIÊN NHIÊN: AURORA & SAO BĂNG */
+        #nature-scene {
             position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at center, #1a0a0c 0%, #000 100%);
+            background: radial-gradient(circle at bottom, #0d0012 0%, #000 100%);
         }
-        
         .aurora {
-            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
-            background: radial-gradient(circle, rgba(255,105,180,0.05) 0%, transparent 70%);
-            animation: rotate 30s linear infinite;
+            position: absolute; width: 150%; height: 150%; top: -25%; left: -25%;
+            background: radial-gradient(circle, rgba(255,182,193,0.08) 0%, transparent 60%);
+            animation: moveAurora 20s ease-in-out infinite alternate;
         }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes moveAurora { from { transform: translate(0,0); } to { transform: translate(10%, 10%); } }
 
         /* MÀN HÌNH CHỜ HOA HỒNG */
-        #intro {
+        #intro-screen {
             position: fixed; inset: 0; background: #000;
             z-index: 9999; display: flex; flex-direction: column;
             justify-content: center; align-items: center; cursor: pointer;
-            transition: opacity 1.2s ease-in-out;
         }
-        .rose-icon {
-            font-size: 100px; filter: drop-shadow(0 0 30px #ff4d6d);
-            animation: breathe 3s ease-in-out infinite;
+        .rose-main {
+            font-size: 100px; filter: drop-shadow(0 0 35px #ff4d6d);
+            animation: pulse 2.5s infinite;
         }
-        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* BOX ĐĂNG NHẬP SANG TRỌNG */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(25px);
+        /* KHUNG ĐĂNG NHẬP SANG TRỌNG */
+        .glass-box {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 35px; padding: 40px 25px;
-            width: 90%; max-width: 360px; text-align: center;
-            display: none; box-shadow: 0 0 50px rgba(0,0,0,0.6);
+            border-radius: 40px; padding: 45px 25px;
+            width: 90%; max-width: 380px; text-align: center;
+            display: none; box-shadow: 0 15px 45px rgba(0,0,0,0.7);
         }
 
-        h2 { font-family: 'Dancing Script', cursive; color: #ffb3c1; font-size: 2.5rem; margin-bottom: 25px; }
+        h2 { font-family: 'Dancing Script', cursive; color: #ffb3c1; font-size: 2.7rem; margin-bottom: 30px; }
 
-        .input-group { position: relative; margin-bottom: 18px; }
+        .input-group { position: relative; margin-bottom: 20px; }
         input {
-            width: 100%; padding: 16px; border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
+            width: 100%; padding: 18px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.15);
             background: rgba(255,255,255,0.05); color: white;
             outline: none; text-align: center; font-size: 16px;
         }
-        .eye-icon {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            color: #ffb3c1; cursor: pointer; font-size: 20px;
+        .pass-toggle {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            color: #ffb3c1; cursor: pointer; font-size: 22px;
         }
 
-        .btn-glow {
-            background: linear-gradient(45deg, #ff4d6d, #c9184a);
-            color: white; border: none; padding: 16px; width: 100%;
-            border-radius: 15px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+        .btn-magic {
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            color: white; border: none; padding: 18px; width: 100%;
+            border-radius: 20px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 117, 140, 0.3);
         }
 
-        /* HIỆU ỨNG ĐOM ĐÓM RỰC RỠ */
-        .firefly {
-            position: absolute; border-radius: 50%; pointer-events: none;
-            animation: move linear infinite;
-        }
-        @keyframes move {
-            0% { transform: translate(0, 0); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translate(100px, -100vh); opacity: 0; }
+        /* NÚT BẬT TẮT LOA */
+        #music-btn {
+            position: fixed; bottom: 25px; left: 25px;
+            width: 50px; height: 50px; background: rgba(255,255,255,0.1);
+            border-radius: 50%; display: none; align-items: center;
+            justify-content: center; font-size: 22px; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2); z-index: 1000;
         }
 
-        /* MENU MỤC NỘI DUNG */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
-        .menu-btn {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,179,193,0.3);
-            padding: 20px 10px; border-radius: 18px; color: #ffb3c1;
-            font-size: 13px; font-weight: 600; cursor: pointer;
+        /* SAO BĂNG */
+        .shooting-star {
+            position: absolute; width: 120px; height: 1px;
+            background: linear-gradient(90deg, #fff, transparent);
+            animation: shoot 4s linear infinite; opacity: 0;
+        }
+        @keyframes shoot {
+            0% { transform: rotate(-45deg) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            30% { transform: rotate(-45deg) translateX(-300px); opacity: 0; }
+            100% { opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div id="bg-effect"><div class="aurora"></div></div>
+    <div id="nature-scene"><div class="aurora"></div></div>
 
-    <div id="intro" onclick="startApp()">
-        <div class="rose-icon">🌹</div>
-        <p style="color: white; margin-top: 20px; letter-spacing: 4px; font-weight: 300; opacity: 0.7;">CHẠM ĐỂ KHỞI ĐẦU</p>
+    <div id="intro-screen" onclick="startExperience()">
+        <div class="rose-main">🌹</div>
+        <p style="color: #fff; margin-top: 30px; letter-spacing: 4px; opacity: 0.6;">CHẠM ĐỂ BẮT ĐẦU</p>
     </div>
 
     <audio id="piano-audio" loop preload="auto">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+        <source src="https://files.catbox.moe/67x0e6.mp3" type="audio/mpeg">
     </audio>
 
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-        <div class="glass-card" id="login-card">
+        <div class="glass-box" id="login-box">
             <h2>Vợ Yêu ❤️</h2>
             <div class="input-group">
-                <input type="text" id="u" placeholder="Tài khoản..." autocomplete="off">
+                <input type="text" id="usr" placeholder="Tài khoản..." autocomplete="off">
             </div>
             <div class="input-group">
-                <input type="password" id="p" placeholder="Mật khẩu..." autocomplete="off">
-                <span class="eye-icon" onclick="toggleView()">👁️</span>
+                <input type="password" id="pwd" placeholder="Mật khẩu..." autocomplete="off">
+                <span class="pass-toggle" onclick="togglePwd()">👁️</span>
             </div>
-            <button class="btn-glow" onclick="go()">MỞ QUÀ ✨</button>
-            <p id="err" style="color: #ff4d6d; font-size: 13px; display: none; margin-top: 10px;">Sai rồi nha vợ ơi! ❌</p>
+            <button class="btn-magic" onclick="login()">MỞ CÁNH CỬA ✨</button>
+            <p id="err" style="color: #ff4d6d; font-size: 14px; display: none; margin-top: 15px;">Sai rồi nha vợ ơi! ❌</p>
         </div>
 
-        <div class="glass-card" id="main-content">
+        <div class="glass-box" id="main-menu">
             <h2>Dành Cho Em ❤️</h2>
-            <div class="menu-grid">
-                <div class="menu-btn">CHUYỆN QUÁ KHỨ</div>
-                <div class="menu-btn">CHUYỆN HIỆN TẠI</div>
-                <div class="menu-btn">HỨA HẸN TƯƠNG LAI</div>
-                <div class="menu-btn">LÝ DO ANH YÊU EM</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;">
+                <div style="background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px; color: #ffb3c1; font-weight: 600; font-size: 13px;">CHUYỆN QUÁ KHỨ</div>
+                <div style="background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px; color: #ffb3c1; font-weight: 600; font-size: 13px;">CHUYỆN HIỆN TẠI</div>
+                <div style="background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px; color: #ffb3c1; font-weight: 600; font-size: 13px;">LỜI HỨA TƯƠNG LAI</div>
+                <div style="background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px; color: #ffb3c1; font-weight: 600; font-size: 13px;">LÝ DO ANH YÊU EM</div>
             </div>
         </div>
     </div>
+
+    <div id="music-btn" onclick="controlMusic()">🔊</div>
 
     <script>
         const audio = document.getElementById('piano-audio');
 
-        function startApp() {
-            // Fix âm thanh cho Safari/iPhone
-            audio.play().catch(() => {
-                console.log("Audio waiting for interaction");
-            });
-            
-            document.getElementById('intro').style.opacity = '0';
+        function startExperience() {
+            audio.play().catch(e => console.log("Audio waiting..."));
+            document.getElementById('intro-screen').style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('intro').style.display = 'none';
-                document.getElementById('login-card').style.display = 'block';
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('login-box').style.display = 'block';
+                document.getElementById('music-btn').style.display = 'flex';
+                setInterval(createStar, 3000);
             }, 1200);
-
-            setInterval(createFirefly, 300);
         }
 
-        function toggleView() {
-            const p = document.getElementById('p');
+        function togglePwd() {
+            const p = document.getElementById('pwd');
             p.type = p.type === 'password' ? 'text' : 'password';
         }
 
-        function go() {
-            const user = document.getElementById('u').value;
-            const pass = document.getElementById('p').value;
-            if(user === "anhyeuemlamdonha" && pass === "xindungboroianh") {
-                document.getElementById('login-card').style.display = "none";
-                document.getElementById('main-content').style.display = "block";
+        function login() {
+            const u = document.getElementById('usr').value;
+            const p = document.getElementById('pwd').value;
+            if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
+                document.getElementById('login-box').style.display = "none";
+                document.getElementById('main-menu').style.display = "block";
             } else {
                 document.getElementById('err').style.display = "block";
             }
         }
 
-        function createFirefly() {
-            const f = document.createElement('div');
-            f.className = 'firefly';
-            const size = Math.random() * 4 + 2;
-            f.style.width = size + "px";
-            f.style.height = size + "px";
-            const colors = ['#ffb3c1', '#ff4d6d', '#fff', '#ffd700'];
-            f.style.background = colors[Math.floor(Math.random()*colors.length)];
-            f.style.left = Math.random() * 100 + "vw";
-            f.style.top = "100vh";
-            f.style.boxShadow = `0 0 10px ${f.style.background}`;
-            f.style.animationDuration = Math.random() * 5 + 5 + "s";
-            document.body.appendChild(f);
-            setTimeout(() => f.remove(), 8000);
+        function controlMusic() {
+            if(audio.paused) {
+                audio.play(); document.getElementById('music-btn').innerText = "🔊";
+            } else {
+                audio.pause(); document.getElementById('music-btn').innerText = "🔇";
+            }
+        }
+
+        function createStar() {
+            const s = document.createElement('div');
+            s.className = 'shooting-star';
+            s.style.top = Math.random() * 50 + 'vh';
+            s.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 4000);
         }
     </script>
 </body>
