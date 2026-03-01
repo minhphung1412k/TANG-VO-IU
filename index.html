@@ -4,201 +4,186 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gửi Vợ Yêu ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* FIX LỖI HIỂN THỊ MÀN HÌNH */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background: #000;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden; background: #1a0a0c;
+            font-family: 'Quicksand', sans-serif;
         }
 
-        /* NỀN NEON MESH GRADIENT (KHÔNG LO BỊ ĐEN) */
-        #canvas-bg {
+        /* NỀN HỒNG TRÔ SANG TRỌNG */
+        #bg {
             position: fixed; inset: 0;
-            background: linear-gradient(125deg, #2d0014 0%, #000000 50%, #1a0033 100%);
+            background: radial-gradient(circle at center, #3d1a1e 0%, #1a0a0c 100%);
             z-index: -1;
         }
 
-        /* MÀN HÌNH KHỞI ĐỘNG CỰC ĐẸP */
-        #intro-screen {
+        /* MÀN HÌNH CHỜ HOA HỒNG */
+        #intro {
             position: fixed; inset: 0; background: #000;
             z-index: 9999; display: flex; flex-direction: column;
             justify-content: center; align-items: center; cursor: pointer;
-            transition: opacity 1s ease;
+            transition: 1.5s ease;
         }
 
-        .floating-rose {
-            font-size: 120px; filter: drop-shadow(0 0 30px #ff4d6d);
-            animation: float 3s ease-in-out infinite;
+        .rose-icon {
+            font-size: 100px; filter: drop-shadow(0 0 20px #b76e79);
+            animation: breathe 3s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            50% { transform: translateY(-30px) rotate(10deg); }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
         }
 
-        /* BOX ĐĂNG NHẬP SANG TRỌNG */
-        .main-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 40px; padding: 40px 30px;
-            width: 90%; max-width: 350px; text-align: center;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+        /* KHUNG NỘI DUNG CHÍNH */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(183, 110, 121, 0.3);
+            border-radius: 30px; padding: 30px;
+            width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             display: none; position: relative;
         }
 
-        h2 { color: #fff; font-weight: 300; letter-spacing: 2px; margin-bottom: 30px; text-shadow: 0 0 10px #ff4d6d; }
-
-        .input-field {
-            width: 100%; padding: 16px; margin-bottom: 20px;
-            border-radius: 20px; border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(0,0,0,0.3); color: white;
-            outline: none; font-size: 16px; text-align: center;
+        h2 { 
+            font-family: 'Dancing Script', cursive; 
+            color: #fce4ec; font-size: 2rem; margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(183, 110, 121, 0.5);
         }
 
-        /* NÚT BẤM HIỆU ỨNG ÁNH KIM */
-        .btn-glow {
-            background: linear-gradient(45deg, #ff0055, #ff4d6d);
-            color: white; border: none; padding: 16px;
-            width: 100%; border-radius: 20px; font-weight: bold;
-            cursor: pointer; font-size: 18px;
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
-            transition: 0.4s;
+        /* CÁC MỤC NỘI DUNG THEO YÊU CẦU */
+        .menu-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;
         }
-        .btn-glow:active { transform: scale(0.95); }
+        .menu-item {
+            background: rgba(183, 110, 121, 0.15);
+            border: 1px solid rgba(183, 110, 121, 0.4);
+            padding: 20px 10px; border-radius: 15px;
+            color: #fce4ec; font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: 0.3s;
+        }
+        .menu-item:active { background: rgba(183, 110, 121, 0.4); transform: scale(0.95); }
 
-        /* CÁNH HOA RƠI */
+        /* Ô NHẬP LIỆU TĨNH */
+        input {
+            width: 100%; padding: 14px; margin-bottom: 15px;
+            border-radius: 12px; border: 1px solid rgba(183, 110, 121, 0.3);
+            background: rgba(255,255,255,0.05); color: white;
+            outline: none; text-align: center;
+        }
+
+        .btn-login {
+            background: #b76e79; color: white; border: none;
+            padding: 14px; width: 100%; border-radius: 12px;
+            font-weight: 600; cursor: pointer; margin-top: 10px;
+        }
+
+        /* CÁNH HOA RƠI NHẸ NHÀNG */
         .petal {
             position: absolute; pointer-events: none;
             z-index: 5; animation: fall linear forwards;
+            color: #b76e79; opacity: 0.6;
         }
 
         @keyframes fall {
             0% { transform: translateY(-10vh) rotate(0); opacity: 0; }
-            10% { opacity: 1; }
+            20% { opacity: 0.6; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
-        /* FIX LỖI LOA - NÚT ĐIỀU KHIỂN RÕ RÀNG */
-        #music-ctrl {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: rgba(255,255,255,0.15); padding: 10px 20px;
-            border-radius: 30px; display: none; align-items: center;
-            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
-            z-index: 1000; color: white; font-size: 14px;
+        /* NÚT LOA */
+        #music-btn {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 45px; height: 45px; background: rgba(183, 110, 121, 0.2);
+            border-radius: 50%; display: none; align-items: center;
+            justify-content: center; font-size: 20px; cursor: pointer;
+            border: 1px solid rgba(183, 110, 121, 0.5); z-index: 1000;
         }
-        #speaker { margin-right: 10px; cursor: pointer; font-size: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="canvas-bg"></div>
+    <div id="bg"></div>
 
-    <div id="intro-screen" onclick="activateExperience()">
-        <div class="floating-rose">🌹</div>
-        <p style="color: white; margin-top: 30px; letter-spacing: 4px; font-weight: 300;">CHẠM VÀO ĐỂ BẮT ĐẦU</p>
+    <div id="intro" onclick="startExperience()">
+        <div class="rose-icon">🌹</div>
+        <p style="color: #b76e79; margin-top: 20px; letter-spacing: 2px; font-size: 0.9rem;">CHẠM VÀO HOA HỒNG ĐỂ BẮT ĐẦU</p>
     </div>
 
-    <audio id="piano-audio" loop preload="auto">
-        <source src="https://files.catbox.moe/97a06z.mp3" type="audio/mpeg">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    <audio id="piano" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
     </audio>
 
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-        <div class="main-card" id="card">
-            <h2>VỢ YÊU ❤️</h2>
-            <input type="text" id="user" class="input-field" placeholder="Tài khoản..." autocomplete="off">
-            <input type="password" id="pass" class="input-field" placeholder="Mật khẩu..." autocomplete="off">
-            <button class="btn-glow" onclick="checkAuth()">MỞ QUÀ NGAY ✨</button>
-            <p id="msg" style="color: #ff4d6d; display: none; margin-top: 15px; font-size: 14px;"></p>
+        <div class="glass-container" id="login-box">
+            <h2>Vợ Yêu ❤️</h2>
+            <input type="text" id="u" placeholder="Tên tài khoản..." autocomplete="off">
+            <input type="password" id="p" placeholder="Mật khẩu..." autocomplete="off">
+            <button class="btn-login" onclick="login()">MỞ QUÀ ✨</button>
+            <p id="err" style="color: #ff8a80; font-size: 13px; display: none; margin-top: 10px;">Sai rồi nha vợ ơi! ❌</p>
+        </div>
+
+        <div class="glass-container" id="main-content">
+            <h2>Chào Vợ Yêu ❤️</h2>
+            <div class="menu-grid">
+                <div class="menu-item">CHUYỆN QUÁ KHỨ</div>
+                <div class="menu-item">CHUYỆN HIỆN TẠI</div>
+                <div class="menu-item">LỜI HỨA TƯƠNG LAI</div>
+                <div class="menu-item">LÝ DO ANH YÊU EM</div>
+            </div>
         </div>
     </div>
 
-    <div id="music-ctrl">
-        <span id="speaker" onclick="toggleMute()">🔊</span>
-        <span id="status">Music: On</span>
-    </div>
+    <div id="music-btn" onclick="toggle()">🔊</div>
 
     <script>
-        const audio = document.getElementById('piano-audio');
-        const intro = document.getElementById('intro-screen');
-        const card = document.getElementById('card');
-        const ctrl = document.getElementById('music-ctrl');
+        const audio = document.getElementById('piano');
 
-        // HÀM KÍCH HOẠT (FIX LỖI ÂM THANH)
-        function activateExperience() {
-            // Ép trình duyệt load nhạc
-            audio.load();
-            const playPromise = audio.play();
-
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    updateMusicUI(true);
-                }).catch(error => {
-                    console.log("Cần người dùng nhấn trực tiếp vào loa");
-                    updateMusicUI(false);
-                });
-            }
-
-            intro.style.opacity = '0';
+        function startExperience() {
+            audio.play().catch(() => {
+                console.log("Chờ tương tác loa");
+            });
+            document.getElementById('intro').style.opacity = '0';
             setTimeout(() => {
-                intro.style.display = 'none';
-                card.style.display = 'block';
-                ctrl.style.display = 'flex';
+                document.getElementById('intro').style.display = 'none';
+                document.getElementById('login-box').style.display = 'block';
+                document.getElementById('music-btn').style.display = 'flex';
             }, 1000);
-
-            setInterval(createPetal, 300);
+            setInterval(spawnPetal, 600); // Rơi thưa hơn để tạo sự nhẹ nhàng
         }
 
-        function checkAuth() {
-            const u = document.getElementById('user').value.trim();
-            const p = document.getElementById('pass').value.trim();
-            const m = document.getElementById('msg');
-
-            if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
-                card.innerHTML = "<h2 style='font-size: 28px'>I Love You! ❤️</h2><p style='color: white; line-height: 1.6'>Cảm ơn vì đã là vợ của anh.<br>Mọi thứ tuyệt vời nhất đều dành cho em!</p>";
-                // Thêm hiệu ứng bùng nổ hoa hồng
-                for(let i=0; i<30; i++) setTimeout(createPetal, i*50);
+        function login() {
+            const user = document.getElementById('u').value;
+            const pass = document.getElementById('p').value;
+            if(user === "anhyeuemlamdonha" && pass === "xindungboroianh") {
+                document.getElementById('login-box').style.display = "none";
+                document.getElementById('main-content').style.display = "block";
             } else {
-                m.innerText = "Sai rồi nha vợ ơi! ❌";
-                m.style.display = "block";
+                document.getElementById('err').style.display = "block";
             }
         }
 
-        function toggleMute() {
+        function toggle() {
             if(audio.paused) {
-                audio.play();
-                updateMusicUI(true);
+                audio.play(); document.getElementById('music-btn').innerText = "🔊";
             } else {
-                audio.pause();
-                updateMusicUI(false);
+                audio.pause(); document.getElementById('music-btn').innerText = "🔇";
             }
         }
 
-        function updateMusicUI(isPlaying) {
-            const s = document.getElementById('speaker');
-            const t = document.getElementById('status');
-            if(isPlaying) {
-                s.innerText = "🔊";
-                t.innerText = "Music: On";
-            } else {
-                s.innerText = "🔇";
-                t.innerText = "Music: Off";
-            }
-        }
-
-        function createPetal() {
+        function spawnPetal() {
             const p = document.createElement('div');
             p.className = 'petal';
-            const types = ['🌸', '🌹', '💖', '✨'];
-            p.innerHTML = types[Math.floor(Math.random()*types.length)];
+            p.innerHTML = '🌹';
             p.style.left = Math.random() * 100 + "vw";
-            p.style.fontSize = (Math.random() * 20 + 15) + "px";
-            p.style.animationDuration = (Math.random() * 3 + 4) + "s";
+            p.style.fontSize = Math.random() * 15 + 10 + "px";
+            p.style.animationDuration = Math.random() * 5 + 7 + "s";
             document.body.appendChild(p);
-            setTimeout(() => p.remove(), 7000);
+            setTimeout(() => p.remove(), 12000);
         }
     </script>
 </body>
