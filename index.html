@@ -3,152 +3,629 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hanoi Romance Crystal - Final Edition</title>
+    <title>KIỆT TÁC TÌNH YÊU VĨNH CỬU</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;400;500;700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* ============================================================
-           CSS MODULE: CRYSTAL NEON UI (FIXED & OPTIMIZED)
+           CSS MODULE 1: CORE RESET & VARIABLES
            ============================================================ */
         :root {
-            --neon: #ff2d75;
-            --glass: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 255, 255, 0.2);
-            --shadow: 0 0 30px rgba(255, 45, 117, 0.5);
+            --p: #ff2d55;
+            --p-glow: rgba(255, 45, 85, 0.6);
+            --crystal: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.6);
+            --border-light: rgba(255, 255, 255, 0.2);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body, html { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        /* NỀN THÀNH PHỐ - FIX LỖI HIỂN THỊ TRÀN VIỀN */
-        #city-canvas {
-            position: fixed; inset: 0;
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Quicksand', sans-serif;
+            color: #fff;
+        }
+
+        /* ============================================================
+           CSS MODULE 2: BACKGROUND & ENVIRONMENT
+           ============================================================ */
+        #hanoi-city {
+            position: fixed;
+            inset: 0;
             background: url('https://vtv1.mediacdn.vn/zoom/640_400/2023/1/1/hanoi-16725350353111867184281.jpg') center/cover no-repeat;
-            z-index: 1; filter: brightness(0.12) contrast(1.1) blur(1px);
-            transform: scale(1.05); transition: filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+            filter: brightness(0.15) contrast(1.1) blur(1px);
+            transform: scale(1.1);
+            transition: filter 0.4s ease;
         }
 
-        /* ENGINE PHÁO HOA - TÁCH BIỆT LAYER ĐỂ KHÔNG ĐÈ LÊN UI */
-        canvas#firework-layer { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
-
-        /* KHUNG ĐĂNG NHẬP PHA LÊ ĐA GIÁC (FIXED) */
-        .crystal-box {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
-            width: 90%; max-width: 480px; padding: 70px 40px;
-            background: rgba(10, 10, 10, 0.45); /* Trong suốt để pháo hoa nổ xuyên qua */
-            backdrop-filter: blur(25px) saturate(160%);
-            -webkit-backdrop-filter: blur(25px) saturate(160%);
-            
-            /* Clip-path đa giác kim cương */
-            clip-path: polygon(15% 0%, 85% 0%, 100% 20%, 100% 80%, 85% 100%, 15% 100%, 0% 80%, 0% 20%);
-            
-            border: 1px solid var(--border);
-            z-index: 1000; text-align: center; opacity: 0; visibility: hidden;
-            transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-            box-shadow: inset 0 0 40px rgba(255,255,255,0.05);
+        #flash-effect {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            mix-blend-mode: color-dodge;
+            opacity: 0;
+            transition: opacity 0.1s ease;
         }
 
-        .crystal-box.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
-
-        /* VIỀN NEON CHẠY QUANH KHUNG PHA LÊ */
-        .crystal-box::after {
-            content: ''; position: absolute; inset: 0;
-            border: 2px solid var(--neon);
-            clip-path: polygon(15% 0%, 85% 0%, 100% 20%, 100% 80%, 85% 100%, 15% 100%, 0% 80%, 0% 20%);
-            animation: neonPulse 2.5s infinite alternate;
+        canvas#fireworks-engine {
+            position: fixed;
+            inset: 0;
+            z-index: 5;
             pointer-events: none;
         }
 
-        @keyframes neonPulse {
-            from { opacity: 0.3; filter: drop-shadow(0 0 5px var(--neon)); }
-            to { opacity: 1; filter: drop-shadow(0 0 20px var(--neon)); }
+        /* ============================================================
+           CSS MODULE 3: VINYL PLAYER (LOA) - FIXED ANIMATION
+           ============================================================ */
+        #music-container {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            visibility: hidden;
+            opacity: 0;
+            transition: 1s ease;
         }
 
-        .love-title {
-            font-family: 'Dancing Script', cursive; color: #fff; font-size: 3.5rem;
-            margin-bottom: 35px; filter: drop-shadow(0 0 10px var(--neon));
+        .vinyl-base {
+            width: 100%;
+            height: 100%;
+            background: #111;
+            border-radius: 50%;
+            border: 3px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* INPUT STYLING - TRONG SUỐT VÀ TINH TẾ */
-        .input-wrap { position: relative; margin-bottom: 25px; }
-        .input-wrap i.lead-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--neon); font-size: 18px; }
-        .input-wrap input {
-            width: 100%; padding: 18px 55px; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;
-            color: #fff; font-size: 16px; transition: 0.4s; outline: none;
+        .vinyl-disc {
+            width: 85%;
+            height: 85%;
+            border-radius: 50%;
+            background: repeating-radial-gradient(#222, #000 4px, #222 5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Animation logic updated in JS for position holding */
+            transition: transform 0.2s linear;
         }
-        .input-wrap input:focus { border-color: var(--neon); background: rgba(255,255,255,0.1); box-shadow: 0 0 15px rgba(255,45,117,0.2); }
 
-        /* CON MẮT - FIX LỖI CLICK KHÔNG NHẠY */
-        .eye-icon {
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            color: #777; cursor: pointer; padding: 5px; z-index: 10; transition: 0.3s;
+        .vinyl-disc i {
+            color: var(--p);
+            font-size: 24px;
+            filter: drop-shadow(0 0 5px var(--p));
         }
-        .eye-icon:hover { color: #fff; }
 
-        .btn-premium {
-            width: 100%; padding: 18px; background: linear-gradient(45deg, #ff2d75, #ff5e3a);
-            border: none; border-radius: 15px; color: #fff; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 3px; cursor: pointer;
-            box-shadow: 0 10px 25px rgba(255, 45, 117, 0.4); transition: 0.4s;
+        /* Quay đĩa */
+        @keyframes discRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-        .btn-premium:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 35px rgba(255, 45, 117, 0.6); }
 
-        /* MUSIC DISC - FIX LỖI XOAY TRÊN MOBILE */
-        #music-trigger {
-            position: fixed; top: 25px; right: 25px; z-index: 5000;
-            width: 60px; height: 60px; background: #000; border-radius: 50%;
-            border: 2px solid #333; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; opacity: 0; transition: 1s;
+        .playing-animation {
+            animation: discRotate 4s linear infinite;
         }
-        .disc-spin { animation: discRotate 5s linear infinite; }
-        @keyframes discRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* INTRO ENGINE */
-        #intro-engine {
-            position: fixed; inset: 0; background: #000; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; transition: 1.5s ease-in-out;
+        /* ============================================================
+           CSS MODULE 4: CRYSTAL LOGIN PANEL (FIXED UI)
+           ============================================================ */
+        .crystal-auth {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 520px;
+            padding: 80px 40px;
+            background: rgba(15, 15, 15, 0.5);
+            backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid var(--border-light);
+            z-index: 500;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+            /* Shape Crystal */
+            clip-path: polygon(15% 0%, 85% 0%, 100% 20%, 100% 80%, 85% 100%, 15% 100%, 0% 80%, 0% 20%);
         }
+
+        .crystal-auth::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--p);
+            clip-path: polygon(15% 0%, 85% 0%, 100% 20%, 100% 80%, 85% 100%, 15% 100%, 0% 80%, 0% 20%);
+            box-shadow: inset 0 0 30px var(--p-glow);
+            pointer-events: none;
+            animation: crystalPulse 3s infinite alternate;
+        }
+
+        @keyframes crystalPulse {
+            from { opacity: 0.4; } to { opacity: 1; }
+        }
+
+        .crystal-auth.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .auth-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 40px;
+            color: #fff;
+            text-shadow: 0 0 15px var(--p);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .input-group i.icon-l {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--p);
+            font-size: 20px;
+            z-index: 10;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 20px 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--p);
+            box-shadow: 0 0 20px rgba(255, 45, 85, 0.2);
+        }
+
+        /* Con mắt ẩn hiện - SỬA LỖI BỊ ẨN */
+        .eye-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            cursor: pointer;
+            z-index: 100;
+            padding: 10px;
+            transition: 0.3s;
+        }
+
+        .eye-toggle:hover {
+            color: var(--p);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, var(--p), #ff512f);
+            border: none;
+            border-radius: 15px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 45, 85, 0.4);
+            transition: 0.4s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 45, 85, 0.6);
+        }
+
+        /* ============================================================
+           CSS MODULE 5: INTRO SCREEN
+           ============================================================ */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 1.5s ease-in-out;
+        }
+
+        #intro-overlay h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 15px;
+            color: #fff;
+            text-shadow: 0 0 20px var(--p);
+            animation: pulseText 2s infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* ============================================================
+           CSS MODULE 6: MENU INTERFACE
+           ============================================================ */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .menu-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu-card:hover {
+            background: var(--p);
+            transform: translateY(-10px);
+            border-color: #fff;
+        }
+
+        .menu-card i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
     </style>
 </head>
 <body>
 
-    <div id="city-canvas"></div>
-    <canvas id="firework-layer"></canvas>
+    <div id="hanoi-city"></div>
+    <div id="flash-effect"></div>
+    <canvas id="fireworks-engine"></canvas>
 
-    <div id="ambient-light" style="position:fixed; inset:0; z-index:2; pointer-events:none; transition:0.2s; opacity:0;"></div>
-
-    <div id="intro-engine" onclick="initApp()">
-        <h1 style="color:#fff; font-family:'Montserrat'; font-size:3rem; letter-spacing:15px; text-shadow: var(--shadow);">TOUCH HEART</h1>
-        <div style="margin-top:40px;"><i class="fas fa-heart-circle-bolt fa-beat" style="font-size:80px; color:var(--neon);"></i></div>
-    </div>
-
-    <div id="music-trigger" onclick="toggleAudio()">
-        <i class="fas fa-compact-disc fa-2x" id="disc-ui" style="color:var(--neon);"></i>
-    </div>
-
-    <div id="youtube-api-player"></div>
-
-    <div class="crystal-box" id="auth-panel">
-        <h2 class="love-title">Vợ Yêu ❤️</h2>
-        <div class="input-wrap">
-            <i class="fas fa-user-heart lead-icon"></i>
-            <input type="text" id="username" placeholder="Tên đăng nhập">
+    <div id="music-container" onclick="handleMusicInteraction()">
+        <div class="vinyl-base">
+            <div class="vinyl-disc" id="vinyl-disc-element">
+                <i class="fas fa-compact-disc"></i>
+            </div>
         </div>
-        <div class="input-wrap">
-            <i class="fas fa-shield-heart lead-icon"></i>
-            <input type="password" id="password" placeholder="Mật khẩu">
-            <i class="fas fa-eye eye-icon" onclick="toggleEye()"></i>
-        </div>
-        <button class="btn-premium" onclick="verify()">KHÁM PHÁ NGAY</button>
     </div>
 
-    <div class="crystal-box" id="menu-panel">
-        <h2 class="love-title" style="font-size: 2.8rem;">Trọn Đời ❤️</h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px;">
-            <div onclick="massFire()" style="background:rgba(255,255,255,0.05); padding:25px 10px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--border); transition:0.3s;" onmouseover="this.style.background='var(--neon)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">KỶ NIỆM</div>
-            <div onclick="massFire()" style="background:rgba(255,255,255,0.05); padding:25px 10px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--border); transition:0.3s;" onmouseover="this.style.background='var(--neon)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">GẮN KẾT</div>
-            <div onclick="massFire()" style="background:rgba(255,255,255,0.05); padding:25px 10px; border-radius:15px; color:#fff; cursor:pointer; border:1px solid var(--border); transition:0.3s;" onmouseover="this.style.background='var(--neon)'" onmouseout="this.
+    <div id="intro-overlay" onclick="kickstart()">
+        <h1>CHẠM ĐỂ SƯỚNG</h1>
+        <div style="margin-top: 50px;">
+            <i class="fas fa-heart-pulse fa-beat" style="font-size: 100px; color: var(--p);"></i>
+        </div>
+    </div>
+
+    <div id="audio-engine"></div>
+
+    <div class="crystal-auth" id="auth-box">
+        <h2 class="auth-title">Vợ Yêu ❤️</h2>
+        <div class="input-group">
+            <i class="fas fa-user-crown icon-l"></i>
+            <input type="text" id="username-field" placeholder="TÊN ĐĂNG NHẬP">
+        </div>
+        <div class="input-group">
+            <i class="fas fa-key-skeleton icon-l"></i>
+            <input type="password" id="password-field" placeholder="MẬT KHẨU">
+            <div class="eye-toggle" onclick="togglePasswordVisibility()">
+                <i class="fas fa-eye" id="eye-icon-element"></i>
+            </div>
+        </div>
+        <button class="btn-submit" onclick="attemptLogin()">ĐĂNG NHẬP</button>
+    </div>
+
+    <div class="crystal-auth" id="menu-box">
+        <h2 class="auth-title" style="font-size: 2.8rem;">Mãi Yêu ❤️</h2>
+        <div class="menu-grid">
+            <div class="menu-card" onclick="launchSuperBoom()">
+                <i class="fas fa-star-shooting"></i>
+                <span>QUÁ KHỨ</span>
+            </div>
+            <div class="menu-card" onclick="launchSuperBoom()">
+                <i class="fas fa-heart-circle-check"></i>
+                <span>HIỆN TẠI</span>
+            </div>
+            <div class="menu-card" onclick="launchSuperBoom()">
+                <i class="fas fa-infinity"></i>
+                <span>TƯƠNG LAI</span>
+            </div>
+            <div class="menu-card" onclick="alert('Anh hứa sẽ yêu em đến tận cùng!')">
+                <i class="fas fa-dove"></i>
+                <span>LỜI HỨA</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        /* ============================================================
+           JAVASCRIPT MODULE 1: GLOBAL STATE & CONFIG
+           ============================================================ */
+        const canvas = document.getElementById('fireworks-engine');
+        const ctx = canvas.getContext('2d', { alpha: true });
+        const city = document.getElementById('hanoi-city');
+        const flash = document.getElementById('flash-effect');
+        const disc = document.getElementById('vinyl-disc-element');
+        
+        let width, height;
+        let rockets = [];
+        let particles = [];
+        let ytPlayer;
+        let isMusicPlaying = false;
+        let currentRotation = 0;
+        let rotationInterval;
+
+        // Cài đặt kích thước chuẩn
+        function setupCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', setupCanvas);
+        setupCanvas();
+
+        /* ============================================================
+           JAVASCRIPT MODULE 2: FIREWORKS ENGINE (100% REALISM)
+           ============================================================ */
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 12 + 4;
+                this.vx = Math.cos(angle) * velocity;
+                this.vy = Math.sin(angle) * velocity;
+                this.friction = 0.95;
+                this.gravity = 0.18;
+                this.opacity = 1;
+                this.decay = Math.random() * 0.015 + 0.005;
+                this.size = Math.random() * 3 + 1;
+            }
+
+            update() {
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.opacity -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class Rocket {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * (width - 100) + 50;
+                this.y = height;
+                this.targetY = Math.random() * (height * 0.4);
+                this.speed = Math.random() * 5 + 18;
+                this.color = `hsl(${Math.random() * 360}, 100%, 75%)`;
+                this.trail = [];
+            }
+
+            update() {
+                this.y -= this.speed;
+                this.speed *= 0.985;
+                
+                this.trail.push({ x: this.x, y: this.y });
+                if (this.trail.length > 10) this.trail.shift();
+
+                if (this.y <= this.targetY || this.speed < 1.5) {
+                    this.explode();
+                    return false;
+                }
+                return true;
+            }
+
+            explode() {
+                // Hiệu ứng ánh sáng môi trường
+                city.style.filter = "brightness(0.7) contrast(1.4) blur(0px)";
+                flash.style.opacity = "1";
+                flash.style.background = `radial-gradient(circle at ${this.x}px ${this.y}px, ${this.color}44 0%, transparent 70%)`;
+                
+                setTimeout(() => {
+                    city.style.filter = "brightness(0.15) contrast(1.1) blur(1px)";
+                    flash.style.opacity = "0";
+                }, 350);
+
+                // Tạo hạt nổ
+                for (let i = 0; i < 200; i++) {
+                    particles.push(new Particle(this.x, this.y, this.color));
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = "#fff";
+                ctx.lineCap = "round";
+                if (this.trail.length > 0) {
+                    ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                    for (let p of this.trail) ctx.lineTo(p.x, p.y);
+                }
+                ctx.stroke();
+            }
+        }
+
+        /* ============================================================
+           JAVASCRIPT MODULE 3: MUSIC LOGIC (VINYL ROTATION FIXED)
+           ============================================================ */
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('audio-engine', {
+                height: '0', width: '0', videoId: 'iXaw-jwmjjA',
+                playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
+                events: { 'onReady': (e) => e.target.mute() }
+            });
+        }
+
+        function handleMusicInteraction() {
+            if (isMusicPlaying) {
+                ytPlayer.pauseVideo();
+                stopDiscRotation();
+            } else {
+                ytPlayer.unMute();
+                ytPlayer.playVideo();
+                startDiscRotation();
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function startDiscRotation() {
+            // Sử dụng interval để kiểm soát độ xoay chính xác
+            rotationInterval = setInterval(() => {
+                currentRotation += 2;
+                disc.style.transform = `rotate(${currentRotation}deg)`;
+            }, 20);
+        }
+
+        function stopDiscRotation() {
+            clearInterval(rotationInterval);
+            // Đĩa sẽ đứng yên tại currentRotation hiện tại
+        }
+
+        /* ============================================================
+           JAVASCRIPT MODULE 4: UI CONTROL & AUTH
+           ============================================================ */
+        function kickstart() {
+            document.getElementById('intro-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('intro-overlay').style.display = 'none';
+                document.getElementById('auth-box').classList.add('active');
+                document.getElementById('music-container').style.visibility = 'visible';
+                document.getElementById('music-container').style.opacity = '1';
+                
+                // Mặc định chạy nhạc khi bắt đầu
+                ytPlayer.unMute();
+                ytPlayer.playVideo();
+                isMusicPlaying = true;
+                startDiscRotation();
+
+                // Bắn pháo hoa chào mừng
+                setInterval(() => {
+                    if (Math.random() < 0.1) rockets.push(new Rocket());
+                }, 1000);
+            }, 1200);
+        }
+
+        function togglePasswordVisibility() {
+            const field = document.getElementById('password-field');
+            const icon = document.getElementById('eye-icon-element');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                field.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        function attemptLogin() {
+            const u = document.getElementById('username-field').value;
+            const p = document.getElementById('password-field').value;
+            if (u === "anhyeuemlamdonha" && p === "xindungboroianh") {
+                document.getElementById('auth-box').classList.remove('active');
+                setTimeout(() => {
+                    document.getElementById('menu-box').classList.add('active');
+                    launchSuperBoom();
+                }, 800);
+            } else {
+                alert("Mật khẩu trái tim không khớp rồi vợ ơi!");
+            }
+        }
+
+        function launchSuperBoom() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => rockets.push(new Rocket()), i * 200);
+            }
+        }
+
+        /* ============================================================
+           JAVASCRIPT MODULE 5: MAIN LOOP (CORE ENGINE)
+           ============================================================ */
+        function mainLoop() {
+            // Trail effect mờ ảo
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Update & Draw Rockets
+            for (let i = rockets.length - 1; i >= 0; i--) {
+                if (!rockets[i].update()) {
+                    rockets.splice(i, 1);
+                } else {
+                    rockets[i].draw();
+                }
+            }
+
+            // Update & Draw Particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                if (particles[i].opacity <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    particles[i].draw();
+                }
+            }
+
+            requestAnimationFrame(mainLoop);
+        }
+        mainLoop();
+
+    </script>
+</body>
+</html>
