@@ -3,249 +3,375 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Món Quà Cho Vợ Yêu ❤️</title>
+    <title>Thế Giới Của Chúng Ta ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #ff4d6d;
-            --fire: #ff8e72;
-            --gold: #ffb703;
+            --primary-color: #ff4d6d;
+            --secondary-color: #ff8e72;
+            --text-color: #fff;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.3);
+            --glow-color: rgba(255, 77, 109, 0.7);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        
-        /* FIX NỀN: ĐẢM BẢO KHÔNG BAO GIỜ ĐEN */
-        body, html { 
-            width: 100%; height: 100%; overflow: hidden; 
-            font-family: 'Quicksand', sans-serif; 
-            background: #f9d423; /* Màu nền dự phòng nếu ảnh lỗi */
-        }
+        body, html { width: 100%; height: 100%; overflow: hidden; font-family: 'Quicksand', sans-serif; background: #000; }
 
-        .nature-bg {
+        /* NỀN THÀNH PHỐ TỐI ĐEN - SẼ SÁNG KHI CÓ PHÁO HOA */
+        .city-bg {
             position: fixed; inset: 0;
-            background: url('https://images.unsplash.com/photo-1475924156731-da36b85e0272?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            background: url('https://images.unsplash.com/photo-1519782876646-b07223f66c0d?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
             z-index: -2;
-            filter: brightness(0.8);
-            transition: 2s ease-in-out;
+            filter: brightness(0.1); /* Ban đầu tối đen */
+            transition: filter 0.5s ease-out; /* Hiệu ứng sáng mượt */
         }
 
-        .warm-overlay {
+        .dark-overlay {
             position: fixed; inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
+            background: rgba(0,0,0,0.6);
             z-index: -1;
+            transition: background 0.5s ease-out;
         }
 
-        #firework-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+        #main-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
 
-        /* MÀN HÌNH CHỜ RỰC RỠ */
-        #intro {
-            position: fixed; inset: 0; background: #000; z-index: 9999;
+        /* MÀN HÌNH CHỜ "CHẠM ĐỂ SƯỚNG" */
+        #intro-screen {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer; transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .intro-title {
-            color: white; font-size: 2.5rem; font-weight: 800; letter-spacing: 5px;
-            text-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary);
-            animation: glow 1.5s infinite alternate;
+        .intro-text {
+            color: var(--text-color); font-family: 'Dancing Script', cursive; 
+            font-size: 3.5rem; text-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--secondary-color);
+            animation: text-glow 1.8s infinite alternate;
         }
-        .heart-icon { font-size: 100px; color: var(--primary); margin-top: 20px; animation: beat 0.8s infinite; }
+        .intro-heart { font-size: 120px; color: var(--primary-color); animation: beat 0.9s infinite; }
 
-        /* KHUNG KÍNH HIỆN ĐẠI */
-        .glass-card {
+        /* KHUNG ĐĂNG NHẬP/MENU (GLASSMORPHISM CAO CẤP) */
+        .glass-panel {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 420px; padding: 40px 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 40px; text-align: center;
-            display: none; z-index: 100; box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            width: 90%; max-width: 450px; padding: 45px 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px);
+            border: 2px solid var(--border-color); border-radius: 40px;
+            text-align: center; display: none; z-index: 100;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.7);
+            animation: fadeInScale 0.8s ease-out forwards;
         }
+        @keyframes fadeInScale { from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
 
-        h2 { font-family: 'Dancing Script', cursive; color: #fff; font-size: 2.8rem; margin-bottom: 30px; }
+        h2 { font-family: 'Dancing Script', cursive; color: var(--text-color); font-size: 3rem; margin-bottom: 35px; }
 
-        /* INPUT BOX */
-        .input-group { position: relative; margin-bottom: 20px; }
+        /* INPUT CÓ ĐỔ BÓNG VÀ ICON */
+        .input-group { position: relative; margin-bottom: 25px; }
         input {
-            width: 100%; padding: 18px 50px; border-radius: 20px; border: none;
-            background: rgba(255, 255, 255, 0.9); font-weight: 700; outline: none; font-size: 16px;
+            width: 100%; padding: 20px 55px; border-radius: 25px; border: none;
+            background: rgba(255, 255, 255, 0.95); color: #222; font-weight: 700; font-size: 17px; outline: none;
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.15); transition: 0.3s;
         }
-        .input-group i:first-child { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--primary); }
-        .eye-toggle { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #555; }
+        input:focus { box-shadow: inset 0 3px 8px rgba(0,0,0,0.2), 0 0 0 3px var(--primary-color); }
+        .input-group i:first-child { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--primary-color); font-size: 20px; }
+        .eye-toggle { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666; font-size: 18px; padding: 5px; }
 
-        .btn-burn {
-            width: 100%; padding: 18px; border-radius: 20px; border: none;
+        /* NÚT ĐĂNG NHẬP "RỰC LỬA" */
+        .btn-fire {
+            width: 100%; padding: 20px; border-radius: 25px; border: none;
             background: linear-gradient(45deg, #ff416c, #ff4b2b);
-            color: white; font-weight: 800; font-size: 1.2rem; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 65, 108, 0.5); transition: 0.3s;
+            color: var(--text-color); font-weight: 900; font-size: 1.3rem; cursor: pointer;
+            box-shadow: 0 12px 40px var(--glow-color); transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            text-transform: uppercase; letter-spacing: 2px;
         }
-        .btn-burn:hover { transform: scale(1.03); filter: brightness(1.1); }
+        .btn-fire:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 18px 50px var(--glow-color); }
+        .btn-fire:active { transform: translateY(0) scale(0.98); box-shadow: 0 5px 20px var(--glow-color); }
 
-        /* MENU GRID 4 MỤC */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        /* MENU 4 MỤC */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 25px; }
         .menu-item {
-            background: rgba(255, 255, 255, 0.2); padding: 25px 10px; border-radius: 22px;
-            color: #fff; font-size: 13px; font-weight: 800; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.2); transition: 0.4s;
+            background: rgba(255, 255, 255, 0.15); padding: 30px 15px; border-radius: 25px;
+            color: var(--text-color); font-size: 14px; font-weight: 800; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.25); transition: 0.4s ease-out;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.4);
         }
-        .menu-item:hover { background: var(--primary); transform: translateY(-10px); box-shadow: 0 15px 30px rgba(255, 77, 109, 0.4); }
+        .menu-item:hover { background: var(--primary-color); transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 40px var(--glow-color); }
 
-        /* LOA NHẠC */
-        #music-btn {
-            position: fixed; top: 25px; right: 25px; width: 60px; height: 60px;
+        /* LOA NHẠC TINH TẾ */
+        #music-control {
+            position: fixed; top: 30px; right: 30px; width: 65px; height: 65px;
             background: rgba(255,255,255,0.2); border-radius: 50%;
             display: none; justify-content: center; align-items: center;
-            color: white; cursor: pointer; z-index: 1000; border: 2px solid #fff;
+            color: var(--text-color); cursor: pointer; z-index: 1000; border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3); transition: 0.3s;
         }
+        #music-control:hover { background: rgba(255,255,255,0.35); transform: scale(1.1); }
 
-        @keyframes glow { from { text-shadow: 0 0 10px #fff, 0 0 20px var(--primary); } to { text-shadow: 0 0 20px #fff, 0 0 40px #ff0040; } }
-        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        /* KEYFRAMES CHO HIỆU ỨNG */
+        @keyframes text-glow { from { text-shadow: 0 0 15px var(--text-color), 0 0 30px var(--primary-color); } to { text-shadow: 0 0 25px var(--text-color), 0 0 50px var(--secondary-color); } }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
     </style>
 </head>
 <body>
 
-    <div class="nature-bg"></div>
-    <div class="warm-overlay"></div>
-    <canvas id="firework-canvas"></canvas>
+    <div class="city-bg" id="city-bg"></div>
+    <div class="dark-overlay" id="dark-overlay"></div>
+    <canvas id="main-canvas"></canvas>
 
-    <div id="intro" onclick="startExperience()">
-        <h1 class="intro-title">CHẠM ĐỂ SƯỚNG</h1>
-        <div class="heart-icon"><i class="fas fa-heart"></i></div>
+    <div id="intro-screen" onclick="startShow()">
+        <h1 class="intro-text">CHẠM ĐỂ SƯỚNG</h1>
+        <div class="intro-heart"><i class="fas fa-heart"></i></div>
     </div>
 
     <div id="player"></div>
 
-    <div id="music-btn" onclick="toggleMusic()">
-        <i id="m-icon" class="fas fa-compact-disc fa-spin fa-2x"></i>
+    <div id="music-control" onclick="toggleMusic()">
+        <i id="music-icon" class="fas fa-compact-disc fa-spin fa-3x"></i>
     </div>
 
-    <div class="glass-card" id="login-card">
-        <h2>Xin Chào Vợ ❤️</h2>
+    <div class="glass-panel" id="login-panel">
+        <h2>Thiên Đường Tình Yêu ❤️</h2>
         <div class="input-group">
-            <i class="fas fa-user"></i>
-            <input type="text" id="user" placeholder="TÊN ĐĂNG NHẬP">
+            <i class="fas fa-user-circle"></i>
+            <input type="text" id="username" placeholder="TÊN ĐĂNG NHẬP">
         </div>
         <div class="input-group">
             <i class="fas fa-key"></i>
-            <input type="password" id="pass" placeholder="MẬT KHẨU">
-            <i class="fas fa-eye eye-toggle" onclick="toggleP()"></i>
+            <input type="password" id="password" placeholder="MẬT KHẨU">
+            <i class="fas fa-eye eye-toggle" onclick="togglePasswordVisibility()"></i>
         </div>
-        <button class="btn-burn" onclick="doLogin()">ĐĂNG NHẬP</button>
+        <button class="btn-fire" onclick="authenticateUser()">ĐĂNG NHẬP</button>
     </div>
 
-    <div class="glass-card" id="menu-card">
-        <h2>Hạnh Phúc Mãi Mãi</h2>
+    <div class="glass-panel" id="menu-panel">
+        <h2>Vườn Hoa Hạnh Phúc</h2>
         <div class="menu-grid">
-            <div class="menu-item" onclick="launchFireworks(5)">CHUYỆN QUÁ KHỨ</div>
-            <div class="menu-item" onclick="launchFireworks(5)">CHUYỆN HIỆN TẠI</div>
-            <div class="menu-item" onclick="launchFireworks(5)">CHUYỆN TƯƠNG LAI</div>
-            <div class="menu-item" onclick="alert('Anh hứa sẽ mãi yêu em!')">LỜI NHẮN NHỦ VÀ LỜI HỨA</div>
+            <div class="menu-item" onclick="fireworksShow(8)">CHUYỆN QUÁ KHỨ</div>
+            <div class="menu-item" onclick="fireworksShow(8)">CHUYỆN HIỆN TẠI</div>
+            <div class="menu-item" onclick="fireworksShow(8)">CHUYỆN TƯƠNG LAI</div>
+            <div class="menu-item" onclick="alert('Anh hứa sẽ yêu em mãi mãi, không rời xa!')">LỜI NHẮN NHỦ VÀ LỜI HỨA</div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        // --- 1. XỬ LÝ NHẠC YOUTUBE API ---
         let ytPlayer;
+        const YOUTUBE_VIDEO_ID = 'iXaw-jwmjjA'; // LINK BẠN GỬI ĐÃ ĐƯỢC FIX
+
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('player', {
-                height: '0', width: '0',
-                videoId: 'iXaw-jwmjjA', // LINK BẠN GỬI
-                playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
-                events: { 'onReady': (e) => e.target.mute() }
+                height: '0', width: '0', videoId: YOUTUBE_VIDEO_ID,
+                playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': YOUTUBE_VIDEO_ID, 'controls': 0, 'showinfo': 0, 'autohide': 1 },
+                events: { 'onReady': (event) => event.target.mute() } // Bắt đầu tắt tiếng
             });
         }
 
-        function startExperience() {
-            document.getElementById('intro').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('intro').style.display = 'none';
-                document.getElementById('login-card').style.display = 'block';
-                document.getElementById('music-btn').style.display = 'flex';
-                ytPlayer.unMute();
-                ytPlayer.playVideo();
-                launchFireworks(10);
-            }, 1000);
-        }
-
-        function toggleP() {
-            const p = document.getElementById('pass');
-            p.type = p.type === 'password' ? 'text' : 'password';
-        }
-
-        function doLogin() {
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
-            if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
-                document.getElementById('login-card').style.display = 'none';
-                document.getElementById('menu-card').style.display = 'block';
-                launchFireworks(20);
-            } else { alert("Sai rồi vợ ơi!"); }
-        }
-
-        let isPlaying = true;
+        let isMusicPlaying = false;
         function toggleMusic() {
-            const icon = document.getElementById('m-icon');
-            if(isPlaying) { ytPlayer.pauseVideo(); icon.classList.remove('fa-spin'); }
-            else { ytPlayer.playVideo(); icon.classList.add('fa-spin'); }
-            isPlaying = !isPlaying;
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) {
+                ytPlayer.pauseVideo();
+                icon.classList.remove('fa-spin');
+                icon.classList.replace('fa-compact-disc', 'fa-play');
+            } else {
+                ytPlayer.playVideo();
+                icon.classList.add('fa-spin');
+                icon.classList.replace('fa-play', 'fa-compact-disc');
+            }
+            isMusicPlaying = !isMusicPlaying;
         }
 
-        // HỆ THỐNG PHÁO HOA RỰC LỬA CHÂN THỰC
-        const canvas = document.getElementById('firework-canvas');
+        // --- 2. XỬ LÝ MÀN HÌNH INTRO VÀ CHUYỂN CẢNH ---
+        function startShow() {
+            document.getElementById('intro-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('intro-screen').style.display = 'none';
+                document.getElementById('login-panel').style.display = 'block';
+                document.getElementById('music-control').style.display = 'flex';
+                ytPlayer.unMute(); // Mở tiếng nhạc
+                ytPlayer.playVideo();
+                isMusicPlaying = true;
+                fireworksShow(10); // Pháo hoa chào mừng khi vào màn hình đăng nhập
+            }, 1200);
+        }
+
+        // --- 3. XỬ LÝ ĐĂNG NHẬP ---
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.querySelector('.eye-toggle');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function authenticateUser() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if (user === "anhyeuemlamdonha" && pass === "xindungboroianh") {
+                document.getElementById('login-panel').style.display = 'none';
+                document.getElementById('menu-panel').style.display = 'block';
+                fireworksShow(20); // Pháo hoa rực rỡ khi đăng nhập thành công
+            } else {
+                alert("Mật mã trái tim bị sai rồi, vợ yêu kiểm tra lại nhé! ❤️");
+            }
+        }
+
+        // --- 4. HỆ THỐNG PHÁO HOA "ĐIỆN ẢNH" VÀ LÀM SÁNG THÀNH PHỐ ---
+        const canvas = document.getElementById('main-canvas');
         const ctx = canvas.getContext('2d');
+        const cityBg = document.getElementById('city-bg');
+        const darkOverlay = document.getElementById('dark-overlay');
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         let particles = [];
+        let rockets = [];
+        let cityLightTimer = null; // Timer để điều khiển độ sáng của thành phố
 
-        class Particle {
-            constructor(x, y, color) {
+        class FireworkParticle {
+            constructor(x, y, color, vx, vy, isRocket = false) {
                 this.x = x; this.y = y; this.color = color;
-                this.vx = (Math.random() - 0.5) * 12;
-                this.vy = (Math.random() - 0.5) * 12;
+                this.vx = vx; this.vy = vy;
                 this.life = 1;
-                this.gravity = 0.15;
+                this.gravity = isRocket ? 0.05 : 0.15;
+                this.flicker = Math.random() > 0.5; // Để tạo hiệu ứng nhấp nháy
+                this.size = isRocket ? 4 : Math.random() * 2 + 1;
+                this.trail = [];
+                this.trailLength = isRocket ? 5 : 0; // Đuôi lửa cho rocket
             }
+
             update() {
-                this.vx *= 0.98; this.vy *= 0.98;
-                this.vy += this.gravity;
-                this.x += this.vx; this.y += this.vy;
+                this.x += this.vx; this.y += this.vy; this.vy += this.gravity;
+                this.vx *= 0.97; this.vy *= 0.97; // Giảm tốc dần
                 this.life -= 0.015;
+
+                // Cập nhật đuôi lửa
+                this.trail.unshift({ x: this.x, y: this.y, life: this.life });
+                if (this.trail.length > this.trailLength) this.trail.pop();
             }
+
             draw() {
-                ctx.globalAlpha = this.life;
+                ctx.globalAlpha = this.life * (this.flicker ? (Math.random() * 0.5 + 0.5) : 1);
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
-                // Hiệu ứng phát sáng
-                ctx.shadowBlur = 10;
+
+                // Vẽ đuôi lửa
+                for (let i = 0; i < this.trail.length; i++) {
+                    const trailPart = this.trail[i];
+                    ctx.globalAlpha = trailPart.life * 0.3 * (i / this.trail.length); // Độ trong suốt giảm dần
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(trailPart.x, trailPart.y, this.size * 0.6, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.shadowBlur = 15; // Hiệu ứng phát sáng
                 ctx.shadowColor = this.color;
             }
         }
 
-        function launchFireworks(num) {
-            const colors = ['#ff4d6d', '#ffb703', '#00f2fe', '#fff', '#7cfc00'];
-            for(let i=0; i<num; i++) {
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height * 0.7;
-                const color = colors[Math.floor(Math.random()*colors.length)];
-                for(let j=0; j<80; j++) particles.push(new Particle(x, y, color));
+        function createExplosion(x, y, color) {
+            for (let i = 0; i < 80; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 10 + 2;
+                particles.push(new FireworkParticle(x, y, color, Math.cos(angle) * speed, Math.sin(angle) * speed));
+            }
+            illuminateCity(); // Làm sáng thành phố khi pháo hoa nổ
+        }
+
+        function createRocket() {
+            const startX = Math.random() * canvas.width;
+            const startY = canvas.height;
+            const targetY = Math.random() * (canvas.height * 0.4);
+            const rocketColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+
+            rockets.push({
+                x: startX, y: startY,
+                targetY: targetY,
+                vx: (Math.random() - 0.5) * 2, // Bay hơi xiên
+                vy: Math.random() * 15 + 10,
+                color: rocketColor,
+                life: 1,
+                trail: [],
+                size: 3,
+                isExploded: false
+            });
+        }
+
+        function fireworksShow(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(createRocket, i * 200); // Bắn từng quả
             }
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, i) => {
-                p.update(); p.draw();
-                if(p.life <= 0) particles.splice(i, 1);
-            });
-            requestAnimationFrame(animate);
+        function illuminateCity() {
+            clearTimeout(cityLightTimer); // Xóa timer cũ nếu có
+            cityBg.style.filter = 'brightness(0.6)'; // Sáng lên
+            darkOverlay.style.background = 'rgba(0,0,0,0.3)'; // Trong hơn
+            cityLightTimer = setTimeout(() => {
+                cityBg.style.filter = 'brightness(0.1)'; // Tối lại
+                darkOverlay.style.background = 'rgba(0,0,0,0.6)'; // Đậm hơn
+            }, 800); // Sáng trong 0.8 giây
         }
-        animate();
 
-        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Xóa toàn bộ canvas
+
+            // Cập nhật và vẽ rocket
+            rockets = rockets.filter(rocket => {
+                if (!rocket.isExploded) {
+                    rocket.x += rocket.vx;
+                    rocket.y -= rocket.vy;
+                    rocket.vy *= 0.98; // Giảm tốc rocket
+
+                    // Cập nhật và vẽ đuôi rocket
+                    rocket.trail.push({ x: rocket.x, y: rocket.y, color: rocket.color });
+                    if (rocket.trail.length > 5) rocket.trail.shift(); // Giữ 5 điểm trong đuôi
+
+                    ctx.shadowBlur = 10; ctx.shadowColor = rocket.color;
+                    for(let i = 0; i < rocket.trail.length; i++){
+                        ctx.globalAlpha = (i / rocket.trail.length) * rocket.life;
+                        ctx.fillStyle = rocket.trail[i].color;
+                        ctx.beginPath(); ctx.arc(rocket.trail[i].x, rocket.trail[i].y, rocket.size, 0, Math.PI * 2); ctx.fill();
+                    }
+                    ctx.globalAlpha = rocket.life; // Reset alpha
+                    ctx.fillStyle = rocket.color;
+                    ctx.beginPath(); ctx.arc(rocket.x, rocket.y, rocket.size + 1, 0, Math.PI * 2); ctx.fill();
+
+
+                    if (rocket.y <= rocket.targetY || rocket.vy < 0.5) {
+                        createExplosion(rocket.x, rocket.y, rocket.color);
+                        rocket.isExploded = true; // Đánh dấu đã nổ
+                        return false; // Xóa rocket này khỏi mảng
+                    }
+                }
+                return true;
+            });
+
+            // Cập nhật và vẽ hạt pháo hoa
+            particles = particles.filter(p => {
+                p.update(); p.draw();
+                return p.life > 0;
+            });
+            ctx.shadowBlur = 0; // Tắt shadow để không ảnh hưởng các phần tử khác
+            requestAnimationFrame(animateCanvas);
+        }
+
+        animateCanvas();
+
+        window.onresize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
     </script>
 </body>
 </html>
