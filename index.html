@@ -3,179 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gửi Vợ Yêu ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+    <title>Thiên Đường Của Vợ - Tuyệt Tác Tình Yêu ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --fire-color: #ff4500;
+            --rose-color: #ff0055;
+            --gold: #ffd700;
+        }
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; background: #000;
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* PHONG CẢNH THIÊN NHIÊN: AURORA & SAO BĂNG */
-        #nature-scene {
+        /* NỀN THIÊN NHIÊN RỰC RỠ & ĐỘNG */
+        #universe {
             position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at bottom, #0d0012 0%, #000 100%);
-        }
-        .aurora {
-            position: absolute; width: 150%; height: 150%; top: -25%; left: -25%;
-            background: radial-gradient(circle, rgba(255,182,193,0.08) 0%, transparent 60%);
-            animation: moveAurora 20s ease-in-out infinite alternate;
-        }
-        @keyframes moveAurora { from { transform: translate(0,0); } to { transform: translate(10%, 10%); } }
-
-        /* MÀN HÌNH CHỜ HOA HỒNG */
-        #intro-screen {
-            position: fixed; inset: 0; background: #000;
-            z-index: 9999; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; cursor: pointer;
-        }
-        .rose-main {
-            font-size: 100px; filter: drop-shadow(0 0 35px #ff4d6d);
-            animation: pulse 2.5s infinite;
-        }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-
-        /* KHUNG ĐĂNG NHẬP SANG TRỌNG */
-        .glass-box {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px; padding: 45px 25px;
-            width: 90%; max-width: 380px; text-align: center;
-            display: none; box-shadow: 0 15px 45px rgba(0,0,0,0.7);
+            background: radial-gradient(circle at center, #1a0005 0%, #000 100%);
         }
 
-        h2 { font-family: 'Dancing Script', cursive; color: #ffb3c1; font-size: 2.7rem; margin-bottom: 30px; }
+        .aurora-glow {
+            position: absolute; width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--rose-color), transparent, #00f, transparent);
+            opacity: 0.1; animation: rotateAurora 20s linear infinite;
+        }
+        @keyframes rotateAurora { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .input-group { position: relative; margin-bottom: 20px; }
+        /* MÀN HÌNH KHỞI ĐỘNG CHÁY RỰC */
+        #intro {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            cursor: pointer; transition: 1.5s;
+        }
+        .main-rose {
+            font-size: 120px; filter: drop-shadow(0 0 50px var(--rose-color));
+            animation: burn 2s ease-in-out infinite alternate;
+        }
+        @keyframes burn { 
+            from { transform: scale(1) rotate(-5deg); filter: drop-shadow(0 0 20px var(--rose-color)); }
+            to { transform: scale(1.2) rotate(5deg); filter: drop-shadow(0 0 60px var(--fire-color)); }
+        }
+
+        /* KHUNG ĐĂNG NHẬP RỰC LỬA */
+        .fire-box {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border: 2px solid transparent;
+            border-image: linear-gradient(to bottom right, var(--fire-color), var(--rose-color), var(--gold)) 1;
+            border-radius: 5px; /* Để linear gradient border hoạt động */
+            padding: 40px; width: 90%; max-width: 400px;
+            text-align: center; display: none; position: relative;
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.3);
+        }
+
+        h2 { font-family: 'Dancing Script', cursive; color: #fff; font-size: 3rem; margin-bottom: 30px; text-shadow: 0 0 20px var(--rose-color); }
+
+        /* INPUT VÀ NÚT BẤM */
+        .input-group { position: relative; margin-bottom: 25px; }
         input {
-            width: 100%; padding: 18px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.05); color: white;
-            outline: none; text-align: center; font-size: 16px;
+            width: 100%; padding: 18px; background: rgba(255,255,255,0.05);
+            border: none; border-bottom: 2px solid var(--rose-color);
+            color: #fff; font-size: 16px; outline: none; transition: 0.3s;
         }
-        .pass-toggle {
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            color: #ffb3c1; cursor: pointer; font-size: 22px;
+        input:focus { border-bottom-color: var(--gold); background: rgba(255,255,255,0.1); }
+        
+        .eye-toggle { position: absolute; right: 15px; top: 18px; color: var(--gold); cursor: pointer; font-size: 20px; }
+
+        .btn-fire {
+            background: linear-gradient(45deg, var(--fire-color), var(--rose-color));
+            color: #fff; border: none; padding: 20px; width: 100%;
+            border-radius: 50px; font-weight: 800; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(255, 69, 0, 0.5);
+            animation: buttonGlow 2s infinite;
+        }
+        @keyframes buttonGlow { 0%, 100% { box-shadow: 0 0 10px var(--fire-color); } 50% { box-shadow: 0 0 30px var(--rose-color); } }
+
+        /* HIỆU ỨNG BAY QUA BAY LẠI */
+        .sparkle {
+            position: absolute; pointer-events: none;
+            background: white; border-radius: 50%;
+            animation: fly linear forwards;
+        }
+        @keyframes fly {
+            0% { transform: scale(0) translate(0, 0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: scale(1) translate(var(--x), var(--y)); opacity: 0; }
         }
 
-        .btn-magic {
-            background: linear-gradient(45deg, #ff758c, #ff7eb3);
-            color: white; border: none; padding: 18px; width: 100%;
-            border-radius: 20px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 10px 25px rgba(255, 117, 140, 0.3);
+        /* MENU MỤC NỘI DUNG */
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 30px; }
+        .menu-item {
+            background: rgba(255,255,255,0.05); border-left: 5px solid var(--gold);
+            padding: 20px; color: #fff; font-weight: 600; cursor: pointer;
+            transition: 0.3s; text-align: left;
         }
+        .menu-item:hover { background: rgba(255,255,255,0.1); transform: translateX(10px); }
 
-        /* NÚT BẬT TẮT LOA */
-        #music-btn {
-            position: fixed; bottom: 25px; left: 25px;
-            width: 50px; height: 50px; background: rgba(255,255,255,0.1);
+        /* NÚT LOA */
+        #audio-ctrl {
+            position: fixed; bottom: 30px; left: 30px;
+            width: 60px; height: 60px; background: var(--rose-color);
             border-radius: 50%; display: none; align-items: center;
-            justify-content: center; font-size: 22px; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.2); z-index: 1000;
-        }
-
-        /* SAO BĂNG */
-        .shooting-star {
-            position: absolute; width: 120px; height: 1px;
-            background: linear-gradient(90deg, #fff, transparent);
-            animation: shoot 4s linear infinite; opacity: 0;
-        }
-        @keyframes shoot {
-            0% { transform: rotate(-45deg) translateX(0); opacity: 0; }
-            10% { opacity: 1; }
-            30% { transform: rotate(-45deg) translateX(-300px); opacity: 0; }
-            100% { opacity: 0; }
+            justify-content: center; font-size: 24px; cursor: pointer;
+            box-shadow: 0 0 20px var(--fire-color);
         }
     </style>
 </head>
 <body>
 
-    <div id="nature-scene"><div class="aurora"></div></div>
+    <div id="universe"><div class="aurora-glow"></div></div>
 
-    <div id="intro-screen" onclick="startExperience()">
-        <div class="rose-main">🌹</div>
-        <p style="color: #fff; margin-top: 30px; letter-spacing: 4px; opacity: 0.6;">CHẠM ĐỂ BẮT ĐẦU</p>
+    <div id="intro" onclick="startMasterpiece()">
+        <div class="main-rose">🌹</div>
+        <p style="color: #fff; margin-top: 40px; letter-spacing: 8px; font-weight: 800; text-shadow: 0 0 10px #fff;">CHẠM ĐỂ RỰC CHÁY</p>
     </div>
 
-    <audio id="piano-audio" loop preload="auto">
-        <source src="https://files.catbox.moe/67x0e6.mp3" type="audio/mpeg">
+    <audio id="love-piano" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mpeg">
     </audio>
 
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-        <div class="glass-box" id="login-box">
+        <div class="fire-box" id="login-form">
             <h2>Vợ Yêu ❤️</h2>
             <div class="input-group">
-                <input type="text" id="usr" placeholder="Tài khoản..." autocomplete="off">
+                <input type="text" id="username" placeholder="Người ấy là ai?" autocomplete="off">
             </div>
             <div class="input-group">
-                <input type="password" id="pwd" placeholder="Mật khẩu..." autocomplete="off">
-                <span class="pass-toggle" onclick="togglePwd()">👁️</span>
+                <input type="password" id="password" placeholder="Mật mã trái tim..." autocomplete="off">
+                <span class="eye-toggle" onclick="togglePass()">👁️</span>
             </div>
-            <button class="btn-magic" onclick="login()">MỞ CÁNH CỬA ✨</button>
-            <p id="err" style="color: #ff4d6d; font-size: 14px; display: none; margin-top: 15px;">Sai rồi nha vợ ơi! ❌</p>
+            <button class="btn-fire" onclick="access()">KHÁM PHÁ NGAY ✨</button>
+            <p id="error" style="color: #ffff00; margin-top: 15px; display: none;">Chỉ có vợ iu mới biết mật mã thôi! ❌</p>
         </div>
 
-        <div class="glass-box" id="main-menu">
-            <h2>Dành Cho Em ❤️</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px;">
-                <div style="background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px; color: #ffb3c1; font-weight: 600; font-size: 13px;">CHUYỆN QUÁ KHỨ</div>
-                <div style="background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px; color: #ffb3c1; font-weight: 600; font-size: 13px;">CHUYỆN HIỆN TẠI</div>
-                <div style="background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px; color: #ffb3c1; font-weight: 600; font-size: 13px;">LỜI HỨA TƯƠNG LAI</div>
-                <div style="background: rgba(255,255,255,0.05); padding: 25px 10px; border-radius: 20px; color: #ffb3c1; font-weight: 600; font-size: 13px;">LÝ DO ANH YÊU EM</div>
+        <div class="fire-box" id="content-page">
+            <h2>Thiên Đường ❤️</h2>
+            <div class="menu-grid">
+                <div class="menu-item">🌸 CHUYỆN QUÁ KHỨ</div>
+                <div class="menu-item">🕯️ CHUYỆN HIỆN TẠI</div>
+                <div class="menu-item">💍 LỜI HỨA TƯƠNG LAI</div>
+                <div class="menu-item">🔥 LÝ DO ANH YÊU EM</div>
             </div>
         </div>
     </div>
 
-    <div id="music-btn" onclick="controlMusic()">🔊</div>
+    <div id="audio-ctrl" onclick="toggleAudio()">🔊</div>
 
     <script>
-        const audio = document.getElementById('piano-audio');
+        const audio = document.getElementById('love-piano');
 
-        function startExperience() {
-            audio.play().catch(e => console.log("Audio waiting..."));
-            document.getElementById('intro-screen').style.opacity = '0';
+        function startMasterpiece() {
+            audio.play().catch(() => console.log("Waiting for user..."));
+            document.getElementById('intro').style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('intro-screen').style.display = 'none';
-                document.getElementById('login-box').style.display = 'block';
-                document.getElementById('music-btn').style.display = 'flex';
-                setInterval(createStar, 3000);
-            }, 1200);
+                document.getElementById('intro').style.display = 'none';
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('audio-ctrl').style.display = 'flex';
+            }, 1000);
+            setInterval(spawnSparkle, 100);
         }
 
-        function togglePwd() {
-            const p = document.getElementById('pwd');
+        function togglePass() {
+            const p = document.getElementById('password');
             p.type = p.type === 'password' ? 'text' : 'password';
         }
 
-        function login() {
-            const u = document.getElementById('usr').value;
-            const p = document.getElementById('pwd').value;
+        function access() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
             if(u === "anhyeuemlamdonha" && p === "xindungboroianh") {
-                document.getElementById('login-box').style.display = "none";
-                document.getElementById('main-menu').style.display = "block";
+                document.getElementById('login-form').style.display = "none";
+                document.getElementById('content-page').style.display = "block";
+                // Bùng nổ hiệu ứng khi đăng nhập đúng
+                for(let i=0; i<50; i++) setTimeout(spawnSparkle, i*20);
             } else {
-                document.getElementById('err').style.display = "block";
+                document.getElementById('error').style.display = "block";
             }
         }
 
-        function controlMusic() {
+        function toggleAudio() {
             if(audio.paused) {
-                audio.play(); document.getElementById('music-btn').innerText = "🔊";
+                audio.play(); document.getElementById('audio-ctrl').innerText = "🔊";
             } else {
-                audio.pause(); document.getElementById('music-btn').innerText = "🔇";
+                audio.pause(); document.getElementById('audio-ctrl').innerText = "🔇";
             }
         }
 
-        function createStar() {
+        function spawnSparkle() {
             const s = document.createElement('div');
-            s.className = 'shooting-star';
-            s.style.top = Math.random() * 50 + 'vh';
-            s.style.left = Math.random() * 100 + 'vw';
+            s.className = 'sparkle';
+            const size = Math.random() * 5 + 2;
+            s.style.width = size + "px";
+            s.style.height = size + "px";
+            const colors = ['#ff4500', '#ff0055', '#ffd700', '#ffffff'];
+            s.style.background = colors[Math.floor(Math.random()*colors.length)];
+            s.style.left = Math.random() * 100 + "vw";
+            s.style.top = Math.random() * 100 + "vh";
+            
+            s.style.setProperty('--x', (Math.random() * 400 - 200) + "px");
+            s.style.setProperty('--y', (Math.random() * 400 - 200) + "px");
+            
+            s.style.animationDuration = Math.random() * 2 + 1 + "s";
             document.body.appendChild(s);
-            setTimeout(() => s.remove(), 4000);
+            setTimeout(() => s.remove(), 3000);
         }
     </script>
 </body>
