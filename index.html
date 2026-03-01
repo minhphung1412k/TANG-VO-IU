@@ -3,77 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thế Giới Của Vợ Yêu ❤️</title>
+    <title>Thế Giới Lung Linh Của Vợ Yêu ❤️</title>
     <style>
-        /* Hiệu ứng nền chuyển động đa sắc */
+        /* NỀN CHUYỂN ĐỘNG ĐA SẮC RỰC RỠ */
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100vh; display: flex;
+            justify-content: center; align-items: center;
+            overflow: hidden;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        body {
-            margin: 0; padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffecd2, #fcb69f);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-            height: 100vh; display: flex;
-            justify-content: center; align-items: center;
-            overflow: hidden;
-        }
-
-        /* Khung kính Glassmorphism */
-        #login-box, #main-content {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        /* KHUNG KÍNH PHÁT SÁNG */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
             border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             padding: 40px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-            text-align: center; width: 340px;
-            z-index: 100; transition: 0.8s ease;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 10;
+            transition: 0.5s;
         }
 
-        h2 { color: #fff; text-shadow: 2px 2px 10px rgba(0,0,0,0.2); font-size: 1.4rem; }
+        h2 { color: white; text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d; font-size: 1.4rem; margin-bottom: 25px; }
 
+        /* INPUT RỰC RỠ */
         .input-group { position: relative; margin-bottom: 20px; }
-
         input {
             width: 100%; padding: 15px; border: none; border-radius: 50px;
-            background: rgba(255, 255, 255, 0.8); outline: none;
-            box-sizing: border-box; font-size: 16px; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.9); outline: none;
+            font-size: 16px; transition: 0.3s; box-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
-
-        input:focus { background: #fff; transform: scale(1.02); }
+        input:focus { transform: scale(1.05); box-shadow: 0 0 20px #fff; }
 
         #toggleEye { position: absolute; right: 20px; top: 12px; cursor: pointer; font-size: 1.4rem; }
 
+        /* NÚT BẤM NEON */
         button#btnSubmit {
             background: #ff4d6d; color: white; border: none; padding: 15px;
             width: 100%; border-radius: 50px; font-weight: bold;
-            cursor: pointer; box-shadow: 0 10px 20px rgba(255, 77, 109, 0.4);
-            transition: 0.3s; font-size: 1rem;
+            cursor: pointer; font-size: 1.1rem;
+            box-shadow: 0 0 20px #ff4d6d;
+            transition: 0.3s;
         }
+        button#btnSubmit:hover { background: #fff; color: #ff4d6d; box-shadow: 0 0 40px #fff; }
 
-        button#btnSubmit:hover { background: #ff758f; transform: translateY(-3px); }
-
-        /* Menu rực rỡ */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
-
+        /* MENU RỰC RỠ SAU KHI VÀO */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
         .menu-btn {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.2);
             padding: 25px 10px; border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            color: #fff; font-weight: bold; cursor: pointer;
-            transition: 0.4s; text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+            color: white; font-weight: bold; cursor: pointer;
+            transition: 0.3s; text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .menu-btn:hover { background: white; color: #ff4d6d; transform: scale(1.1); box-shadow: 0 0 20px #fff; }
+
+        /* NÚT LOA VÀ SÓNG NHẠC */
+        #music-btn {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 70px; height: 70px; background: white;
+            border-radius: 50%; display: none; align-items: center; justify-content: center;
+            font-size: 35px; cursor: pointer; z-index: 1000;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+        }
+        .waves { animation: ripple 1s linear infinite; }
+        @keyframes ripple { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.7); } 100% { box-shadow: 0 0 0 30px rgba(255,255,255,0); } }
+
+        /* TRÁI TIM VÀ ÁNH SÁNG BAY */
+        .particle { position: absolute; pointer-events: none; animation: floatUp forwards; }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="mySong" loop preload="auto">
+        <source src="https://files.catbox.moe/97a06z.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="glass-card" id="login-box">
+        <h2>THẾ GIỚI CỦA VỢ YÊU ❤️</h2>
+        <div class="input-group">
+            <input type="text" id="user" placeholder="Tài khoản: anhyeuemlamdonha">
+        </div>
+        <div class="input-group">
+            <input type="password" id="pass" placeholder="Mật khẩu: xindungboroianh">
+            <span id="toggleEye" onclick="togglePass()">👁️</span>
+        </div>
+        <button id="btnSubmit" onclick="checkLogin()">MỞ CÁNH CỬA BÍ MẬT ✨</button>
+        <p id="error-msg" style="color: yellow; font-weight: bold; margin-top: 15px; display: none;">VỢ IU NHẬP SAI ÒI ❌</p>
+    </div>
+
+    <div class="glass-card" id="main-content" style="display: none; width: 80%; max-width: 600px;">
+        <h1 style="color: white; font-size: 2.2rem; text-shadow: 0 0 20px #ff4d6d;">Gửi Vợ Yêu ❤️</h1>
+        <div class="menu-grid">
+            <div class="menu-btn">CHUYỆN QUÁ KHỨ</div>
+            <div class="menu-btn">CHUYỆN HIỆN TẠI</div>
+            <div class="menu-btn">LỜI HỨA TƯƠNG LAI</div>
+            <div class="menu-btn">LÝ DO ANH YÊU EM</div>
+        </div>
+    </div>
+
+    <div id="music-btn" onclick="toggleMusic()">🔇</div>
+
+    <script>
+        const u_c = "anhyeuemlamdonha";
+        const p_c = "xindungboroianh";
+
+        function togglePass() {
+            const p = document.getElementById('pass');
+            const e = document.getElementById('toggleEye');
+            p.type = (p.type === "password") ? "text" : "password";
+            e.innerText = (p.type === "password") ? "👁️" : "🔒";
         }
 
-        .menu-btn:hover { background: rgba(255, 255, 255, 0.6); transform: scale(1.05) rotate(2deg); color: #ff4d6d; }
+        function checkLogin() {
+            const u = document.getElementById('user').value.trim();
+            const p = document.getElementById('pass').value.trim();
+            const song = document.getElementById('mySong');
+            const btn = document.getElementById('music-btn');
 
-        /* Nút loa rực rỡ */
-        #music-control {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 70px; height: 70px; background: #fff;
-            border-radius
+            if(u === u_c && p === p_c) {
+                document.getElementById('login-box').style.transform = "scale(0) rotate(360deg)";
+                setTimeout(() => {
+                    document.getElementById('login-box').style.display = "none";
+                    document.getElementById('main-content').style.display = "block";
+                    btn.style.display = "flex";
+                    
+                    // Lệnh ép phát nhạc
+                    song.play().then(() => {
+                        btn.innerText = "🔊";
+                        btn.classList.add('waves');
+                    }).catch(e => {
+                        console.log("Browser blocked autoplay");
+                        btn.innerText = "🔇";
+                    });
+                    
+                    setInterval(spawnParticles, 100);
+                }, 600);
+            } else {
+                document.getElementById('error-msg').style.display = "block";
+                document.getElementById('pass').value = "";
+            }
+        }
+
+        function toggleMusic() {
+            const s = document.getElementById('mySong');
+            const b = document.getElementById('music-btn');
+            if(s.paused) { 
+                s.play(); 
+                b.innerText = "🔊"; 
+                b.classList.add('waves'); 
+            } else { 
+                s.pause(); 
+                b.innerText = "🔇"; 
+                b.classList.remove('waves'); 
+            }
+        }
+
+        function spawnParticles() {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const icons = ['❤️', '✨', '💖', '⭐', '🌸'];
+            p.innerHTML = icons[Math.floor(Math.random()*icons.length)];
+            p.style.left = Math.random() * 100 + "vw";
+            p.style.fontSize = Math.random() * 20 + 20 + "px";
+            p.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
