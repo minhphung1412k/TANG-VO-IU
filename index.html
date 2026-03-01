@@ -3,241 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BÌNH MINH ❤️ THUÝ VÂN - DIVINE 80</title>
+    <title>BÌNH MINH ❤️ THUÝ VÂN - BẢN 81</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --p: #ff007b; --s: #00f2ff; --g: #ffd700; --v: #7000ff;
-            --glass: rgba(255, 255, 255, 0.05);
-        }
-
+        :root { --p: #ff007b; --s: #00f2ff; --g: #ffd700; --v: #7000ff; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; color: #fff; }
+        body { background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; }
 
-        /* --- DEEP SPACE CANVAS --- */
-        #canvas { position: fixed; inset: 0; z-index: 1; filter: contrast(1.2) brightness(1.1); }
+        canvas#scene { position: fixed; inset: 0; z-index: 1; filter: contrast(1.1) brightness(1.2); }
 
-        /* --- MUSIC CONTROLLER (DISC NEON) --- */
-        #music-ctrl {
-            position: fixed; top: 30px; right: 30px; z-index: 1000; display: none;
-            width: 65px; height: 65px; border-radius: 50%;
-            background: linear-gradient(45deg, var(--p), var(--s));
-            padding: 3px; cursor: pointer; animation: rotateDisc 4s linear infinite;
-            box-shadow: 0 0 30px var(--p);
-        }
-        #music-inner {
-            width: 100%; height: 100%; border-radius: 50%; background: #000;
-            display: flex; align-items: center; justify-content: center; font-size: 20px;
-        }
-        @keyframes rotateDisc { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* --- THE MASTER UI --- */
-        .overlay {
+        /* --- GIAO DIỆN CRYSTAL (DYNAMIC LAYOUT) --- */
+        .master-ui {
             position: fixed; inset: 0; z-index: 100;
             display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at center, transparent, rgba(0,0,0,0.6));
+            background: radial-gradient(circle, transparent 10%, rgba(0,0,0,0.7) 100%);
         }
 
-        .divine-card {
-            width: 90%; max-width: 450px; padding: 60px 40px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%);
+        .divine-box {
+            width: 92%; max-width: 460px; padding: 60px 35px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(50px) saturate(180%); -webkit-backdrop-filter: blur(50px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 80px 20px 80px 20px; text-align: center;
-            box-shadow: 0 0 100px rgba(0,0,0,0.5), inset 0 0 40px rgba(255,255,255,0.05);
-            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            border-radius: 50px; text-align: center;
+            box-shadow: 0 0 80px rgba(0,0,0,0.5);
+            transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        .title {
-            font-family: 'Cinzel Decorative', cursive; font-size: 2.2rem;
-            margin-bottom: 45px; line-height: 1.2;
-            background: linear-gradient(to bottom, #fff 20%, var(--p) 50%, var(--s) 80%);
+        .hero-title {
+            font-family: 'Cinzel Decorative', cursive; font-size: 2rem;
+            margin-bottom: 40px; color: #fff;
+            text-shadow: 0 0 20px var(--p);
+            background: linear-gradient(to bottom, #fff, var(--p));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px var(--p)); animation: glowTitle 3s infinite alternate;
-        }
-        @keyframes glowTitle { from { filter: drop-shadow(0 0 10px var(--p)); } to { filter: drop-shadow(0 0 25px var(--s)); } }
-
-        /* --- GLOWING INPUTS (NON-LINEAR) --- */
-        .input-group { position: relative; margin-bottom: 35px; transform: rotate(-1deg); }
-        .input-group i { position: absolute; left: 25px; top: 50%; transform: translateY(-50%); color: var(--s); font-size: 18px; text-shadow: 0 0 10px var(--s); }
-        .input-group input {
-            width: 100%; padding: 22px 30px 22px 65px;
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 40px; color: #fff; font-size: 16px; font-weight: 500;
-            transition: 0.5s; box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
-        }
-        .input-group input:focus {
-            background: rgba(255,255,255,0.07); border-color: var(--p);
-            box-shadow: 0 0 40px rgba(255,0,123,0.3); transform: scale(1.03) rotate(1deg);
         }
 
-        .eye-icon { position: absolute; right: 25px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #fff; opacity: 0.6; transition: 0.3s; }
-        .eye-icon:hover { opacity: 1; color: var(--p); }
+        /* --- INPUTS & EYE FIX --- */
+        .input-container { position: relative; margin-bottom: 25px; }
+        .input-container i.main-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--s); font-size: 18px; }
+        .input-container input {
+            width: 100%; padding: 20px 60px;
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px; color: #fff; font-size: 16px; transition: 0.4s;
+        }
+        .input-container input:focus { border-color: var(--p); box-shadow: 0 0 25px rgba(255,0,123,0.2); }
+        
+        /* FIX CON MẮT ĐỨNG RIÊNG BIỆT */
+        .eye-wrapper { 
+            position: absolute; right: 0; top: 0; height: 100%; width: 55px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            z-index: 10;
+        }
+        .eye-wrapper i { color: rgba(255,255,255,0.4); transition: 0.3s; }
+        .eye-wrapper:hover i { color: var(--p); transform: scale(1.1); }
 
-        /* --- THE DIVINE BUTTON --- */
         .btn-divine {
-            width: 100%; padding: 22px; border: none; border-radius: 40px;
-            background: linear-gradient(45deg, var(--p), var(--v), var(--s));
-            background-size: 200% 200%; animation: gradientMove 4s infinite;
-            color: #fff; font-weight: 900; letter-spacing: 5px; cursor: pointer;
-            box-shadow: 0 20px 50px rgba(255,0,123,0.4); transition: 0.5s;
+            width: 100%; padding: 20px; border: none; border-radius: 15px;
+            background: linear-gradient(45deg, var(--p), var(--v));
+            color: #fff; font-weight: 800; letter-spacing: 4px; cursor: pointer;
+            box-shadow: 0 15px 40px rgba(255,0,123,0.3); transition: 0.4s;
         }
-        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .btn-divine:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 30px 70px var(--p); }
+        .btn-divine:hover { transform: translateY(-5px); box-shadow: 0 20px 60px var(--p); }
 
-        /* --- MENU CRYSTAL GRID --- */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
-        .menu-item {
-            background: var(--glass); padding: 35px 15px; border-radius: 30px;
-            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.6s;
-            display: flex; flex-direction: column; align-items: center;
+        /* --- MENU BỐ CỤC PHÁ CÁCH (NON-LINEAR) --- */
+        .dynamic-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; position: relative; }
+        .node {
+            background: rgba(255,255,255,0.05); padding: 40px 10px; border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.08); cursor: pointer; transition: 0.6s;
         }
-        .menu-item:nth-child(odd) { transform: translateY(-15px); }
-        .menu-item:hover {
-            background: rgba(255,255,255,0.1); border-color: #fff;
-            transform: scale(1.1) rotate(5deg); box-shadow: 0 20px 60px rgba(0,242,255,0.3);
+        /* Tạo độ lệch (Zig-zag) cho các mục menu */
+        .node:nth-child(1) { transform: translateY(-10px) rotate(-2deg); }
+        .node:nth-child(2) { transform: translateY(20px) rotate(2deg); }
+        .node:nth-child(3) { transform: translateY(-20px) rotate(1deg); }
+        .node:nth-child(4) { transform: translateY(10px) rotate(-1deg); }
+        
+        .node:hover {
+            background: rgba(255,255,255,0.15); border-color: var(--s);
+            transform: scale(1.1) rotate(0deg) !important; z-index: 50;
+            box-shadow: 0 0 40px var(--s);
         }
-        .menu-item i { font-size: 35px; margin-bottom: 15px; color: var(--g); filter: drop-shadow(0 0 10px var(--g)); }
-        .menu-item span { font-weight: 800; font-size: 14px; letter-spacing: 2px; }
+        .node i { font-size: 32px; margin-bottom: 12px; color: var(--g); filter: drop-shadow(0 0 8px var(--g)); }
+        .node span { display: block; font-weight: 700; font-size: 13px; color: #fff; }
 
-        /* --- CINEMATIC INTRO --- */
-        #intro {
+        /* --- CINEMATIC ANIMATIONS --- */
+        .zoom-out { opacity: 0; transform: scale(3) rotate(5deg); filter: blur(20px); pointer-events: none; }
+        .zoom-in { animation: zoomInEffect 1.2s forwards cubic-bezier(0.19, 1, 0.22, 1); }
+        @keyframes zoomInEffect {
+            from { opacity: 0; transform: scale(0.2) translateY(50px); filter: blur(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+        }
+
+        #music-btn {
+            position: fixed; top: 30px; left: 30px; z-index: 500;
+            width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--s);
+            background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 0 20px var(--s);
+        }
+
+        #intro-gate {
             position: fixed; inset: 0; z-index: 10000; background: #000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
-        .heart-nebula {
-            width: 130px; height: 130px; background: var(--p);
-            filter: blur(40px); border-radius: 50%; position: absolute; animation: heartGlow 2s infinite;
-        }
-        .heart-icon { z-index: 10; font-size: 80px; color: #fff; cursor: pointer; transition: 0.5s; }
-        @keyframes heartGlow { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(2); opacity: 0.8; } }
-
-        #toast {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: #fff; color: #000; padding: 20px 60px; border-radius: 50px;
-            font-weight: 900; z-index: 10000; transition: 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        #toast.active { top: 50px; box-shadow: 0 0 50px #fff; }
-
-        #yt-api { position: absolute; visibility: hidden; }
+        .gate-heart { font-size: 100px; color: var(--p); filter: drop-shadow(0 0 30px var(--p)); animation: heartBeat 1.5s infinite; }
+        @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); filter: drop-shadow(0 0 50px var(--p)); } }
     </style>
 </head>
 <body>
 
-    <div id="intro" onclick="divineStart()">
-        <div class="heart-nebula"></div>
-        <i class="fa-solid fa-heart heart-icon"></i>
-        <p style="margin-top: 60px; letter-spacing: 12px; font-weight: 300; color: rgba(255,255,255,0.5);">DIVINE 80 START</p>
+    <div id="intro-gate" onclick="unlockWorld()">
+        <i class="fa-solid fa-heart gate-heart"></i>
+        <p style="margin-top: 40px; color: #fff; letter-spacing: 10px; opacity: 0.5;">BẢN 81 - KHỞI CHẠY</p>
     </div>
 
-    <canvas id="canvas"></canvas>
-    <div id="yt-api"></div>
+    <canvas id="scene"></canvas>
+    <div id="yt-player" style="position: absolute; visibility: hidden;"></div>
 
-    <div id="music-ctrl" onclick="toggleAudio()">
-        <div id="music-inner"><i class="fa-solid fa-music" id="music-icon"></i></div>
+    <div id="music-btn" onclick="togglePlay()">
+        <i class="fa-solid fa-music" style="color: var(--s);" id="m-icon"></i>
     </div>
 
-    <div class="overlay">
-        <div class="divine-card" id="login-panel" style="display: none;">
-            <h1 class="title">BÌNH MINH ❤️ THUÝ VÂN</h1>
-            <div class="input-group">
-                <i class="fa-solid fa-user-astronaut"></i>
-                <input type="text" id="inp-u" placeholder="Tên tài khoản vợ iu">
+    <div class="master-ui">
+        <div class="divine-box" id="box-login" style="display: none;">
+            <h1 class="hero-title">BÌNH MINH ❤️ THUÝ VÂN</h1>
+            <div class="input-container">
+                <i class="fa-solid fa-user-circle main-icon"></i>
+                <input type="text" id="u-inp" placeholder="Tên tài khoản vợ iu">
             </div>
-            <div class="input-group">
-                <i class="fa-solid fa-key"></i>
-                <input type="password" id="inp-p" placeholder="Mật khẩu bí mật">
-                <i class="fa-solid fa-eye eye-icon" onclick="toggleEye()"></i>
+            <div class="input-container">
+                <i class="fa-solid fa-lock main-icon"></i>
+                <input type="password" id="p-inp" placeholder="Mật khẩu của chúng mình">
+                <div class="eye-wrapper" onclick="togglePass()">
+                    <i class="fa-solid fa-eye" id="eye-i"></i>
+                </div>
             </div>
-            <button class="btn-divine" onclick="divineLogin()">TRUY CẬP TRÁI TIM</button>
+            <button class="btn-divine" onclick="verifyAccess()">KHÁM PHÁ NGAY</button>
         </div>
 
-        <div class="divine-card" id="menu-panel" style="display: none; opacity: 0; transform: scale(0.5) translateY(100px);">
-            <h1 class="title" style="font-size: 1.8rem;">GỬI THUÝ VÂN</h1>
-            <div class="menu-grid">
-                <div class="menu-item" onclick="blast(20)"><i class="fa-solid fa-camera-retro"></i><span>KỈ NIỆM</span></div>
-                <div class="menu-item" onclick="blast(20)"><i class="fa-solid fa-hourglass-half"></i><span>HIỆN TẠI</span></div>
-                <div class="menu-item" onclick="blast(20)"><i class="fa-solid fa-rocket"></i><span>TƯƠNG LAI</span></div>
-                <div class="menu-item" onclick="surprise()"><i class="fa-solid fa-heart-pulse"></i><span>YÊU EM</span></div>
+        <div class="divine-box" id="box-menu" style="display: none;">
+            <h1 class="hero-title" style="font-size: 1.7rem;">GỬI THUÝ VÂN</h1>
+            <div class="dynamic-menu">
+                <div class="node" onclick="fire(15)"><i class="fa-solid fa-cloud-moon"></i><span>KỈ NIỆM</span></div>
+                <div class="node" onclick="fire(15)"><i class="fa-solid fa-clock-rotate-left"></i><span>HIỆN TẠI</span></div>
+                <div class="node" onclick="fire(15)"><i class="fa-solid fa-shuttle-space"></i><span>TƯƠNG LAI</span></div>
+                <div class="node" onclick="loveSurprise()"><i class="fa-solid fa-crown"></i><span>YÊU EM</span></div>
             </div>
         </div>
     </div>
-
-    <div id="toast">CHƯA ĐÚNG RỒI VỢ IU ƠI! ❤️</div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const canvas = document.getElementById('canvas');
+        const canvas = document.getElementById('scene');
         const ctx = canvas.getContext('2d');
-        let w, h, player, isPlaying = false;
-        let particles = [], rockets = [], buildings = [];
+        let w, h, player, isMuted = true;
+        let rockets = [], particles = [], builds = [];
 
         function resize() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-            initCity();
+            initBuildings();
         }
         window.onresize = resize;
 
-        function initCity() {
-            buildings = [];
-            const count = 40;
-            for(let i=0; i<count; i++) {
-                buildings.push({
-                    x: (w / count) * i,
-                    w: (w / count) * 0.8,
-                    h: Math.random() * (h * 0.4) + 100,
-                    color: `rgba(10, 10, 25, 1)`,
-                    neon: Math.random() > 0.5 ? '#ff007b' : '#00f2ff',
-                    windows: Array.from({length: 12}, () => Math.random() > 0.7)
+        function initBuildings() {
+            builds = [];
+            for(let i=0; i<45; i++) {
+                builds.push({
+                    x: Math.random() * w,
+                    w: 30 + Math.random() * 70,
+                    h: 50 + Math.random() * (h * 0.4),
+                    blink: Math.random() > 0.5
                 });
             }
         }
 
-        class Particle {
-            constructor(x, y, color) {
-                this.x = x; this.y = y; this.color = color;
-                const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 12 + 2;
-                this.vx = Math.cos(angle) * speed;
-                this.vy = Math.sin(angle) * speed;
-                this.alpha = 1; this.decay = Math.random() * 0.01 + 0.005;
-                this.size = Math.random() * 3 + 1;
+        class Part {
+            constructor(x, y, c) {
+                this.x = x; this.y = y; this.c = c;
+                const a = Math.random() * Math.PI * 2;
+                const s = Math.random() * 10 + 2;
+                this.vx = Math.cos(a) * s; this.vy = Math.sin(a) * s;
+                this.alpha = 1; this.decay = 0.01 + Math.random() * 0.015;
             }
             draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.shadowBlur = 15; ctx.shadowColor = this.color;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                ctx.fill();
-                ctx.restore();
+                ctx.save(); ctx.globalAlpha = this.alpha;
+                ctx.shadowBlur = 15; ctx.shadowColor = this.c;
+                ctx.fillStyle = this.c; ctx.beginPath();
+                ctx.arc(this.x, this.y, 2.5, 0, 7); ctx.fill(); ctx.restore();
             }
-            update() {
-                this.x += this.vx; this.y += this.vy; this.vy += 0.15;
-                this.alpha -= this.decay;
-            }
+            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.15; this.alpha -= this.decay; }
         }
 
-        class Rocket {
+        class Rock {
             constructor() {
-                this.x = Math.random() * w;
-                this.y = h;
-                this.targetY = Math.random() * (h * 0.5);
-                this.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-                this.v = -12;
+                this.x = Math.random() * w; this.y = h;
+                this.target = Math.random() * (h * 0.5);
+                this.c = `hsl(${Math.random()*360}, 100%, 75%)`;
             }
-            draw() {
-                ctx.fillStyle = "#fff";
-                ctx.shadowBlur = 20; ctx.shadowColor = this.color;
-                ctx.beginPath(); ctx.arc(this.x, this.y, 4, 0, 7); ctx.fill();
-            }
+            draw() { ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(this.x, this.y, 3.5, 0, 7); ctx.fill(); }
             update() {
-                this.y += this.v;
-                if(this.y <= this.targetY) {
-                    for(let i=0; i<120; i++) particles.push(new Particle(this.x, this.y, this.color));
+                this.y -= 12;
+                if(this.y <= this.target) {
+                    for(let i=0; i<100; i++) particles.push(new Part(this.x, this.y, this.c));
                     return false;
                 }
                 return true;
@@ -245,92 +211,66 @@
         }
 
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-api', {
+            player = new YT.Player('yt-player', {
                 height: '0', width: '0', videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
                 events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function toggleAudio() {
-            const icon = document.getElementById('music-icon');
-            if(isPlaying) {
-                player.mute(); isPlaying = false;
-                icon.className = 'fa-solid fa-volume-xmark';
-                document.getElementById('music-ctrl').style.animationPlayState = 'paused';
-            } else {
-                player.unMute(); player.playVideo(); isPlaying = true;
-                icon.className = 'fa-solid fa-music';
-                document.getElementById('music-ctrl').style.animationPlayState = 'running';
-            }
+        function togglePlay() {
+            const icon = document.getElementById('m-icon');
+            if(isMuted) { player.unMute(); player.playVideo(); isMuted = false; icon.className = 'fa-solid fa-volume-high'; }
+            else { player.mute(); isMuted = true; icon.className = 'fa-solid fa-volume-xmark'; }
         }
 
-        function divineStart() {
-            document.getElementById('intro').style.transform = "scale(5)";
-            document.getElementById('intro').style.opacity = "0";
+        function unlockWorld() {
+            document.getElementById('intro-gate').style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('intro').style.display = 'none';
-                document.getElementById('login-panel').style.display = 'block';
-                document.getElementById('music-ctrl').style.display = 'block';
-                resize(); toggleAudio(); render();
-                setInterval(() => { if(Math.random() < 0.2) rockets.push(new Rocket()); }, 800);
-            }, 1000);
+                document.getElementById('intro-gate').style.display = 'none';
+                const login = document.getElementById('box-login');
+                login.style.display = 'block'; login.classList.add('zoom-in');
+                resize(); togglePlay(); loop();
+                setInterval(() => { if(Math.random() < 0.2) rockets.push(new Rock()); }, 800);
+            }, 800);
         }
 
-        function divineLogin() {
-            const u = document.getElementById('inp-u').value;
-            const p = document.getElementById('inp-p').value;
+        function verifyAccess() {
+            const u = document.getElementById('u-inp').value, p = document.getElementById('p-inp').value;
             if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
-                const box = document.getElementById('login-panel');
-                box.style.transform = "rotateY(90deg) scale(0)"; box.style.opacity = "0";
+                const lb = document.getElementById('box-login');
+                lb.classList.remove('zoom-in'); lb.classList.add('zoom-out');
                 setTimeout(() => {
-                    box.style.display = 'none';
-                    const menu = document.getElementById('menu-panel');
-                    menu.style.display = 'block';
-                    setTimeout(() => {
-                        menu.style.opacity = '1'; 
-                        menu.style.transform = 'scale(1) translateY(0)';
-                    }, 100);
-                    blast(30);
-                }, 800);
-            } else {
-                const t = document.getElementById('toast');
-                t.classList.add('active'); setTimeout(() => t.classList.remove('active'), 3000);
-            }
+                    lb.style.display = 'none';
+                    const mb = document.getElementById('box-menu');
+                    mb.style.display = 'block'; mb.classList.add('zoom-in');
+                    fire(25);
+                }, 1000);
+            } else { alert("Nhập sai rồi vợ iu ơi! ❤️"); }
         }
 
-        function blast(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*150); }
-        function surprise() { alert('Bình Minh sẽ yêu Thuý Vân đến tận cùng thế giới!'); blast(40); }
-        function toggleEye() { const p = document.getElementById('inp-p'); p.type = p.type === 'password' ? 'text' : 'password'; }
+        function togglePass() {
+            const inp = document.getElementById('p-inp'), i = document.getElementById('eye-i');
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+            i.className = inp.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+        }
 
-        function render() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+        function fire(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rock()), i*200); }
+        function loveSurprise() { alert('Bình Minh yêu Thuý Vân nhất trên đời!'); fire(30); }
+
+        function loop() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
             ctx.fillRect(0,0,w,h);
-
-            // RENDER BLOOM CITY
-            buildings.forEach(b => {
-                ctx.fillStyle = b.color;
-                ctx.fillRect(b.x, h - b.h, b.w, b.h);
-                // Line Neon đỉnh tòa nhà
-                ctx.strokeStyle = b.neon;
-                ctx.lineWidth = 2;
-                ctx.strokeRect(b.x, h - b.h, b.w, 2);
-                // Cửa sổ nhấp nháy
-                b.windows.forEach((wnd, idx) => {
-                    if(wnd) {
-                        ctx.fillStyle = Math.random() > 0.1 ? b.neon : '#fff';
-                        ctx.globalAlpha = Math.random() * 0.5 + 0.3;
-                        const row = Math.floor(idx / 3);
-                        const col = idx % 3;
-                        ctx.fillRect(b.x + col*15 + 10, h - b.h + row*25 + 20, 8, 8);
-                    }
-                });
-                ctx.globalAlpha = 1;
+            builds.forEach(b => {
+                ctx.fillStyle = '#050510'; ctx.fillRect(b.x, h - b.h, b.w, b.h);
+                if(b.blink && Math.random() > 0.95) {
+                    ctx.fillStyle = 'rgba(255, 215, 0, 0.3)';
+                    ctx.fillRect(b.x + 5, h - b.h + 10, b.w - 10, 15);
+                }
             });
-
             rockets = rockets.filter(r => { r.draw(); return r.update(); });
             particles = particles.filter(p => { p.draw(); p.update(); return p.alpha > 0; });
-            requestAnimationFrame(render);
+            requestAnimationFrame(loop);
         }
     </script>
 </body>
