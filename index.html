@@ -4,170 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>BÌNH MINH TẶNG EM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Orbitron:wght@400;700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Orbitron:wght@400;900&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        /* [CORE SETTINGS] - TỐI ƯU KHÔNG GIAN */
         :root {
-            --p: #ff007b; --s: #00f2ff; --v: #7000ff; --a: #00ff88;
-            --bg: #000003; --glass: rgba(255, 255, 255, 0.03);
+            --p: #ff007b; --s: #00f2ff; --v: #7000ff;
+            --bg: #000005; --glass: rgba(255, 255, 255, 0.02);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { width: 100%; height: 100%; background: var(--bg); overflow: hidden; font-family: 'Quicksand', sans-serif; color: #fff; position: fixed; }
+        body, html { 
+            width: 100vw; height: 100vh; background: var(--bg); 
+            overflow: hidden; font-family: 'Quicksand', sans-serif; 
+            color: #fff; position: fixed; touch-action: none;
+        }
 
         /* CẢNH BÁO XOAY NGANG */
-        #landscape-gate {
-            position: fixed; inset: 0; z-index: 99999; background: #000;
+        #rotate-notice {
+            position: fixed; inset: 0; z-index: 100000; background: #000;
             display: none; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: var(--s); font-family: 'Orbitron';
         }
-        @media screen and (orientation: portrait) { #landscape-gate { display: flex; } }
+        @media screen and (orientation: portrait) { #rotate-notice { display: flex; } }
 
-        /* CANVAS ENGINE */
-        #world { position: fixed; inset: 0; z-index: 5; pointer-events: none; filter: saturate(1.5) brightness(1.1); }
+        /* ENGINE CANVAS */
+        #vortex-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; filter: saturate(1.8) brightness(1.2); }
 
-        /* GIAO DIỆN TỔNG THỂ */
-        .stage {
+        /* GIAO DIỆN CHÍNH */
+        .master-stage {
             position: fixed; inset: 0; z-index: 100;
             display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at center, transparent, rgba(0,0,0,0.8));
-            perspective: 1500px;
+            background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.8) 100%);
         }
 
-        /* KHUNG ĐĂNG NHẬP THU NHỎ (MINIATURE DESIGN) */
-        .mini-monolith {
-            width: 80vw; max-width: 420px; /* Thu nhỏ bề ngang */
-            padding: 40px 30px; position: relative;
+        /* KHUNG ĐĂNG NHẬP THU NHỎ & TINH TẾ */
+        .login-card {
+            width: 300px; /* SIÊU NHỎ */
+            padding: 35px 30px; position: relative;
             background: var(--glass);
-            backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
-            transform: rotateX(5deg);
-            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
-            animation: floating 8s infinite ease-in-out;
+            clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
+            animation: cardEntrance 1s ease-out;
         }
-        @keyframes floating { 0%, 100% { transform: translateY(0) rotateX(5deg); } 50% { transform: translateY(-15px) rotateX(2deg); } }
 
-        .title {
-            font-family: 'Cinzel Decorative', cursive; font-size: 1.6rem;
-            text-align: center; margin-bottom: 35px; letter-spacing: 3px;
+        @keyframes cardEntrance { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+        .web-title {
+            font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem;
+            text-align: center; margin-bottom: 35px; line-height: 1.5;
             background: linear-gradient(90deg, #fff, var(--p), var(--s), #fff);
             background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: moveText 4s linear infinite;
+            animation: glow 4s linear infinite;
         }
-        @keyframes moveText { to { background-position: 200% center; } }
+        @keyframes glow { to { background-position: 200% center; } }
 
-        /* INPUT TỐI GIẢN - KHÔNG ICON */
-        .field { position: relative; margin-bottom: 25px; }
-        .field label { font-family: 'Orbitron'; font-size: 9px; color: var(--s); letter-spacing: 3px; display: block; margin-bottom: 8px; opacity: 0.8; }
-        .field input {
-            width: 100%; padding: 15px 20px; background: rgba(255,255,255,0.05);
-            border: none; border-bottom: 2px solid rgba(255,255,255,0.1); color: #fff;
-            font-size: 15px; outline: none; transition: 0.4s;
+        /* INPUT VIỆT HÓA - KHÔNG ICON */
+        .input-wrap { position: relative; margin-bottom: 22px; }
+        .input-wrap label {
+            display: block; font-family: 'Orbitron'; font-size: 8px; 
+            color: var(--s); letter-spacing: 3px; margin-bottom: 8px; opacity: 0.7;
         }
-        .field input:focus { border-bottom-color: var(--p); background: rgba(255,255,255,0.1); }
+        .input-wrap input {
+            width: 100%; padding: 12px 15px; background: rgba(255,255,255,0.05);
+            border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
+            color: #fff; font-size: 14px; outline: none; transition: 0.4s;
+        }
+        .input-wrap input:focus { border-bottom-color: var(--p); background: rgba(255,255,255,0.1); }
 
-        .btn {
-            width: 100%; padding: 18px; border: none; margin-top: 15px;
-            font-family: 'Orbitron'; font-weight: bold; font-size: 0.9rem;
-            color: #fff; letter-spacing: 8px; cursor: pointer;
+        .btn-enter {
+            width: 100%; padding: 16px; border: none; margin-top: 10px;
+            font-family: 'Orbitron'; font-weight: 900; font-size: 0.8rem;
+            color: #fff; letter-spacing: 6px; cursor: pointer;
             background: linear-gradient(45deg, var(--p), var(--v));
-            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+            clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
             transition: 0.5s;
         }
-        .btn:hover { letter-spacing: 12px; filter: brightness(1.2); transform: scale(1.02); }
+        .btn-enter:hover { letter-spacing: 10px; filter: brightness(1.2); }
 
-        /* DASHBOARD */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
-        .item {
-            background: rgba(255,255,255,0.03); padding: 25px 10px;
+        /* DASHBOARD VIỆT HÓA */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 25px; }
+        .menu-item {
+            background: rgba(255,255,255,0.03); padding: 20px 5px;
             border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
-            text-align: center; transition: 0.4s;
+            text-align: center; transition: 0.3s;
         }
-        .item:hover { background: var(--p); color: #fff; transform: translateY(-5px); }
-        .item span { font-family: 'Orbitron'; font-size: 10px; letter-spacing: 2px; }
+        .menu-item:hover { background: var(--p); transform: translateY(-3px); }
+        .menu-item span { font-family: 'Orbitron'; font-size: 9px; letter-spacing: 1px; }
 
-        /* CỔNG KHỞI ĐẦU */
-        #starter {
+        /* ÂM THANH */
+        #audio-nucleus {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .audio-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff0000; transition: 0.3s; }
+
+        /* TRANG KHỞI ĐẦU: CHẠM ĐỂ SƯỚNG */
+        #gate-portal {
             position: fixed; inset: 0; z-index: 10000; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
-        .core { width: 120px; height: 120px; border-radius: 50%; background: #fff; box-shadow: 0 0 80px #fff; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; } }
-
-        /* NÚT ÂM THANH MỚI - TINH TẾ */
-        #audio-ctrl {
-            position: fixed; top: 30px; right: 30px; z-index: 1000;
-            width: 50px; height: 50px; border: 1px solid var(--s); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        .gate-core { 
+            width: 100px; height: 100px; background: #fff; border-radius: 50%; 
+            box-shadow: 0 0 50px #fff, 0 0 100px var(--p); 
+            animation: corePulse 1.5s infinite alternate; 
         }
+        @keyframes corePulse { from { transform: scale(0.85); opacity: 0.6; } to { transform: scale(1.1); opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="landscape-gate">
-        <h2 style="font-family: 'Orbitron'; color: var(--s);">VUI LÒNG XOAY NGANG</h2>
+    <div id="rotate-notice">
+        <p style="letter-spacing: 5px;">VUI LÒNG XOAY NGANG ĐIỆN THOẠI</p>
     </div>
 
-    <div id="starter" onclick="start()">
-        <div class="core"></div>
-        <h2 style="margin-top: 40px; font-family: 'Orbitron'; letter-spacing: 10px;">CHẠM ĐỂ MỞ</h2>
+    <div id="gate-portal" onclick="igniteEngine()">
+        <div class="gate-core"></div>
+        <h2 style="margin-top: 40px; font-family: 'Orbitron'; letter-spacing: 10px; font-size: 18px; color: #fff;">CHẠM ĐỂ SƯỚNG</h2>
     </div>
 
-    <div id="audio-ctrl" onclick="toggleAudio()">
-        <div id="audio-status" style="width: 10px; height: 10px; background: var(--p); border-radius: 50%;"></div>
+    <div id="audio-nucleus" onclick="toggleAllAudio()">
+        <div id="status-dot" class="audio-dot"></div>
     </div>
 
-    <canvas id="world"></canvas>
-    <div id="yt-player" style="display:none"></div>
+    <canvas id="vortex-canvas"></canvas>
+    <div id="yt-api" style="display:none"></div>
 
-    <div class="stage">
-        <div class="mini-monolith" id="login">
-            <h1 class="title">BÌNH MINH TẶNG EM</h1>
-            <div class="field">
-                <label>IDENTITY</label>
-                <input type="text" id="un" placeholder="tên của bé">
+    <div class="master-stage">
+        <div class="login-card" id="ui-auth">
+            <h1 class="web-title">BÌNH MINH<br>TẶNG EM</h1>
+            <div class="input-wrap">
+                <label>DANH TÍNH</label>
+                <input type="text" id="user-field" placeholder="Tên của em ưi">
             </div>
-            <div class="field">
-                <label>KEY</label>
-                <input type="password" id="pw" placeholder="mật khẩu">
+            <div class="input-wrap">
+                <label>MẬT MÃ TRÁI TIM</label>
+                <input type="password" id="pass-field" placeholder="Nhập mật mã">
             </div>
-            <button class="btn" onclick="check()">TRUY CẬP</button>
+            <button class="btn-enter" onclick="verifyAccess()">TRUY CẬP</button>
         </div>
 
-        <div class="mini-monolith" id="dash" style="display: none; opacity: 0;">
-            <h1 class="title">DÀNH CHO VÂN</h1>
-            <div class="grid">
-                <div class="item" onclick="fire(50)"><span>KỈ NIỆM</span></div>
-                <div class="item" onclick="fire(50)"><span>HIỆN TẠI</span></div>
-                <div class="item" onclick="fire(50)"><span>TƯƠNG LAI</span></div>
-                <div class="item" onclick="love()"><span>YÊU ANH</span></div>
+        <div class="login-card" id="ui-menu" style="display: none; opacity: 0;">
+            <h1 class="web-title" style="font-size: 1.1rem;">VŨ TRỤ THUÝ VÂN</h1>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="launchRockets(60)"><span>KỈ NIỆM</span></div>
+                <div class="menu-item" onclick="launchRockets(60)"><span>HIỆN TẠI</span></div>
+                <div class="menu-item" onclick="launchRockets(60)"><span>TƯƠNG LAI</span></div>
+                <div class="menu-item" onclick="loveConfess()"><span>MÃI YÊU ANH</span></div>
             </div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        /**
-         * BÌNH MINH TẶNG EM - ENGINE V15.0
-         * Hệ thống âm thanh vật lý & Pháo hoa bụi kim cương
-         */
-
-        const canvas = document.getElementById('world');
+        const canvas = document.getElementById('vortex-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, yt, audioCtx, isMute = true;
         let rockets = [], particles = [], stars = [], buildings = [];
+        
+        // DANH SÁCH CHỮ NEON TRÊN THÀNH PHỐ
+        const neonTexts = ["BMINH THƯƠNG EM", "BMINH YÊU EM", "THVAN CUTE", "THVAN XINH", "MÃI YÊU EM"];
 
-        // HỆ THỐNG ÂM THANH VẬT LÝ (Web Audio API)
-        function playExplosionSound() {
+        function playBoom() {
             if(isMute || !audioCtx) return;
             const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            const g = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            osc.connect(gain); gain.connect(audioCtx.destination);
+            g.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.connect(g); g.connect(audioCtx.destination);
             osc.start(); osc.stop(audioCtx.currentTime + 0.5);
         }
 
@@ -175,95 +182,119 @@
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
             stars = [];
-            for(let i=0; i<400; i++) stars.push({x:Math.random()*w, y:Math.random()*h, s:Math.random()*2, o:Math.random()});
+            for(let i=0; i<300; i++) stars.push({x:Math.random()*w, y:Math.random()*h, s:Math.random()*1.5, o:Math.random()});
+            
             buildings = [];
-            let bCount = w < 800 ? 30 : 60;
-            for(let i=0; i<bCount; i++) {
+            let count = w < 800 ? 25 : 50;
+            for(let i=0; i<count; i++) {
                 buildings.push({
-                    x: Math.random()*w, w: 60+Math.random()*120, h: Math.random()*(h*0.6),
-                    win: Array.from({length: 40}, () => Math.random()>0.8)
+                    x: Math.random()*w, 
+                    w: 60+Math.random()*120, 
+                    h: 120+Math.random()*(h*0.6),
+                    wins: Array.from({length: 40}, () => Math.random()>0.8),
+                    // Mỗi tòa nhà có xác suất hiện 1 trong các dòng chữ của bạn
+                    label: Math.random() > 0.7 ? neonTexts[Math.floor(Math.random()*neonTexts.length)] : null
                 });
             }
         }
 
-        class Particle {
+        class Part {
             constructor(x, y, hue) {
-                this.x = x; this.y = y; this.hue = hue;
-                this.vx = (Math.random()-0.5)*12;
-                this.vy = (Math.random()-0.5)*12;
-                this.a = 1; this.d = 0.01 + Math.random()*0.02;
-            }
-            draw() {
-                ctx.fillStyle = `hsla(${this.hue}, 100%, 70%, ${this.a})`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, 1.5, 0, 7); ctx.fill();
+                this.x = x; this.y = y; this.h = hue;
+                this.vx = (Math.random()-0.5)*15;
+                this.vy = (Math.random()-0.5)*15;
+                this.a = 1; this.decay = 0.01 + Math.random()*0.02;
             }
             update() {
-                this.vx *= 0.96; this.vy *= 0.96; this.vy += 0.15;
-                this.x += this.vx; this.y += this.vy; this.a -= this.d;
+                this.vx *= 0.95; this.vy *= 0.95; this.vy += 0.15;
+                this.x += this.vx; this.y += this.vy; this.a -= this.decay;
+            }
+            draw() {
+                ctx.fillStyle = `hsla(${this.h}, 100%, 75%, ${this.a})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, 1.2, 0, 7); ctx.fill();
             }
         }
 
-        class Rocket {
+        class Rock {
             constructor() {
                 this.x = Math.random()*w; this.y = h;
-                this.ty = 50 + Math.random()*(h*0.4);
-                this.v = 10 + Math.random()*5;
-                this.h = Math.random()*360;
-            }
-            draw() {
-                ctx.fillStyle = '#fff'; ctx.fillRect(this.x, this.y, 2, 10);
+                this.ty = 80 + Math.random()*(h*0.4);
+                this.v = 12 + Math.random()*6;
+                this.hue = Math.random()*360;
             }
             update() {
                 this.y -= this.v;
                 if(this.y <= this.ty) {
-                    playExplosionSound();
-                    for(let i=0; i<150; i++) particles.push(new Particle(this.x, this.y, this.h));
+                    playBoom();
+                    for(let i=0; i<200; i++) particles.push(new Part(this.x, this.y, this.hue));
                     return false;
                 }
                 return true;
             }
+            draw() {
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(this.x, this.y, 2, 10);
+            }
         }
 
         function onYouTubeIframeAPIReady() {
-            yt = new YT.Player('yt-player', { videoId: 'iXaw-jwmjjA', playerVars: { loop:1, playlist:'iXaw-jwmjjA' }});
+            yt = new YT.Player('yt-api', { videoId: 'iXaw-jwmjjA', playerVars: { loop:1, playlist:'iXaw-jwmjjA' }});
         }
 
-        function start() {
-            document.getElementById('starter').style.display = 'none';
+        function igniteEngine() {
+            document.getElementById('gate-portal').style.display = 'none';
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            init(); loop();
-            setInterval(() => { if(Math.random()<0.2) rockets.push(new Rocket()); }, 600);
+            init(); render();
+            setInterval(() => { if(Math.random()<0.3) rockets.push(new Rock()); }, 500);
         }
 
-        function toggleAudio() {
+        function toggleAllAudio() {
             isMute = !isMute;
-            document.getElementById('audio-status').style.background = isMute ? 'var(--p)' : 'var(--a)';
-            isMute ? yt.mute() : yt.unMute(); yt.playVideo();
+            document.getElementById('status-dot').style.background = isMute ? '#ff0000' : '#00ff88';
+            isMute ? yt.mute() : (yt.unMute(), yt.playVideo());
         }
 
-        function check() {
-            if(document.getElementById('un').value === "thuyvanchithuongbminh" && document.getElementById('pw').value === "bminhcungchicuoithvanthoi") {
-                document.getElementById('login').style.display = 'none';
-                const d = document.getElementById('dash');
-                d.style.display = 'block'; setTimeout(() => d.style.opacity = 1, 100);
-                fire(80);
-            } else { alert("Sai mật khẩu rồi bé ơi!"); }
+        function verifyAccess() {
+            const u = document.getElementById('user-field').value;
+            const p = document.getElementById('pass-field').value;
+            if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
+                document.getElementById('ui-auth').style.display = 'none';
+                const menu = document.getElementById('ui-menu');
+                menu.style.display = 'block'; setTimeout(() => menu.style.opacity = 1, 100);
+                launchRockets(80);
+            } else { alert("Chỉ có em mới được vào thôi Vân ơi! ❤️"); }
         }
 
-        function fire(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*150); }
-        function love() { alert("Bình Minh yêu Thuý Vân nhất trên đời!"); fire(100); }
+        function launchRockets(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rock()), i*180); }
+        function loveConfess() { alert("Bình Minh thương và yêu Thuý Vân nhất quả đất!"); launchRockets(120); }
 
-        function loop() {
-            ctx.fillStyle = 'rgba(0,0,5,0.2)'; ctx.fillRect(0,0,w,h);
+        function render() {
+            ctx.fillStyle = 'rgba(0,0,5,0.25)';
+            ctx.fillRect(0,0,w,h);
+            
             stars.forEach(s => { ctx.fillStyle = `rgba(255,255,255,${s.o})`; ctx.fillRect(s.x, s.y, s.s, s.s); });
+            
             buildings.forEach(b => {
                 ctx.fillStyle = '#050510'; ctx.fillRect(b.x, h-b.h, b.w, b.h);
-                b.win.forEach((w_on, i) => { if(w_on) { ctx.fillStyle = '#ff0'; ctx.fillRect(b.x+10+(i%5)*15, h-b.h+10+Math.floor(i/5)*20, 5, 5); }});
+                
+                // Vẽ chữ Neon trên tòa nhà
+                if(b.label) {
+                    ctx.font = 'bold 12px Orbitron';
+                    ctx.fillStyle = 'var(--s)';
+                    ctx.shadowBlur = 10; ctx.shadowColor = 'var(--s)';
+                    ctx.fillText(b.label, b.x + 5, h - b.h + 40);
+                    ctx.shadowBlur = 0;
+                }
+
+                b.wins.forEach((on, i) => { if(on) { ctx.fillStyle = '#ffd700'; ctx.fillRect(b.x+10+(i%5)*15, h-b.h+60+Math.floor(i/5)*20, 4, 4); }});
             });
+
             rockets = rockets.filter(r => { r.draw(); return r.update(); });
             particles = particles.filter(p => { p.draw(); p.update(); return p.a > 0; });
-            requestAnimationFrame(loop);
+            
+            requestAnimationFrame(render);
         }
+
         window.addEventListener('resize', init);
     </script>
 </body>
