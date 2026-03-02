@@ -3,294 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BÌNH MINH ❤️ THUÝ VÂN</title>
+    <title>BÌNH MINH ❤️ THUÝ VÂN - BẢN 82 PRO MAX</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --p: #ff007b; --s: #00f2ff; --g: #ffd700; --v: #7000ff; --a: #00ff88; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; color: #fff; }
+        :root { --p: #ff007b; --s: #00f2ff; --g: #ffd700; --v: #7000ff; --glass: rgba(255, 255, 255, 0.02); }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { background: #000; overflow: hidden; font-family: 'Quicksand', sans-serif; color: #fff; perspective: 1000px; }
 
-        canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; filter: contrast(1.2) brightness(1.2); }
 
-        /* --- SIÊU GIAO DIỆN SẶC SỠ --- */
-        .nebula-container {
+        /* --- SIÊU GIAO DIỆN KHÔNG GIAN --- */
+        .ultimate-ui {
             position: fixed; inset: 0; z-index: 100;
             display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 100%);
+            background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.95) 100%);
         }
 
-        .aurora-card {
-            width: 92%; max-width: 500px; padding: 60px 40px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px solid transparent;
-            border-image: linear-gradient(45deg, var(--p), var(--s), var(--a), var(--v)) 1;
-            border-radius: 50px; /* Note: Border-image overrides border-radius, using clip-path for shape */
-            clip-path: inset(0 round 50px);
-            backdrop-filter: blur(50px) saturate(250%); -webkit-backdrop-filter: blur(50px) saturate(250%);
-            box-shadow: 0 0 150px rgba(255, 0, 123, 0.2);
-            text-align: center; transition: 2s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        .title-neon {
-            font-family: 'Cinzel Decorative', cursive; font-size: 2.6rem;
-            margin-bottom: 50px; background: linear-gradient(90deg, #fff, var(--p), var(--s), var(--g), #fff);
-            background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: flowText 5s linear infinite; filter: drop-shadow(0 0 20px var(--p));
-        }
-        @keyframes flowText { to { background-position: 300% center; } }
-
-        /* --- INPUTS & VỆ TINH CÔNG NGHỆ --- */
-        .input-group { position: relative; margin-bottom: 40px; }
-        .input-group input {
-            width: 100%; padding: 25px 35px; padding-right: 80px;
-            background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px; color: #fff; font-size: 18px; font-weight: 500;
-            transition: 0.6s; letter-spacing: 1px;
-        }
-        .input-group input:focus { 
-            border-color: var(--a); transform: scale(1.02);
-            box-shadow: 0 0 50px rgba(0, 255, 136, 0.3), inset 0 0 20px rgba(0,255,136,0.1);
-        }
-
-        .eye-satellite-v2 {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            width: 50px; height: 50px; border-radius: 50%;
-            background: rgba(0,0,0,0.8); border: 2px solid var(--s);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 200; transition: 0.5s;
-            box-shadow: 0 0 20px var(--s);
-        }
-        .eye-satellite-v2:hover { border-color: var(--p); box-shadow: 0 0 30px var(--p); transform: translateY(-50%) rotate(360deg) scale(1.1); }
-
-        .btn-supreme {
-            width: 100%; padding: 25px; border: none; border-radius: 30px;
-            background: linear-gradient(45deg, var(--p), var(--v), var(--s), var(--a));
-            background-size: 400% 400%; animation: gradientMove 8s infinite;
-            color: #fff; font-weight: 900; letter-spacing: 7px; cursor: pointer;
-            box-shadow: 0 20px 60px rgba(0, 242, 255, 0.4); transition: 0.5s;
-        }
-        @keyframes gradientMove { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-        .btn-supreme:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 40px 80px var(--v); }
-
-        /* --- MENU ĐA CHIỀU (MULTI-DIMENSIONAL) --- */
-        .nebula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 35px; margin-top: 30px; }
-        .nebula-node {
-            background: rgba(255,255,255,0.02); padding: 50px 15px; border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.7s;
+        .cyber-card {
+            width: 90%; max-width: 500px; padding: 60px 40px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 80px 20px 80px 20px;
+            backdrop-filter: blur(60px) saturate(200%); -webkit-backdrop-filter: blur(60px) saturate(200%);
+            box-shadow: 0 0 100px rgba(0,0,0,1), inset 0 0 40px rgba(255,255,255,0.02);
+            text-align: center; transition: 2s cubic-bezier(0.2, 0.8, 0.2, 1);
             position: relative; overflow: hidden;
         }
-        .nebula-node:nth-child(1) { transform: rotate(-4deg) translateY(-20px); }
-        .nebula-node:nth-child(2) { transform: rotate(4deg) translateY(20px); }
-        .nebula-node:hover {
-            background: rgba(255,255,255,0.1); transform: scale(1.2) rotate(0deg) !important;
-            box-shadow: 0 0 60px var(--a); z-index: 10; border-color: var(--a);
-        }
-        .nebula-node i { font-size: 40px; margin-bottom: 20px; color: var(--g); display: block; filter: drop-shadow(0 0 15px var(--g)); }
-        .nebula-node span { font-weight: 900; letter-spacing: 3px; font-size: 14px; }
 
-        /* --- NÚT ÂM THANH HOLOGRAM --- */
-        #audio-vip {
-            position: fixed; top: 40px; left: 40px; z-index: 1000;
-            width: 60px; height: 60px; border-radius: 50%;
-            background: rgba(0,0,0,0.7); border: 2px solid var(--a);
+        .title-ultra {
+            font-family: 'Cinzel Decorative', cursive; font-size: 2.5rem;
+            margin-bottom: 50px; background: linear-gradient(45deg, #fff, var(--p), var(--s), var(--g));
+            background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: flow 5s linear infinite; filter: drop-shadow(0 0 25px var(--p));
+        }
+        @keyframes flow { to { background-position: 300% center; } }
+
+        /* --- INPUTS VÀ HỆ THỐNG MẮT VỆ TINH --- */
+        .input-box { position: relative; margin-bottom: 35px; }
+        .input-box input {
+            width: 100%; padding: 24px 30px; padding-right: 85px;
+            background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 40px; color: #fff; font-size: 17px; font-weight: 500;
+            transition: 0.5s; box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+        .input-box input:focus { 
+            border-color: var(--s); transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+        }
+
+        .eye-orb {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            width: 55px; height: 55px; border-radius: 50%;
+            background: rgba(255,255,255,0.03); border: 2px solid var(--p);
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 0 25px var(--a); transition: 0.4s;
+            cursor: pointer; z-index: 10; transition: 0.5s;
+            box-shadow: 0 0 20px var(--p);
         }
-        .v-bars { display: flex; gap: 4px; align-items: flex-end; height: 25px; }
-        .v-bars span { width: 4px; background: var(--a); animation: v-rise 0.8s infinite alternate; }
-        @keyframes v-rise { from { height: 4px; } to { height: 25px; } }
+        .eye-orb:hover { background: var(--p); transform: translateY(-50%) rotate(360deg) scale(1.1); }
+        .eye-orb i { font-size: 20px; filter: drop-shadow(0 0 5px #fff); }
 
-        /* --- CỔNG KHAI HỎA (IGNITION GATE) --- */
-        #gate-supreme {
+        .btn-pro {
+            width: 100%; padding: 25px; border: none; border-radius: 40px;
+            background: linear-gradient(45deg, var(--p), var(--v), var(--s));
+            background-size: 400% 400%; animation: moveGradi 8s infinite;
+            color: #fff; font-weight: 900; letter-spacing: 8px; cursor: pointer;
+            box-shadow: 0 25px 60px rgba(255, 0, 123, 0.4); transition: 0.6s;
+        }
+        @keyframes moveGradi { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        .btn-pro:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 40px 80px var(--p); }
+
+        /* --- MENU CHÒM SAO ĐA CHIỀU --- */
+        .constellation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 25px; }
+        .star-node {
+            background: rgba(255,255,255,0.02); padding: 50px 10px; border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.8s;
+        }
+        .star-node:nth-child(odd) { transform: rotate(-5deg) translateY(-20px); }
+        .star-node:nth-child(even) { transform: rotate(5deg) translateY(20px); }
+        .star-node:hover {
+            background: var(--s); color: #000; transform: scale(1.2) rotate(0deg) !important;
+            box-shadow: 0 0 70px var(--s); z-index: 50;
+        }
+        .star-node i { font-size: 40px; margin-bottom: 20px; color: var(--g); display: block; }
+        .star-node span { font-weight: 900; font-size: 14px; letter-spacing: 3px; }
+
+        /* --- NÚT ÂM THANH PRO MAX --- */
+        #sound-visualizer {
+            position: fixed; top: 40px; right: 40px; z-index: 1000;
+            width: 65px; height: 65px; border-radius: 50%;
+            background: rgba(0,0,0,0.7); border: 2px solid var(--s);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 0 30px var(--s); transition: 0.4s;
+        }
+        .v-lines { display: flex; gap: 4px; align-items: flex-end; height: 28px; }
+        .v-lines span { width: 4px; background: var(--s); animation: v-rise 0.8s infinite alternate; }
+        @keyframes v-rise { from { height: 4px; } to { height: 28px; } }
+
+        /* --- CỔNG KHAI NGUYÊN (GATE) --- */
+        #super-gate {
             position: fixed; inset: 0; z-index: 10000; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
-        .gate-icon { font-size: 120px; color: var(--p); animation: gate-pulse 1s infinite alternate; filter: drop-shadow(0 0 50px var(--p)); }
-        @keyframes gate-pulse { from { transform: scale(1); filter: hue-rotate(0deg); } to { transform: scale(1.4); filter: hue-rotate(90deg); } }
+        .gate-spark { font-size: 130px; color: var(--p); animation: pulse 1s infinite alternate; filter: drop-shadow(0 0 60px var(--p)); }
+        @keyframes pulse { from { transform: scale(1) rotate(0); } to { transform: scale(1.3) rotate(15deg); } }
 
-        /* --- HIỆU ỨNG DIMENSION WARP --- */
-        .dimension-warp { opacity: 0; transform: scale(10) rotate(45deg); filter: blur(100px); pointer-events: none; }
+        /* --- WARP EFFECT --- */
+        .warp-active { opacity: 0; transform: scale(0) rotate(1080deg); filter: blur(100px); pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div id="gate-supreme" onclick="igniteNebula()">
-        <i class="fa-solid fa-wand-magic-sparkles gate-icon"></i>
-        <h2 style="margin-top: 50px; letter-spacing: 20px; font-weight: 300; color: #fff;">CHẠM ĐỂ SƯỚNG</h2>
+    <div id="super-gate" onclick="igniteEngine()">
+        <i class="fa-solid fa-star-and-crescent gate-spark"></i>
+        <h2 style="margin-top: 50px; letter-spacing: 25px; font-weight: 300; color: #fff; text-shadow: 0 0 20px var(--p);">CHẠM ĐỂ SƯỚNG</h2>
     </div>
 
-    <div id="audio-vip" onclick="controlAudio()">
-        <div class="v-bars" id="v-on" style="display: none;">
+    <div id="sound-visualizer" onclick="toggleMusic()">
+        <div class="v-lines" id="music-on" style="display: none;">
             <span></span><span style="animation-delay: 0.2s"></span><span style="animation-delay: 0.4s"></span>
         </div>
-        <i class="fa-solid fa-volume-xmark" id="v-off" style="color: var(--a); font-size: 20px;"></i>
+        <i class="fa-solid fa-microphone-slash" id="music-off" style="color: var(--s); font-size: 24px;"></i>
     </div>
 
-    <canvas id="nebula-canvas"></canvas>
-    <div id="video-engine" style="position: absolute; visibility: hidden;"></div>
+    <canvas id="galaxy-canvas"></canvas>
+    <div id="yt-core" style="position: absolute; visibility: hidden;"></div>
 
-    <div class="nebula-container">
-        <div class="aurora-card" id="card-login" style="display: none;">
-            <h1 class="title-neon">BÌNH MINH ❤️ THUÝ VÂN</h1>
-            <div class="input-group">
-                <input type="text" id="u-name" placeholder="nhập tài khoản đi bây bi">
+    <div class="ultimate-ui">
+        <div class="cyber-card" id="card-login" style="display: none;">
+            <h1 class="title-ultra">BÌNH MINH ❤️ THUÝ VÂN</h1>
+            <div class="input-box">
+                <input type="text" id="user" placeholder="nhập tài khoản đi bây bi">
             </div>
-            <div class="input-group">
-                <input type="password" id="p-word" placeholder="nhập mật khẩu bé ưi">
-                <div class="eye-satellite-v2" onclick="toggleSecret()">
-                    <i class="fa-solid fa-eye" id="eye-v2"></i>
+            <div class="input-box">
+                <input type="password" id="pass" placeholder="nhập mật khẩu bé ưi">
+                <div class="eye-orb" onclick="togglePass()">
+                    <i class="fa-solid fa-eye" id="eye-icon"></i>
                 </div>
             </div>
-            <button class="btn-supreme" onclick="verify()">KHAI MỞ TRÁI TIM</button>
+            <button class="btn-pro" onclick="accessHeart()">KHAI HỎA TRÁI TIM</button>
         </div>
 
-        <div class="aurora-card" id="card-menu" style="display: none; opacity: 0; transform: scale(0.01) rotate(-180deg);">
-            <h1 class="title-neon" style="font-size: 1.8rem;">VŨ TRỤ CỦA VÂN</h1>
-            <div class="nebula-grid">
-                <div class="nebula-node" onclick="superBlast(30)"><i class="fa-solid fa-cloud-moon"></i><span>KỈ NIỆM</span></div>
-                <div class="nebula-node" onclick="superBlast(30)"><i class="fa-solid fa-sun-plant-wilt"></i><span>HIỆN TẠI</span></div>
-                <div class="nebula-node" onclick="superBlast(30)"><i class="fa-solid fa-shuttle-space"></i><span>TƯƠNG LAI</span></div>
-                <div class="nebula-node" onclick="deepLove()"><i class="fa-solid fa-heart-circle-bolt"></i><span>YÊU EM</span></div>
+        <div class="cyber-card" id="card-menu" style="display: none; opacity: 0; transform: scale(0.1) rotateX(90deg);">
+            <h1 class="title-ultra" style="font-size: 2rem;">VŨ TRỤ CỦA VÂN</h1>
+            <div class="constellation-grid">
+                <div class="star-node" onclick="superFire(40)"><i class="fa-solid fa-gem"></i><span>KỈ NIỆM</span></div>
+                <div class="star-node" onclick="superFire(40)"><i class="fa-solid fa-fire"></i><span>HIỆN TẠI</span></div>
+                <div class="star-node" onclick="superFire(40)"><i class="fa-solid fa-infinity"></i><span>TƯƠNG LAI</span></div>
+                <div class="star-node" onclick="finalSurprise()"><i class="fa-solid fa-heart-pulse"></i><span>YÊU EM</span></div>
             </div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const canvas = document.getElementById('nebula-canvas');
+        const canvas = document.getElementById('galaxy-canvas');
         const ctx = canvas.getContext('2d');
-        let w, h, player, isLive = false;
-        let rockets = [], particles = [], skyscrapers = [];
+        let w, h, player, isPlaying = false;
+        let rockets = [], particles = [], city = [];
 
         function resize() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-            skyscrapers = [];
-            for(let i=0; i<60; i++) {
-                skyscrapers.push({
+            city = [];
+            for(let i=0; i<70; i++) {
+                city.push({
                     x: Math.random() * w,
-                    w: 40 + Math.random() * 100,
+                    w: 30 + Math.random() * 90,
                     h: 50 + Math.random() * (h * 0.5),
                     hue: Math.random() * 360,
-                    lightPower: Math.random()
+                    blink: Math.random()
                 });
             }
         }
         window.onresize = resize;
 
-        class NebulaPart {
+        class Particle {
             constructor(x, y, color) {
                 this.x = x; this.y = y; this.color = color;
-                const ang = Math.random() * Math.PI * 2;
-                const spd = Math.random() * 15 + 2;
-                this.vx = Math.cos(ang) * spd;
-                this.vy = Math.sin(ang) * spd;
-                this.alpha = 1; this.decay = 0.005 + Math.random() * 0.01;
-                this.size = Math.random() * 4 + 1;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 18 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1; this.decay = Math.random() * 0.01 + 0.005;
+                this.size = Math.random() * 5 + 1;
             }
-            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.15; this.alpha -= this.decay; }
+            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.18; this.alpha -= this.decay; }
             draw() {
                 ctx.save(); ctx.globalAlpha = this.alpha;
-                ctx.shadowBlur = 20; ctx.shadowColor = this.color;
+                ctx.shadowBlur = 25; ctx.shadowColor = this.color;
                 ctx.fillStyle = this.color; ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, 7); ctx.fill(); ctx.restore();
             }
         }
 
-        class SuperRocket {
+        class Rocket {
             constructor() {
                 this.x = Math.random() * w; this.y = h;
-                this.target = Math.random() * (h * 0.4);
+                this.target = Math.random() * (h * 0.45);
                 this.color = `hsl(${Math.random() * 360}, 100%, 75%)`;
             }
             update() {
-                this.y -= 18;
+                this.y -= 20;
                 if(this.y <= this.target) {
-                    for(let i=0; i<300; i++) particles.push(new NebulaPart(this.x, this.y, this.color));
+                    for(let i=0; i<400; i++) particles.push(new Particle(this.x, this.y, this.color));
                     return false;
                 }
                 return true;
             }
             draw() {
-                ctx.fillStyle = "#fff"; ctx.shadowBlur = 30; ctx.shadowColor = this.color;
-                ctx.beginPath(); ctx.arc(this.x, this.y, 5, 0, 7); ctx.fill();
+                ctx.fillStyle = "#fff"; ctx.shadowBlur = 35; ctx.shadowColor = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, 6, 0, 7); ctx.fill();
             }
         }
 
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('video-engine', {
+            player = new YT.Player('yt-core', {
                 height: '0', width: '0', videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
                 events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function controlAudio() {
-            const on = document.getElementById('v-on');
-            const off = document.getElementById('v-off');
-            if(!isLive) {
-                player.unMute(); player.playVideo(); isLive = true;
+        function toggleMusic() {
+            const on = document.getElementById('music-on'), off = document.getElementById('music-off');
+            if(!isPlaying) {
+                player.unMute(); player.playVideo(); isPlaying = true;
                 on.style.display = 'flex'; off.style.display = 'none';
             } else {
-                player.mute(); isLive = false;
+                player.mute(); isPlaying = false;
                 on.style.display = 'none'; off.style.display = 'block';
             }
         }
 
-        function igniteNebula() {
-            document.getElementById('gate-supreme').classList.add('dimension-warp');
+        function igniteEngine() {
+            document.getElementById('super-gate').classList.add('warp-active');
             setTimeout(() => {
-                document.getElementById('gate-supreme').style.display = 'none';
+                document.getElementById('super-gate').style.display = 'none';
                 document.getElementById('card-login').style.display = 'block';
-                resize(); nebulaLoop();
-                setInterval(() => { if(Math.random() < 0.3) rockets.push(new SuperRocket()); }, 500);
+                resize(); mainLoop();
+                setInterval(() => { if(Math.random() < 0.35) rockets.push(new Rocket()); }, 450);
             }, 1200);
         }
 
-        function verify() {
-            const u = document.getElementById('u-name').value;
-            const p = document.getElementById('p-word').value;
+        function accessHeart() {
+            const u = document.getElementById('user').value, p = document.getElementById('pass').value;
             if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
                 const log = document.getElementById('card-login');
-                log.style.transform = "scale(5) rotate(180deg)"; log.style.opacity = "0";
+                log.style.transform = "scale(0) translateZ(-500px) rotate(360deg)"; log.style.opacity = "0";
                 setTimeout(() => {
                     log.style.display = 'none';
                     const menu = document.getElementById('card-menu');
                     menu.style.display = 'block';
-                    setTimeout(() => { menu.style.opacity = "1"; menu.style.transform = "scale(1) rotate(0deg)"; }, 200);
-                    superBlast(50);
-                }, 1000);
+                    setTimeout(() => { menu.style.opacity = "1"; menu.style.transform = "scale(1) rotateX(0deg)"; }, 200);
+                    superFire(60);
+                }, 1500);
             } else { alert("Chưa đúng rồi bây bi ơi! ❤️"); }
         }
 
-        function toggleSecret() {
-            const i = document.getElementById('p-word'), e = document.getElementById('eye-v2');
+        function togglePass() {
+            const i = document.getElementById('pass'), e = document.getElementById('eye-icon');
             i.type = i.type === 'password' ? 'text' : 'password';
             e.className = i.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
         }
 
-        function superBlast(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new SuperRocket()), i*100); }
-        function deepLove() { alert('Bình Minh yêu Thuý Vân nhất vũ trụ sặc sỡ này!'); superBlast(60); }
+        function superFire(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*120); }
+        function finalSurprise() { alert('Bình Minh yêu Thuý Vân nhất cái vũ trụ này!'); superFire(80); }
 
-        function nebulaLoop() {
+        function mainLoop() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; ctx.fillRect(0,0,w,h);
-            skyscrapers.forEach(s => {
-                ctx.fillStyle = '#020205'; ctx.fillRect(s.x, h - s.h, s.w, s.h);
-                // Hệ thống ánh sáng Neon đa sắc
-                ctx.strokeStyle = `hsla(${s.hue}, 100%, 60%, 0.4)`; ctx.lineWidth = 2;
-                ctx.shadowBlur = 15; ctx.shadowColor = `hsl(${s.hue}, 100%, 50%)`;
+            city.forEach(s => {
+                ctx.fillStyle = '#050510'; ctx.fillRect(s.x, h - s.h, s.w, s.h);
+                ctx.strokeStyle = `hsla(${s.hue}, 100%, 60%, 0.3)`; ctx.lineWidth = 2;
+                ctx.shadowBlur = 10; ctx.shadowColor = `hsl(${s.hue}, 100%, 50%)`;
                 ctx.strokeRect(s.x, h - s.h, s.w, s.h);
-                // Đèn cửa sổ lấp lánh
-                if(Math.random() < 0.1) {
+                if(Math.random() < 0.05) {
                     ctx.fillStyle = `hsla(${s.hue}, 100%, 80%, ${Math.random()})`;
-                    ctx.fillRect(s.x + 10, h - s.h + 20, s.w - 20, 5);
+                    ctx.fillRect(s.x + 5, h - s.h + 10, s.w - 10, 5);
                 }
             });
             ctx.shadowBlur = 0;
             rockets = rockets.filter(r => { r.draw(); return r.update(); });
             particles = particles.filter(p => { p.draw(); p.update(); return p.alpha > 0; });
-            requestAnimationFrame(nebulaLoop);
+            requestAnimationFrame(mainLoop);
         }
     </script>
 </body>
