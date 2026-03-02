@@ -9,141 +9,112 @@
     
     <style>
         :root {
-            --p: #ff007b; --s: #00f2ff; --v: #7000ff; --w: #ffffff;
-            --bg: #02020a; --glass: rgba(10, 10, 20, 0.75);
+            --p: #ff007b; --s: #00f2ff; --v: #7000ff;
+            --bg: #000005; --glass: rgba(255, 255, 255, 0.03);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { 
-            width: 100vw; height: 100vh; background: var(--bg); 
-            overflow: hidden; font-family: 'Quicksand', sans-serif; 
-            color: #fff; position: fixed;
+        body, html { width: 100vw; height: 100vh; background: var(--bg); overflow: hidden; font-family: 'Quicksand', sans-serif; color: #fff; position: fixed; }
+
+        /* CANVAS & BACKGROUND */
+        #vortex-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; filter: saturate(1.5) brightness(1.1); }
+        .master-stage { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, transparent, rgba(0,0,0,0.8)); }
+
+        /* KHUNG ĐĂNG NHẬP SIÊU TINH TẾ (THU NHỎ) */
+        .login-card {
+            width: 310px; padding: 40px 30px; position: relative;
+            background: var(--glass); backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.5);
+            animation: fadeIn 1.2s ease-out;
         }
 
-        /* ENGINE ĐỒ HỌA THÀNH PHỐ */
-        #vortex-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; filter: contrast(1.1) brightness(1.2) saturate(1.5); }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        /* XOAY NGANG MÀN HÌNH */
-        #rotate-notice {
-            position: fixed; inset: 0; z-index: 100000; background: #000;
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; color: var(--s); font-family: 'Orbitron';
+        .web-title {
+            font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem; text-align: center;
+            margin-bottom: 35px; background: linear-gradient(90deg, #fff, var(--p), var(--s), #fff);
+            background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: flow 5s linear infinite;
         }
-        @media screen and (orientation: portrait) { #rotate-notice { display: flex; } }
+        @keyframes flow { to { background-position: 200% center; } }
 
-        /* GIAO DIỆN MASTER */
-        .master-stage {
-            position: fixed; inset: 0; z-index: 100;
-            display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.8) 100%);
-        }
-
-        /* KHUNG ĐĂNG NHẬP LUXURY */
-        .cyber-card {
-            width: 340px; padding: 40px; position: relative;
-            background: var(--glass);
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 40px 10px 40px 10px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-            animation: cardFadeIn 1.5s ease;
-        }
-
-        @keyframes cardFadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        .web-header { text-align: center; margin-bottom: 30px; }
-        .web-header h1 { font-family: 'Cinzel Decorative', cursive; font-size: 1.4rem; color: #fff; letter-spacing: 2px; text-shadow: 0 0 15px var(--p); }
-        .web-header p { font-family: 'Orbitron'; font-size: 9px; color: var(--s); letter-spacing: 4px; margin-top: 10px; text-transform: uppercase; }
-
-        /* INPUT CÓ ICON */
-        .field-group { position: relative; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.2); transition: 0.3s; }
-        .field-group:focus-within { border-bottom-color: var(--s); }
+        /* INPUT GROUP - NỘI DUNG CHUẨN CỦA BẠN */
+        .input-group { position: relative; margin-bottom: 25px; }
+        .input-group label { display: block; font-family: 'Orbitron'; font-size: 8px; color: var(--s); letter-spacing: 2px; margin-bottom: 8px; }
         
-        .field-group i { position: absolute; left: 0; bottom: 12px; color: var(--s); font-size: 14px; opacity: 0.7; }
-        
-        .field-group label { display: block; font-family: 'Orbitron'; font-size: 8px; color: var(--p); letter-spacing: 2px; margin-bottom: 5px; }
-        
-        .field-group input {
-            width: 100%; padding: 10px 30px; background: transparent;
-            border: none; color: #fff; font-size: 15px; outline: none;
+        .input-box { position: relative; display: flex; align-items: center; }
+        .input-box input {
+            width: 100%; padding: 12px 15px; background: rgba(255,255,255,0.05);
+            border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
+            color: #fff; font-size: 14px; outline: none; transition: 0.3s;
         }
+        .input-box input:focus { border-bottom-color: var(--p); background: rgba(255,255,255,0.1); }
 
-        /* NÚT TRUY CẬP TRONG SUỐT NỔI BẬT */
-        .btn-glow {
+        /* ICON ẨN HIỆN MẬT KHẨU */
+        .toggle-pw { position: absolute; right: 10px; cursor: pointer; color: rgba(255,255,255,0.5); transition: 0.3s; }
+        .toggle-pw:hover { color: var(--s); }
+
+        .btn-access {
             width: 100%; padding: 16px; border: none; margin-top: 10px;
             font-family: 'Orbitron'; font-weight: 900; font-size: 0.8rem;
             color: #fff; letter-spacing: 8px; cursor: pointer;
             background: linear-gradient(45deg, var(--p), var(--v));
             border-radius: 50px; transition: 0.4s;
-            box-shadow: 0 5px 20px rgba(255, 0, 123, 0.3);
         }
-        .btn-glow:hover { transform: scale(1.05); letter-spacing: 12px; box-shadow: 0 0 30px var(--p); }
+        .btn-access:hover { transform: scale(1.03); letter-spacing: 12px; box-shadow: 0 0 30px var(--p); }
 
-        /* MÀN HÌNH CHỜ */
-        #portal {
-            position: fixed; inset: 0; z-index: 10000; background: #000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
-        }
-        .portal-ring {
-            width: 120px; height: 120px; border: 2px solid var(--p); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            animation: ringSpin 4s linear infinite;
-        }
-        @keyframes ringSpin { to { transform: rotate(360deg); border-color: var(--s); } }
+        /* MÀN HÌNH CHẠM ĐỂ SƯỚNG */
+        #portal { position: fixed; inset: 0; z-index: 10000; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+        .core { width: 80px; height: 80px; background: #fff; border-radius: 50%; box-shadow: 0 0 50px #fff; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; } }
 
-        /* NÚT NHẠC */
-        #music-btn {
-            position: fixed; top: 25px; right: 25px; z-index: 1000;
-            width: 45px; height: 45px; border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
+        #audio-toggle { position: fixed; top: 25px; right: 25px; z-index: 1000; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="rotate-notice"><h2>XOAY NGANG ĐIỆN THOẠI ĐỂ TRẢI NGHIỆM ĐẸP NHẤT</h2></div>
-
-    <div id="portal" onclick="initEngine()">
-        <div class="portal-ring"><div style="width:20px; height:20px; background:#fff; border-radius:50%; box-shadow: 0 0 30px #fff;"></div></div>
-        <h1 style="margin-top: 40px; font-family: 'Orbitron'; letter-spacing: 12px; font-size: 20px;">CHẠM ĐỂ SƯỚNG</h1>
+    <div id="portal" onclick="startApp()">
+        <div class="core"></div>
+        <h2 style="margin-top: 30px; font-family: 'Orbitron'; letter-spacing: 12px; font-size: 18px;">CHẠM ĐỂ SƯỚNG</h2>
     </div>
 
-    <div id="music-btn" onclick="toggleMute()">
-        <i id="m-icon" class="fas fa-volume-mute" style="color: #fff; font-size: 14px;"></i>
+    <div id="audio-toggle" onclick="toggleMute()">
+        <i id="vol-icon" class="fas fa-volume-mute"></i>
     </div>
 
     <canvas id="vortex-canvas"></canvas>
     <div id="yt-player" style="display:none"></div>
 
     <div class="master-stage">
-        <div class="cyber-card" id="ui-login">
-            <div class="web-header">
-                <h1>BÌNH MINH</h1>
-                <p>TẶNG EM THUÝ VÂN</p>
-            </div>
+        <div class="login-card" id="login-ui">
+            <h1 class="web-title">BÌNH MINH TẶNG EM</h1>
             
-            <div class="field-group">
+            <div class="input-group">
                 <label>DANH TÍNH</label>
-                <i class="fas fa-user"></i>
-                <input type="text" id="username" placeholder="Tên của em ưi">
+                <div class="input-box">
+                    <input type="text" id="user" placeholder="tên của bé">
+                </div>
             </div>
 
-            <div class="field-group">
+            <div class="input-group">
                 <label>MẬT MÃ</label>
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Mật mã bí mật">
+                <div class="input-box">
+                    <input type="password" id="pass" placeholder="mật khẩu">
+                    <i class="fas fa-eye toggle-pw" id="eye-icon" onclick="togglePass()"></i>
+                </div>
             </div>
 
-            <button class="btn-glow" onclick="access()">TRUY CẬP</button>
+            <button class="btn-access" onclick="verify()">TRUY CẬP</button>
         </div>
 
-        <div class="cyber-card" id="ui-menu" style="display:none; opacity:0;">
-            <div class="web-header"><h1>VŨ TRỤ CỦA VÂN</h1></div>
+        <div class="login-card" id="menu-ui" style="display:none; opacity:0;">
+            <h1 class="web-title">DÀNH CHO VÂN</h1>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <button class="btn-glow" style="font-size:9px; padding:12px; letter-spacing:2px;" onclick="ignite(60)">KỈ NIỆM</button>
-                <button class="btn-glow" style="font-size:9px; padding:12px; letter-spacing:2px;" onclick="ignite(60)">HIỆN TẠI</button>
-                <button class="btn-glow" style="font-size:9px; padding:12px; letter-spacing:2px;" onclick="ignite(60)">TƯƠNG LAI</button>
-                <button class="btn-glow" style="font-size:9px; padding:12px; letter-spacing:2px;" onclick="love()">MÃI YÊU</button>
+                <button class="btn-access" style="font-size: 9px; padding: 12px; letter-spacing: 2px;" onclick="fire(60)">KỈ NIỆM</button>
+                <button class="btn-access" style="font-size: 9px; padding: 12px; letter-spacing: 2px;" onclick="fire(60)">HIỆN TẠI</button>
+                <button class="btn-access" style="font-size: 9px; padding: 12px; letter-spacing: 2px;" onclick="fire(60)">TƯƠNG LAI</button>
+                <button class="btn-access" style="font-size: 9px; padding: 12px; letter-spacing: 2px;" onclick="love()">YÊU ANH</button>
             </div>
         </div>
     </div>
@@ -152,16 +123,16 @@
     <script>
         const canvas = document.getElementById('vortex-canvas');
         const ctx = canvas.getContext('2d');
-        let w, h, yt, audioCtx, isMuted = true;
+        let w, h, yt, audioCtx, muted = true;
         let rockets = [], particles = [], stars = [], buildings = [];
-        const neonMsgs = ["BMINH THƯƠNG EM", "BMINH YÊU EM", "THVAN CUTE", "THVAN XINH", "MÃI YÊU EM"];
+        const texts = ["BMINH THƯƠNG EM", "BMINH YÊU EM", "THVAN CUTE", "THVAN XINH", "MÃI YÊU EM"];
 
-        function boomSound() {
-            if(isMuted || !audioCtx) return;
+        function boom() {
+            if(muted || !audioCtx) return;
             const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-            o.type = 'sine'; o.frequency.setValueAtTime(100, audioCtx.currentTime);
+            o.type = 'sine'; o.frequency.setValueAtTime(110, audioCtx.currentTime);
             o.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            g.gain.setValueAtTime(0.08, audioCtx.currentTime);
             g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
             o.connect(g); g.connect(audioCtx.destination);
             o.start(); o.stop(audioCtx.currentTime + 0.5);
@@ -170,45 +141,42 @@
         function initScene() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-            stars = Array.from({length: 300}, () => ({x:Math.random()*w, y:Math.random()*h, s:Math.random()*2, o:Math.random()}));
+            stars = Array.from({length: 250}, () => ({x:Math.random()*w, y:Math.random()*h, s:Math.random()*1.5, o:Math.random()}));
             buildings = [];
-            let count = w < 800 ? 30 : 60;
+            let count = w < 800 ? 25 : 55;
             for(let i=0; i<count; i++) {
                 buildings.push({
-                    x: Math.random()*w, w: 50+Math.random()*120, h: 100+Math.random()*(h*0.65),
-                    label: Math.random() > 0.85 ? neonMsgs[Math.floor(Math.random()*neonMsgs.length)] : null,
-                    shade: 5 + Math.random()*15
+                    x: Math.random()*w, w: 60+Math.random()*100, h: 120+Math.random()*(h*0.6),
+                    txt: Math.random() > 0.85 ? texts[Math.floor(Math.random()*texts.length)] : null
                 });
             }
         }
 
-        class Part {
+        class Particle {
             constructor(x, y, hue) {
                 this.x = x; this.y = y; this.h = hue;
-                this.vx = (Math.random()-0.5)*18; this.vy = (Math.random()-0.5)*18;
-                this.a = 1; this.d = 0.01 + Math.random()*0.02;
+                this.vx = (Math.random()-0.5)*15; this.vy = (Math.random()-0.5)*15;
+                this.a = 1; this.d = 0.015 + Math.random()*0.02;
             }
             draw() {
                 ctx.fillStyle = `hsla(${this.h}, 100%, 75%, ${this.a})`;
-                ctx.shadowBlur = 15; ctx.shadowColor = `hsl(${this.h}, 100%, 50%)`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, 1.5, 0, 7); ctx.fill();
-                ctx.shadowBlur = 0;
+                ctx.beginPath(); ctx.arc(this.x, this.y, 1.3, 0, 7); ctx.fill();
             }
-            update() { this.vx *= 0.94; this.vy *= 0.94; this.vy += 0.15; this.x += this.vx; this.y += this.vy; this.a -= this.d; }
+            update() { this.vx *= 0.95; this.vy *= 0.95; this.vy += 0.15; this.x += this.vx; this.y += this.vy; this.a -= this.d; }
         }
 
         class Rocket {
             constructor() {
                 this.x = Math.random()*w; this.y = h;
-                this.ty = 50 + Math.random()*(h*0.45);
-                this.v = 13 + Math.random()*7; this.hue = Math.random()*360;
+                this.ty = 60 + Math.random()*(h*0.4);
+                this.v = 11+Math.random()*6; this.hue = Math.random()*360;
             }
-            draw() { ctx.fillStyle = '#fff'; ctx.fillRect(this.x, this.y, 2, 12); }
+            draw() { ctx.fillStyle = '#fff'; ctx.fillRect(this.x, this.y, 1.5, 10); }
             update() {
                 this.y -= this.v;
                 if(this.y <= this.ty) {
-                    boomSound();
-                    for(let i=0; i<200; i++) particles.push(new Part(this.x, this.y, this.hue));
+                    boom();
+                    for(let i=0; i<180; i++) particles.push(new Particle(this.x, this.y, this.hue));
                     return false;
                 }
                 return true;
@@ -219,50 +187,53 @@
             yt = new YT.Player('yt-player', { videoId: 'iXaw-jwmjjA', playerVars: { loop:1, playlist:'iXaw-jwmjjA' }});
         }
 
-        function initEngine() {
+        function startApp() {
             document.getElementById('portal').style.display = 'none';
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            initScene(); animate();
-            setInterval(() => { if(Math.random()<0.3) rockets.push(new Rocket()); }, 500);
+            initScene(); loop();
+            setInterval(() => { if(Math.random()<0.3) rockets.push(new Rocket()); }, 600);
+        }
+
+        function togglePass() {
+            const p = document.getElementById('pass');
+            const icon = document.getElementById('eye-icon');
+            if(p.type === "password") { p.type = "text"; icon.className = "fas fa-eye-slash"; }
+            else { p.type = "password"; icon.className = "fas fa-eye"; }
         }
 
         function toggleMute() {
-            isMuted = !isMuted;
-            const icon = document.getElementById('m-icon');
-            icon.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
-            isMuted ? yt.mute() : (yt.unMute(), yt.playVideo());
+            muted = !muted;
+            document.getElementById('vol-icon').className = muted ? "fas fa-volume-mute" : "fas fa-volume-up";
+            muted ? yt.mute() : (yt.unMute(), yt.playVideo());
         }
 
-        function access() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
+        function verify() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
             if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
-                document.getElementById('ui-login').style.display = 'none';
-                const m = document.getElementById('ui-menu'); m.style.display = 'block';
-                setTimeout(() => m.style.opacity = 1, 100); ignite(100);
-            } else { alert("Tên hoặc mật mã không đúng rồi em ơi! ❤️"); }
+                document.getElementById('login-ui').style.display = 'none';
+                const m = document.getElementById('menu-ui'); m.style.display = 'block';
+                setTimeout(() => m.style.opacity = 1, 100); fire(80);
+            } else { alert("Tên hoặc mật mã sai rồi bé ơi! ❤️"); }
         }
 
-        function ignite(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*150); }
-        function love() { alert("Bình Minh yêu Thuý Vân vĩnh cửu!"); ignite(120); }
+        function fire(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*150); }
+        function love() { alert("Bình Minh yêu Thuý Vân nhất!"); fire(100); }
 
-        function animate() {
-            ctx.fillStyle = 'rgba(2, 2, 10, 0.25)'; ctx.fillRect(0,0,w,h);
+        function loop() {
+            ctx.fillStyle = 'rgba(0,0,5,0.25)'; ctx.fillRect(0,0,w,h);
             stars.forEach(s => { ctx.fillStyle=`rgba(255,255,255,${s.o})`; ctx.fillRect(s.x, s.y, s.s, s.s); });
             buildings.forEach(b => {
-                let g = ctx.createLinearGradient(b.x, h-b.h, b.x, h);
-                g.addColorStop(0, `rgb(${b.shade}, ${b.shade}, ${b.shade+10})`);
-                g.addColorStop(1, '#000');
-                ctx.fillStyle = g; ctx.fillRect(b.x, h-b.h, b.w, b.h);
-                if(b.label) {
+                ctx.fillStyle = '#050510'; ctx.fillRect(b.x, h-b.h, b.w, b.h);
+                if(b.txt) {
                     ctx.font = 'bold 11px Orbitron'; ctx.fillStyle = 'var(--s)';
                     ctx.shadowBlur = 10; ctx.shadowColor = 'var(--s)';
-                    ctx.fillText(b.label, b.x + 5, h-b.h + 40); ctx.shadowBlur = 0;
+                    ctx.fillText(b.txt, b.x + 5, h-b.h + 40); ctx.shadowBlur = 0;
                 }
             });
             rockets = rockets.filter(r => { r.draw(); return r.update(); });
             particles = particles.filter(p => { p.draw(); p.update(); return p.a > 0; });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(loop);
         }
         window.addEventListener('resize', initScene);
     </script>
