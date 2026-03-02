@@ -8,15 +8,18 @@
     <style>
         :root {
             --p: #ff007b; --s: #00f2ff; --v: #7000ff;
-            --bg: #000005; --glass: rgba(255, 255, 255, 0.02);
+            --bg: #00000a; --glass: rgba(10, 10, 20, 0.85);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { 
             width: 100vw; height: 100vh; background: var(--bg); 
             overflow: hidden; font-family: 'Quicksand', sans-serif; 
-            color: #fff; position: fixed; touch-action: none;
+            color: #fff; position: fixed;
         }
+
+        /* LỚP PHỦ THÀNH PHỐ CHÂN THỰC */
+        #vortex-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; filter: contrast(1.1) brightness(1); }
 
         /* CẢNH BÁO XOAY NGANG */
         #rotate-notice {
@@ -26,131 +29,119 @@
         }
         @media screen and (orientation: portrait) { #rotate-notice { display: flex; } }
 
-        /* ENGINE CANVAS */
-        #vortex-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; filter: saturate(1.8) brightness(1.2); }
-
         /* GIAO DIỆN CHÍNH */
         .master-stage {
             position: fixed; inset: 0; z-index: 100;
             display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.6) 100%);
         }
 
-        /* KHUNG ĐĂNG NHẬP THU NHỎ & TINH TẾ */
-        .login-card {
-            width: 300px; /* SIÊU NHỎ */
-            padding: 35px 30px; position: relative;
+        /* KHUNG ĐĂNG NHẬP CYBER - NHƯ TRONG HÌNH */
+        .cyber-card {
+            width: 320px; padding: 30px; position: relative;
             background: var(--glass);
-            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
-            animation: cardEntrance 1s ease-out;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px 10px 40px 10px; /* Bo góc đối xứng đặc biệt */
+            box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05);
+            animation: cardEntrance 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @keyframes cardEntrance { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes cardEntrance { from { opacity: 0; transform: translateY(50px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        .web-title {
-            font-family: 'Cinzel Decorative', cursive; font-size: 1.3rem;
-            text-align: center; margin-bottom: 35px; line-height: 1.5;
-            background: linear-gradient(90deg, #fff, var(--p), var(--s), #fff);
-            background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: glow 4s linear infinite;
-        }
-        @keyframes glow { to { background-position: 200% center; } }
+        .web-header { text-align: center; margin-bottom: 25px; }
+        .web-header h1 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; letter-spacing: 1px; line-height: 1.6; }
+        .web-header p { font-size: 10px; color: var(--p); letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
 
-        /* INPUT VIỆT HÓA - KHÔNG ICON */
-        .input-wrap { position: relative; margin-bottom: 22px; }
-        .input-wrap label {
-            display: block; font-family: 'Orbitron'; font-size: 8px; 
-            color: var(--s); letter-spacing: 3px; margin-bottom: 8px; opacity: 0.7;
+        .message-box {
+            font-size: 11px; line-height: 1.6; color: rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px;
+            margin-bottom: 25px; border-left: 3px solid var(--p);
         }
-        .input-wrap input {
-            width: 100%; padding: 12px 15px; background: rgba(255,255,255,0.05);
-            border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
-            color: #fff; font-size: 14px; outline: none; transition: 0.4s;
-        }
-        .input-wrap input:focus { border-bottom-color: var(--p); background: rgba(255,255,255,0.1); }
 
-        .btn-enter {
-            width: 100%; padding: 16px; border: none; margin-top: 10px;
-            font-family: 'Orbitron'; font-weight: 900; font-size: 0.8rem;
-            color: #fff; letter-spacing: 6px; cursor: pointer;
-            background: linear-gradient(45deg, var(--p), var(--v));
-            clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
-            transition: 0.5s;
+        /* INPUTS NHƯ TRONG HÌNH */
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; font-size: 10px; color: #fff; margin-bottom: 8px; opacity: 0.8; }
+        .input-group input {
+            width: 100%; padding: 10px 15px; background: #fff;
+            border: none; border-radius: 5px; color: #000;
+            font-size: 14px; outline: none; transition: 0.3s;
         }
-        .btn-enter:hover { letter-spacing: 10px; filter: brightness(1.2); }
 
-        /* DASHBOARD VIỆT HÓA */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 25px; }
-        .menu-item {
-            background: rgba(255,255,255,0.03); padding: 20px 5px;
-            border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
-            text-align: center; transition: 0.3s;
+        .btn-submit {
+            width: 100%; padding: 15px; border: none; margin-top: 10px;
+            font-family: 'Orbitron'; font-weight: 900; font-size: 0.9rem;
+            color: #fff; letter-spacing: 5px; cursor: pointer;
+            background: linear-gradient(90deg, #ff007b, #7000ff);
+            border-radius: 30px;
+            transition: 0.4s;
         }
-        .menu-item:hover { background: var(--p); transform: translateY(-3px); }
-        .menu-item span { font-family: 'Orbitron'; font-size: 9px; letter-spacing: 1px; }
+        .btn-submit:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--p); }
 
-        /* ÂM THANH */
-        #audio-nucleus {
-            position: fixed; top: 20px; right: 20px; z-index: 1000;
-            width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
-        .audio-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff0000; transition: 0.3s; }
-
-        /* TRANG KHỞI ĐẦU: CHẠM ĐỂ SƯỚNG */
+        /* TIỆN ÍCH KHÁC */
         #gate-portal {
             position: fixed; inset: 0; z-index: 10000; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
-        .gate-core { 
-            width: 100px; height: 100px; background: #fff; border-radius: 50%; 
-            box-shadow: 0 0 50px #fff, 0 0 100px var(--p); 
-            animation: corePulse 1.5s infinite alternate; 
+        .gate-core { width: 90px; height: 90px; background: #fff; border-radius: 50%; box-shadow: 0 0 60px #fff; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; } }
+
+        #audio-ctrl {
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
+            width: 40px; height: 40px; border: 1px solid #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
-        @keyframes corePulse { from { transform: scale(0.85); opacity: 0.6; } to { transform: scale(1.1); opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="rotate-notice">
-        <p style="letter-spacing: 5px;">VUI LÒNG XOAY NGANG ĐIỆN THOẠI</p>
-    </div>
+    <div id="rotate-notice"><h2>XOAY NGANG ĐIỆN THOẠI</h2></div>
 
-    <div id="gate-portal" onclick="igniteEngine()">
+    <div id="gate-portal" onclick="ignite()">
         <div class="gate-core"></div>
-        <h2 style="margin-top: 40px; font-family: 'Orbitron'; letter-spacing: 10px; font-size: 18px; color: #fff;">CHẠM ĐỂ SƯỚNG</h2>
+        <h2 style="margin-top: 30px; letter-spacing: 8px; font-family: 'Orbitron';">CHẠM ĐỂ SƯỚNG</h2>
     </div>
 
-    <div id="audio-nucleus" onclick="toggleAllAudio()">
-        <div id="status-dot" class="audio-dot"></div>
+    <div id="audio-ctrl" onclick="toggleMute()">
+        <div id="status" style="width: 8px; height: 8px; background: red; border-radius: 50%;"></div>
     </div>
 
     <canvas id="vortex-canvas"></canvas>
-    <div id="yt-api" style="display:none"></div>
+    <div id="yt-sink" style="display:none"></div>
 
     <div class="master-stage">
-        <div class="login-card" id="ui-auth">
-            <h1 class="web-title">BÌNH MINH<br>TẶNG EM</h1>
-            <div class="input-wrap">
-                <label>DANH TÍNH</label>
-                <input type="text" id="user-field" placeholder="Tên của em ưi">
+        <div class="cyber-card" id="auth-ui">
+            <div class="web-header">
+                <h1>BÌNH ƯỚC GỬI THUÝ VÂN</h1>
+                <p>BÌNH MINH TẶNG EM</p>
             </div>
-            <div class="input-wrap">
-                <label>MẬT MÃ TRÁI TIM</label>
-                <input type="password" id="pass-field" placeholder="Nhập mật mã">
+            
+            <div class="message-box">
+                Tuyệt chiêu bắn tên lửa thiên cương như yêu nồng bé lì không bao giờ ngừng được Bình có bên thể là thư yên.
             </div>
-            <button class="btn-enter" onclick="verifyAccess()">TRUY CẬP</button>
+
+            <div class="input-group">
+                <label>Mã truy cập</label>
+                <input type="text" id="code" value="6h8tox">
+            </div>
+            <div class="input-group">
+                <label>Tên đăng nhập</label>
+                <input type="text" id="un" placeholder="Nhập tên em">
+            </div>
+            <div class="input-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="pw" placeholder="Nhập mật mã">
+            </div>
+
+            <button class="btn-submit" onclick="check()">TRUY CẬP</button>
         </div>
 
-        <div class="login-card" id="ui-menu" style="display: none; opacity: 0;">
-            <h1 class="web-title" style="font-size: 1.1rem;">VŨ TRỤ THUÝ VÂN</h1>
-            <div class="menu-grid">
-                <div class="menu-item" onclick="launchRockets(60)"><span>KỈ NIỆM</span></div>
-                <div class="menu-item" onclick="launchRockets(60)"><span>HIỆN TẠI</span></div>
-                <div class="menu-item" onclick="launchRockets(60)"><span>TƯƠNG LAI</span></div>
-                <div class="menu-item" onclick="loveConfess()"><span>MÃI YÊU ANH</span></div>
+        <div class="cyber-card" id="menu-ui" style="display:none; opacity:0;">
+            <div class="web-header"><h1>VŨ TRỤ THUÝ VÂN</h1></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-submit" style="font-size: 10px; letter-spacing: 2px;" onclick="boom(50)">KỈ NIỆM</button>
+                <button class="btn-submit" style="font-size: 10px; letter-spacing: 2px;" onclick="boom(50)">HIỆN TẠI</button>
+                <button class="btn-submit" style="font-size: 10px; letter-spacing: 2px;" onclick="boom(50)">TƯƠNG LAI</button>
+                <button class="btn-submit" style="font-size: 10px; letter-spacing: 2px;" onclick="love()">MÃI YÊU</button>
             </div>
         </div>
     </div>
@@ -159,41 +150,32 @@
     <script>
         const canvas = document.getElementById('vortex-canvas');
         const ctx = canvas.getContext('2d');
-        let w, h, yt, audioCtx, isMute = true;
+        let w, h, yt, audioCtx, mute = true;
         let rockets = [], particles = [], stars = [], buildings = [];
-        
-        // DANH SÁCH CHỮ NEON TRÊN THÀNH PHỐ
-        const neonTexts = ["BMINH THƯƠNG EM", "BMINH YÊU EM", "THVAN CUTE", "THVAN XINH", "MÃI YÊU EM"];
+        const labels = ["BMINH THƯƠNG EM", "BMINH YÊU EM", "THVAN CUTE", "THVAN XINH", "MÃI YÊU EM"];
 
-        function playBoom() {
-            if(isMute || !audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            g.gain.setValueAtTime(0.08, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            osc.connect(g); g.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+        function playSound() {
+            if(mute || !audioCtx) return;
+            const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+            o.type = 'sine'; o.frequency.setValueAtTime(100, audioCtx.currentTime);
+            o.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            o.connect(g); g.connect(audioCtx.destination);
+            o.start(); o.stop(audioCtx.currentTime + 0.4);
         }
 
-        function init() {
+        function setup() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
             stars = [];
-            for(let i=0; i<300; i++) stars.push({x:Math.random()*w, y:Math.random()*h, s:Math.random()*1.5, o:Math.random()});
-            
+            for(let i=0; i<250; i++) stars.push({x:Math.random()*w, y:Math.random()*h, s:Math.random()*2, o:Math.random()});
             buildings = [];
-            let count = w < 800 ? 25 : 50;
+            let count = w < 800 ? 30 : 60;
             for(let i=0; i<count; i++) {
                 buildings.push({
-                    x: Math.random()*w, 
-                    w: 60+Math.random()*120, 
-                    h: 120+Math.random()*(h*0.6),
-                    wins: Array.from({length: 40}, () => Math.random()>0.8),
-                    // Mỗi tòa nhà có xác suất hiện 1 trong các dòng chữ của bạn
-                    label: Math.random() > 0.7 ? neonTexts[Math.floor(Math.random()*neonTexts.length)] : null
+                    x: Math.random()*w, w: 40+Math.random()*100, h: 150+Math.random()*(h*0.6),
+                    label: Math.random() > 0.8 ? labels[Math.floor(Math.random()*labels.length)] : null
                 });
             }
         }
@@ -201,101 +183,75 @@
         class Part {
             constructor(x, y, hue) {
                 this.x = x; this.y = y; this.h = hue;
-                this.vx = (Math.random()-0.5)*15;
-                this.vy = (Math.random()-0.5)*15;
-                this.a = 1; this.decay = 0.01 + Math.random()*0.02;
+                this.vx = (Math.random()-0.5)*15; this.vy = (Math.random()-0.5)*15;
+                this.a = 1; this.d = 0.015 + Math.random()*0.02;
             }
-            update() {
-                this.vx *= 0.95; this.vy *= 0.95; this.vy += 0.15;
-                this.x += this.vx; this.y += this.vy; this.a -= this.decay;
-            }
-            draw() {
-                ctx.fillStyle = `hsla(${this.h}, 100%, 75%, ${this.a})`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, 1.2, 0, 7); ctx.fill();
-            }
+            update() { this.vx *= 0.95; this.vy *= 0.95; this.vy += 0.12; this.x += this.vx; this.y += this.vy; this.a -= this.d; }
+            draw() { ctx.fillStyle = `hsla(${this.h}, 100%, 70%, ${this.a})`; ctx.beginPath(); ctx.arc(this.x, this.y, 1.5, 0, 7); ctx.fill(); }
         }
 
         class Rock {
             constructor() {
                 this.x = Math.random()*w; this.y = h;
                 this.ty = 80 + Math.random()*(h*0.4);
-                this.v = 12 + Math.random()*6;
-                this.hue = Math.random()*360;
+                this.v = 12+Math.random()*6; this.hue = Math.random()*360;
             }
             update() {
                 this.y -= this.v;
                 if(this.y <= this.ty) {
-                    playBoom();
-                    for(let i=0; i<200; i++) particles.push(new Part(this.x, this.y, this.hue));
+                    playSound();
+                    for(let i=0; i<150; i++) particles.push(new Part(this.x, this.y, this.hue));
                     return false;
                 }
                 return true;
             }
-            draw() {
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(this.x, this.y, 2, 10);
-            }
+            draw() { ctx.fillStyle = '#fff'; ctx.fillRect(this.x, this.y, 2, 10); }
         }
 
         function onYouTubeIframeAPIReady() {
-            yt = new YT.Player('yt-api', { videoId: 'iXaw-jwmjjA', playerVars: { loop:1, playlist:'iXaw-jwmjjA' }});
+            yt = new YT.Player('yt-sink', { videoId: 'iXaw-jwmjjA', playerVars: { loop:1, playlist:'iXaw-jwmjjA' }});
         }
 
-        function igniteEngine() {
+        function ignite() {
             document.getElementById('gate-portal').style.display = 'none';
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            init(); render();
+            setup(); loop();
             setInterval(() => { if(Math.random()<0.3) rockets.push(new Rock()); }, 500);
         }
 
-        function toggleAllAudio() {
-            isMute = !isMute;
-            document.getElementById('status-dot').style.background = isMute ? '#ff0000' : '#00ff88';
-            isMute ? yt.mute() : (yt.unMute(), yt.playVideo());
+        function toggleMute() {
+            mute = !mute;
+            document.getElementById('status').style.background = mute ? 'red' : '#00ff88';
+            mute ? yt.mute() : (yt.unMute(), yt.playVideo());
         }
 
-        function verifyAccess() {
-            const u = document.getElementById('user-field').value;
-            const p = document.getElementById('pass-field').value;
-            if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
-                document.getElementById('ui-auth').style.display = 'none';
-                const menu = document.getElementById('ui-menu');
-                menu.style.display = 'block'; setTimeout(() => menu.style.opacity = 1, 100);
-                launchRockets(80);
-            } else { alert("Chỉ có em mới được vào thôi Vân ơi! ❤️"); }
+        function check() {
+            if(document.getElementById('un').value === "thuyvanchithuongbminh" && document.getElementById('pw').value === "bminhcungchicuoithvanthoi") {
+                document.getElementById('auth-ui').style.display = 'none';
+                const m = document.getElementById('menu-ui'); m.style.display = 'block';
+                setTimeout(() => m.style.opacity = 1, 100); boom(100);
+            } else { alert("Chỉ dành riêng cho Thuý Vân của Bình Minh! ❤️"); }
         }
 
-        function launchRockets(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rock()), i*180); }
-        function loveConfess() { alert("Bình Minh thương và yêu Thuý Vân nhất quả đất!"); launchRockets(120); }
+        function boom(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rock()), i*150); }
+        function love() { alert("Bình Minh thương và yêu Thuý Vân vĩnh cửu!"); boom(100); }
 
-        function render() {
-            ctx.fillStyle = 'rgba(0,0,5,0.25)';
-            ctx.fillRect(0,0,w,h);
-            
-            stars.forEach(s => { ctx.fillStyle = `rgba(255,255,255,${s.o})`; ctx.fillRect(s.x, s.y, s.s, s.s); });
-            
+        function loop() {
+            ctx.fillStyle = 'rgba(0,0,10,0.2)'; ctx.fillRect(0,0,w,h);
+            stars.forEach(s => { ctx.fillStyle=`rgba(255,255,255,${s.o})`; ctx.fillRect(s.x, s.y, s.s, s.s); });
             buildings.forEach(b => {
-                ctx.fillStyle = '#050510'; ctx.fillRect(b.x, h-b.h, b.w, b.h);
-                
-                // Vẽ chữ Neon trên tòa nhà
+                ctx.fillStyle = '#050515'; ctx.fillRect(b.x, h-b.h, b.w, b.h);
                 if(b.label) {
-                    ctx.font = 'bold 12px Orbitron';
-                    ctx.fillStyle = 'var(--s)';
+                    ctx.font = 'bold 10px Orbitron'; ctx.fillStyle = 'var(--s)';
                     ctx.shadowBlur = 10; ctx.shadowColor = 'var(--s)';
-                    ctx.fillText(b.label, b.x + 5, h - b.h + 40);
-                    ctx.shadowBlur = 0;
+                    ctx.fillText(b.label, b.x, h-b.h+40); ctx.shadowBlur = 0;
                 }
-
-                b.wins.forEach((on, i) => { if(on) { ctx.fillStyle = '#ffd700'; ctx.fillRect(b.x+10+(i%5)*15, h-b.h+60+Math.floor(i/5)*20, 4, 4); }});
             });
-
             rockets = rockets.filter(r => { r.draw(); return r.update(); });
             particles = particles.filter(p => { p.draw(); p.update(); return p.a > 0; });
-            
-            requestAnimationFrame(render);
+            requestAnimationFrame(loop);
         }
-
-        window.addEventListener('resize', init);
+        window.addEventListener('resize', setup);
     </script>
 </body>
 </html>
