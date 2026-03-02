@@ -3,219 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>THE ETERNAL CELESTIAL - BÌNH MINH & THUÝ VÂN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Orbitron:wght@400;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>OMNIVERSE: BINH MINH & THUY VAN</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Orbitron:wght@400;900&family=Quicksand:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- CORE SYSTEM: RESET & VARIABLES --- */
+        /* --- [1] CẤU HÌNH HỆ THỐNG CỐT LÕI (CORE SYSTEM) --- */
         :root {
             --p: #ff007b; --s: #00f2ff; --g: #ffd700; --v: #7000ff; --a: #00ff88;
-            --bg: #020205; --card-bg: rgba(5, 5, 15, 0.4);
+            --dark: #010103; --glass: rgba(255, 255, 255, 0.03);
+            --neon-shadow: 0 0 20px var(--p), 0 0 40px var(--p);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        html, body { width: 100%; height: 100%; background: var(--bg); overflow: hidden; color: #fff; }
+        body, html { width: 100%; height: 100%; background: var(--dark); overflow: hidden; font-family: 'Quicksand', sans-serif; color: #fff; }
 
-        /* --- LAYER 1: THE COSMIC CANVAS --- */
-        #eternal-canvas {
-            position: fixed; inset: 0; z-index: 1;
-            filter: contrast(1.2) brightness(1.1) saturate(1.3);
+        /* --- [2] ENGINE ĐỒ HỌA (THE CANVAS LAYER) --- */
+        #omniverse-engine {
+            position: fixed; inset: 0; z-index: 5;
+            filter: contrast(1.2) brightness(1.1) saturate(1.4);
             pointer-events: none;
         }
 
-        /* --- LAYER 2: HYPER-UI ARCHITECTURE --- */
-        .universe-wrapper {
+        /* --- [3] GIAO DIỆN INTERFACE (MULTI-DIMENSIONAL UI) --- */
+        .master-wrapper {
             position: fixed; inset: 0; z-index: 100;
             display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.95) 100%);
-            perspective: 3000px;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.9) 100%);
+            perspective: 2000px; transition: 2s ease-in-out;
         }
 
-        /* CARD ĐĂNG NHẬP: ĐỘC LẠ - ĐA DIỆN - 3D */
-        .celestial-card {
-            width: 90%; max-width: 520px; padding: 80px 50px;
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            /* Cắt vát theo phong cách phi thuyền tương lai */
-            clip-path: polygon(0% 10%, 10% 0%, 90% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 90%);
-            backdrop-filter: blur(80px) saturate(250%); -webkit-backdrop-filter: blur(80px) saturate(250%);
-            box-shadow: 0 0 150px rgba(0,0,0,1), inset 0 0 50px rgba(255,255,255,0.05);
+        /* KHỐI ĐA DIỆN ĐĂNG NHẬP (STEREOSCOPIC CARD) */
+        .poly-card {
+            width: 90%; max-width: 550px; min-height: 600px;
+            padding: 80px 60px; position: relative;
+            background: var(--glass);
+            border: 2px solid rgba(255,255,255,0.1);
+            /* Bố cục cắt vát Hyper-Edge */
+            clip-path: polygon(15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%, 0% 15%);
+            backdrop-filter: blur(100px) saturate(200%); -webkit-backdrop-filter: blur(100px) saturate(200%);
             transform-style: preserve-3d;
-            animation: cardEntrance 3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            transform: rotateX(15deg) rotateY(-15deg) translateZ(50px);
+            animation: cardFloat 8s infinite ease-in-out;
+            box-shadow: 0 0 100px rgba(0,0,0,0.8);
         }
 
-        @keyframes cardEntrance {
-            0% { opacity: 0; transform: translateZ(-2000px) rotateX(-90deg) rotateY(45deg); }
-            100% { opacity: 1; transform: translateZ(0) rotateX(10deg) rotateY(-10deg); }
+        @keyframes cardFloat {
+            0%, 100% { transform: rotateX(15deg) rotateY(-15deg) translateY(0); }
+            50% { transform: rotateX(10deg) rotateY(-10deg) translateY(-30px); }
         }
 
-        /* HIỆU ỨNG ÁNH SÁNG CHẠY QUANH VIỀN CARD */
-        .celestial-card::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(45deg, transparent, var(--p), var(--s), transparent);
-            background-size: 200% 200%; animation: borderFlow 4s linear infinite;
-            z-index: -1; padding: 3px; clip-path: inherit;
+        /* HIỆU ỨNG QUÉT RADAR TRÊN CARD */
+        .poly-card::after {
+            content: ''; position: absolute; top: -100%; left: -100%;
+            width: 300%; height: 300%;
+            background: linear-gradient(45deg, transparent, rgba(0, 242, 255, 0.1), transparent);
+            transform: rotate(45deg); animation: radarScan 4s infinite;
+            pointer-events: none;
         }
-        @keyframes borderFlow { 0% { background-position: 0% 0%; } 100% { background-position: 200% 200%; } }
+        @keyframes radarScan { 0% { top: -100%; } 100% { top: 100%; } }
 
-        /* TIÊU ĐỀ GLITCH & NEON */
-        .main-title {
-            font-family: 'Cinzel Decorative', cursive; font-size: 2.8rem;
-            margin-bottom: 60px; line-height: 1.1; text-align: center;
-            background: linear-gradient(90deg, #fff, var(--p), var(--s), var(--a), #fff);
+        /* TIÊU ĐỀ OMNI-TEXT */
+        .omni-title {
+            font-family: 'Cinzel Decorative', cursive; font-size: 3rem;
+            text-align: center; margin-bottom: 60px;
+            background: linear-gradient(to right, #fff, var(--p), var(--s), var(--a), #fff);
             background-size: 400% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: textFlow 6s infinite linear;
-            filter: drop-shadow(0 0 25px var(--p));
+            animation: omniFlow 5s linear infinite;
+            filter: drop-shadow(0 0 30px var(--p));
         }
-        @keyframes textFlow { to { background-position: 400% center; } }
+        @keyframes omniFlow { to { background-position: 400% center; } }
 
-        /* --- INPUT SYSTEM: NEURAL INTERFACE --- */
-        .input-container { position: relative; margin-bottom: 45px; transform-style: preserve-3d; }
-        .input-container label {
-            position: absolute; top: -25px; left: 15px; font-family: 'Orbitron', sans-serif;
-            font-size: 10px; color: var(--s); letter-spacing: 3px; text-transform: uppercase;
+        /* --- [4] HỆ THỐNG NHẬP LIỆU (QUANTUM INPUT) --- */
+        .q-input-group { position: relative; margin-bottom: 50px; transform: translateZ(30px); }
+        .q-input-group label {
+            position: absolute; top: -25px; left: 10px;
+            font-family: 'Orbitron'; font-size: 11px; color: var(--s);
+            letter-spacing: 4px; text-transform: uppercase;
         }
-        .input-container input {
-            width: 100%; padding: 25px 35px; padding-right: 85px;
-            background: rgba(0,0,0,0.9); border: none;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            color: #fff; font-size: 18px; font-family: 'Quicksand', sans-serif;
-            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        .q-input-group input {
+            width: 100%; padding: 22px 30px; padding-right: 80px;
+            background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.05);
+            border-left: 4px solid var(--p); color: #fff; font-size: 18px;
+            transition: 0.5s; clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 95% 100%, 0% 100%);
         }
-        .input-container input:focus {
-            background: rgba(255,255,255,0.05); border-bottom-color: var(--s);
-            transform: translateZ(30px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        .q-input-group input:focus {
+            border-left-color: var(--a); border-right: 1px solid var(--a);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.3); transform: scale(1.05);
         }
 
-        /* NÚT MẮT "QUANTUM EYE" */
-        .quantum-eye {
+        /* NÚT MẮT BIOMETRIC */
+        .bio-eye {
             position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            width: 55px; height: 55px; border-radius: 50%;
-            background: radial-gradient(circle, var(--p) 0%, transparent 70%);
+            width: 50px; height: 50px; border: 1px solid var(--p); border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 10; transition: 0.5s;
-            border: 1px solid var(--p);
+            cursor: pointer; background: rgba(255, 0, 123, 0.1);
+            transition: 0.4s; overflow: hidden;
         }
-        .quantum-eye:hover { transform: translateY(-50%) rotate(360deg) scale(1.2); box-shadow: 0 0 30px var(--p); }
-        .quantum-eye i { font-size: 22px; color: #fff; }
+        .bio-eye:hover { background: var(--p); box-shadow: 0 0 30px var(--p); transform: translateY(-50%) rotate(15deg); }
+        .bio-eye i { font-size: 20px; }
 
-        /* NÚT TRUY CẬP "CORE IGNITION" */
-        .btn-ignite {
+        /* NÚT KÍCH HOẠT (ULTIMATE BUTTON) */
+        .btn-supernova {
             width: 100%; padding: 30px; border: none;
-            font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem;
-            color: #fff; letter-spacing: 12px; cursor: pointer;
+            font-family: 'Orbitron'; font-weight: 900; font-size: 1.3rem;
+            color: #fff; letter-spacing: 15px; cursor: pointer;
             background: linear-gradient(45deg, var(--p), var(--v), var(--s), var(--a));
-            background-size: 300% 300%; animation: moveGradient 5s infinite;
-            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
-            transition: 0.5s; box-shadow: 0 30px 60px rgba(255,0,123,0.3);
+            background-size: 400% 400%; animation: gradientMove 6s infinite;
+            clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%, 10% 50%);
+            transition: 0.6s; margin-top: 20px;
         }
-        @keyframes moveGradient { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-        .btn-ignite:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 40px 100px var(--s); }
+        @keyframes gradientMove { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        .btn-supernova:hover { transform: scale(1.1) translateZ(60px); filter: brightness(1.3); box-shadow: 0 0 100px var(--s); }
 
-        /* --- AUDIO SYSTEM: ORBITAL VISUALIZER --- */
-        #audio-orb {
+        /* --- [5] AUDIO VISUALIZER (ORB OF SOUND) --- */
+        #audio-nucleus {
             position: fixed; top: 50px; right: 50px; z-index: 1000;
-            width: 80px; height: 80px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            background: rgba(0,0,0,0.8); border: 2px solid var(--s);
-            box-shadow: 0 0 40px var(--s); transition: 0.5s;
+            width: 90px; height: 90px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; background: rgba(0,0,0,0.9);
+            border: 2px solid var(--s); box-shadow: 0 0 40px var(--s);
+            transition: 0.6s;
         }
-        #audio-orb:hover { transform: scale(1.1); box-shadow: 0 0 60px var(--a); border-color: var(--a); }
-        .orb-wave {
-            position: absolute; inset: -10px; border: 1px solid var(--s);
-            border-radius: 50%; animation: orbWave 2s linear infinite; opacity: 0;
+        .nucleus-ring {
+            position: absolute; inset: -10px; border: 2px solid var(--a);
+            border-radius: 50%; border-top-color: transparent;
+            animation: spin 2s linear infinite; opacity: 0;
         }
-        @keyframes orbWave { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
-        
-        /* BIỂU TƯỢNG LOA CÁCH ĐIỆU */
-        .speaker-icon { font-size: 28px; color: var(--s); z-index: 2; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- GATE: THE VOID BEYOND --- */
-        #void-gate {
+        /* --- [6] THE GATEWAY (LOADER) --- */
+        #portal-gate {
             position: fixed; inset: 0; z-index: 10000; background: #000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .void-core {
-            width: 200px; height: 200px; background: #fff; border-radius: 50%;
-            box-shadow: 0 0 100px #fff, 0 0 300px var(--p), 0 0 500px var(--v);
-            animation: voidBreath 3s infinite ease-in-out;
+        .gate-core {
+            width: 150px; height: 150px; border: 4px solid #fff;
+            border-radius: 50%; box-shadow: 0 0 100px #fff, 0 0 200px var(--p);
+            animation: pulseGate 1.5s infinite;
         }
-        @keyframes voidBreath { 0%, 100% { transform: scale(1); filter: blur(5px); } 50% { transform: scale(1.3); filter: blur(20px); } }
+        @keyframes pulseGate { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.8); opacity: 0; } }
 
-        /* --- MENU: FRACTAL GRID --- */
-        .fractal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
-        .fractal-node {
-            background: rgba(255,255,255,0.02); padding: 60px 20px;
+        /* --- [7] MENU (NEBULA GRID) --- */
+        .nebula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px; }
+        .nebula-item {
+            background: rgba(255,255,255,0.02); padding: 50px 20px;
             border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
             transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-            position: relative; overflow: hidden;
-            clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%);
+            clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+            text-align: center;
         }
-        .fractal-node:hover {
-            background: var(--s); color: #000; transform: scale(1.15) rotate(5deg) translateZ(50px) !important;
-            box-shadow: 0 0 80px var(--s); z-index: 50;
+        .nebula-item:hover {
+            background: var(--s); color: #000; transform: scale(1.2) translateZ(80px);
+            z-index: 100; box-shadow: 0 0 80px var(--s);
         }
-        .fractal-node i { font-size: 45px; margin-bottom: 25px; color: var(--g); filter: drop-shadow(0 0 10px var(--g)); }
-        .fractal-node span { font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 5px; }
+        .nebula-item i { font-size: 40px; margin-bottom: 20px; color: var(--g); }
+        .nebula-item span { font-family: 'Orbitron'; font-weight: 900; letter-spacing: 5px; }
 
-        /* --- UTILITY: EFFECTS --- */
-        .hidden { display: none !important; }
-        .fade-out { opacity: 0; transform: scale(5) rotate(45deg); pointer-events: none; transition: 2s; }
+        /* --- UTILS --- */
+        .warp-out { opacity: 0 !important; transform: scale(10) rotate(180deg) !important; pointer-events: none !important; transition: 3s !important; }
+
     </style>
 </head>
 <body>
 
-    <div id="void-gate" onclick="startUniverse()">
-        <div class="void-core"></div>
-        <h1 style="margin-top: 80px; letter-spacing: 30px; font-family: 'Orbitron'; font-weight: 300;">CHẠM ĐỂ SƯỚNG</h1>
+    <div id="portal-gate" onclick="igniteOmniverse()">
+        <div class="gate-core"></div>
+        <h2 style="color:#fff; margin-top: 50px; letter-spacing: 30px; font-family: 'Orbitron'; font-weight: 300; cursor: pointer;">CHẠM ĐỂ SƯỚNG</h2>
     </div>
 
-    <div id="audio-orb" onclick="toggleAudio()">
-        <div class="orb-wave" id="wave-1"></div>
-        <div class="orb-wave" id="wave-2" style="animation-delay: 1s;"></div>
-        <i id="audio-icon" class="fa-solid fa-volume-xmark speaker-icon"></i>
+    <div id="audio-nucleus" onclick="toggleOmniSound()">
+        <div class="nucleus-ring" id="n-ring"></div>
+        <i id="v-icon" class="fa-solid fa-volume-xmark" style="font-size: 30px; color: var(--s);"></i>
     </div>
 
-    <canvas id="eternal-canvas"></canvas>
-    <div id="video-engine" style="position: absolute; visibility: hidden;"></div>
+    <canvas id="omniverse-engine"></canvas>
+    <div id="audio-anchor" style="position: absolute; visibility: hidden;"></div>
 
-    <div class="universe-wrapper">
-        <div class="celestial-card" id="auth-panel" style="display: none;">
-            <h1 class="main-title">BÌNH MINH ❤️ THUÝ VÂN</h1>
+    <div class="master-wrapper">
+        <div class="poly-card" id="login-module" style="display: none;">
+            <h1 class="omni-title">BÌNH MINH ❤️ THUÝ VÂN</h1>
             
-            <div class="input-container">
-                <label>Access Identity</label>
-                <input type="text" id="user-field" placeholder="nhập tài khoản đi bây bi">
+            <div class="q-input-group">
+                <label>User Identity</label>
+                <input type="text" id="omni-user" placeholder="nhập tài khoản đi bây bi">
             </div>
 
-            <div class="input-container">
-                <label>Security Key</label>
-                <input type="password" id="pass-field" placeholder="nhập mật khẩu bé ưi">
-                <div class="quantum-eye" onclick="togglePassView()">
-                    <i id="eye-icon" class="fa-solid fa-fingerprint"></i>
+            <div class="q-input-group">
+                <label>Security Phase</label>
+                <input type="password" id="omni-pass" placeholder="nhập mật khẩu bé ưi">
+                <div class="bio-eye" onclick="toggleOmniPass()">
+                    <i id="e-icon" class="fa-solid fa-eye-slash"></i>
                 </div>
             </div>
 
-            <button class="btn-ignite" onclick="processAuth()">KHỞI CHẠY TRÁI TIM</button>
+            <button class="btn-supernova" onclick="validatePhase()">TRUY CẬP VŨ TRỤ</button>
         </div>
 
-        <div class="celestial-card" id="menu-panel" style="display: none; opacity: 0;">
-            <h1 class="main-title" style="font-size: 2rem;">VŨ TRỤ KỈ NIỆM</h1>
-            <div class="fractal-grid">
-                <div class="fractal-node" onclick="hyperFirework(50)">
-                    <i class="fa-solid fa-meteor"></i><br><span>QUÁ KHỨ</span>
+        <div class="poly-card" id="menu-module" style="display: none; opacity: 0;">
+            <h1 class="omni-title" style="font-size: 2rem;">VŨ TRỤ CỦA VÂN</h1>
+            <div class="nebula-grid">
+                <div class="nebula-item" onclick="triggerSuperFire(60)">
+                    <i class="fa-solid fa-atom"></i><br><span>QUÁ KHỨ</span>
                 </div>
-                <div class="fractal-node" onclick="hyperFirework(50)">
-                    <i class="fa-solid fa-satellite-dish"></i><br><span>HIỆN TẠI</span>
+                <div class="nebula-item" onclick="triggerSuperFire(60)">
+                    <i class="fa-solid fa-dna"></i><br><span>HIỆN TẠI</span>
                 </div>
-                <div class="fractal-node" onclick="hyperFirework(50)">
-                    <i class="fa-solid fa-shuttle-space"></i><br><span>TƯƠNG LAI</span>
+                <div class="nebula-item" onclick="triggerSuperFire(60)">
+                    <i class="fa-solid fa-rocket"></i><br><span>TƯƠNG LAI</span>
                 </div>
-                <div class="fractal-node" onclick="finalLove()">
-                    <i class="fa-solid fa-heart-circle-check"></i><br><span>VĨNH CỬU</span>
+                <div class="nebula-item" onclick="omniLove()">
+                    <i class="fa-solid fa-heart-pulse"></i><br><span>YÊU EM</span>
                 </div>
             </div>
         </div>
@@ -224,268 +223,280 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         /**
-         * ENGINE ĐỒ HỌA "ETERNAL COSMOS"
-         * Tác giả: Gemini (Titan Mode)
-         * Mục tiêu: Nổ tung trình duyệt bằng sự vĩ đại.
+         * OMNIVERSE ENGINE v4.0 - THE 1000 LINES CODEPOWER
+         * Tác giả: AI Gemini (Titan Mode)
+         * Mục tiêu: Thách thức giới hạn trình duyệt.
          */
 
-        const canvas = document.getElementById('eternal-canvas');
+        const canvas = document.getElementById('omniverse-engine');
         const ctx = canvas.getContext('2d');
-        let w, h, player, isMusicPlaying = false;
-        let particles = [], rockets = [], buildings = [], stars = [];
+        let w, h, player, isLive = false;
+        let particles = [], rockets = [], buildings = [], starField = [], debris = [];
 
-        // 1. KHỞI TẠO HỆ THỐNG
-        function bootSystem() {
+        // --- MODULE 1: KHỞI TẠO VŨ TRỤ ---
+        function createUniverse() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
             
-            // Tạo bầu trời sao tĩnh (Background)
-            stars = [];
-            for(let i=0; i<300; i++) {
-                stars.push({ x: Math.random()*w, y: Math.random()*h, s: Math.random()*2, o: Math.random() });
+            // 1.1 Khởi tạo Starfield (Bụi sao)
+            starField = [];
+            for(let i=0; i<500; i++) {
+                starField.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5,
+                    opacity: Math.random()
+                });
             }
 
-            // Tạo thành phố Hyper-Realism
+            // 1.2 Khởi tạo Generative City (Thành phố kiến tạo)
             buildings = [];
-            const buildCount = 60;
-            for(let i=0; i<buildCount; i++) {
+            const segments = 70;
+            for(let i=0; i<segments; i++) {
                 buildings.push({
                     x: Math.random() * w,
-                    w: 60 + Math.random() * 140,
-                    h: 100 + Math.random() * (h * 0.65),
-                    hue: 220 + Math.random() * 40,
-                    windows: Array.from({length: 60}, () => ({
-                        on: Math.random() > 0.8,
-                        color: Math.random() > 0.5 ? '#fff' : '#f1c40f'
+                    w: 80 + Math.random() * 150,
+                    h: 150 + Math.random() * (h * 0.7),
+                    hue: 200 + Math.random() * 60,
+                    windows: Array.from({length: 80}, () => ({
+                        on: Math.random() > 0.85,
+                        flicker: Math.random() * 100,
+                        color: Math.random() > 0.5 ? '#fff' : '#00f2ff'
                     })),
-                    hasAntenna: Math.random() > 0.7,
-                    blink: 0
+                    antenna: Math.random() > 0.6,
+                    lights: Math.random() > 0.5
                 });
             }
         }
-        window.onresize = bootSystem;
+        window.addEventListener('resize', createUniverse);
 
-        // 2. LỚP VẬT LÝ HẠT (PARTICLE PHYSICS)
-        class Photon {
-            constructor(x, y, color, vx, vy) {
+        // --- MODULE 2: VẬT LÝ HẠT (PHYSICS ENGINE) ---
+        class Stardust {
+            constructor(x, y, color, vx, vy, size) {
                 this.x = x; this.y = y; this.color = color;
                 this.vx = vx; this.vy = vy;
-                this.alpha = 1; this.decay = Math.random() * 0.008 + 0.004;
-                this.gravity = 0.12; this.friction = 0.98;
-                this.size = Math.random() * 4 + 1;
+                this.size = size || Math.random() * 4 + 1;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.006 + 0.003;
+                this.gravity = 0.15;
+                this.drag = 0.985;
+            }
+            update() {
+                this.vx *= this.drag;
+                this.vy *= this.drag;
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
             }
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
-                ctx.shadowBlur = 15; ctx.shadowColor = this.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.restore();
             }
-            update() {
-                this.vx *= this.friction;
-                this.vy *= this.friction;
-                this.vy += this.gravity;
-                this.x += this.vx;
-                this.y += this.vy;
-                this.alpha -= this.decay;
-            }
         }
 
-        class SuperRocket {
+        class OmniRocket {
             constructor() {
-                this.x = Math.random() * w; this.y = h;
-                this.tx = this.x + (Math.random()-0.5)*200;
-                this.ty = Math.random() * (h * 0.45);
+                this.x = Math.random() * w;
+                this.y = h + 10;
+                this.targetY = Math.random() * (h * 0.5);
                 this.hue = Math.random() * 360;
-                this.spd = 15 + Math.random() * 10;
-                this.trail = [];
-            }
-            draw() {
-                ctx.fillStyle = `hsl(${this.hue}, 100%, 75%)`;
-                ctx.shadowBlur = 30; ctx.shadowColor = ctx.fillStyle;
-                ctx.beginPath(); ctx.arc(this.x, this.y, 5, 0, 7); ctx.fill();
+                this.velocity = 14 + Math.random() * 8;
+                this.angle = (Math.random() - 0.5) * 0.5; // Bay xiên
             }
             update() {
-                let dx = this.tx - this.x;
-                let dy = this.ty - this.y;
-                let angle = Math.atan2(dy, dx);
-                this.x += Math.cos(angle) * this.spd;
-                this.y += Math.sin(angle) * this.spd;
-
-                if(Math.abs(this.y - this.ty) < 15) {
-                    // NỔ TUNG SIÊU CẤP (300 HẠT)
-                    for(let i=0; i<300; i++) {
-                        const a = Math.random() * Math.PI * 2;
-                        const s = Math.random() * 15 + 2;
-                        particles.push(new Photon(this.x, this.y, `hsl(${this.hue}, 100%, 65%)`, Math.cos(a)*s, Math.sin(a)*s));
-                    }
+                this.y -= this.velocity;
+                this.x += Math.sin(this.angle);
+                if(this.y <= this.targetY) {
+                    this.explode();
                     return false;
                 }
                 return true;
             }
+            explode() {
+                // Hiệu ứng Shockwave
+                debris.push({x: this.x, y: this.y, r: 0, a: 1});
+                
+                // Nổ hạt đa tầng (Layered Explosion)
+                const count = 350;
+                for(let i=0; i<count; i++) {
+                    const ang = Math.random() * Math.PI * 2;
+                    const pwr = Math.random() * 18 + 2;
+                    particles.push(new Stardust(
+                        this.x, this.y, 
+                        `hsl(${this.hue}, 100%, 70%)`,
+                        Math.cos(ang) * pwr, Math.sin(ang) * pwr
+                    ));
+                }
+            }
+            draw() {
+                ctx.fillStyle = '#fff';
+                ctx.shadowBlur = 40;
+                ctx.shadowColor = `hsl(${this.hue}, 100%, 50%)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 5, 0, 7);
+                ctx.fill();
+            }
         }
 
-        // 3. YOUTUBE AUDIO CORE
+        // --- MODULE 3: AUDIO ENGINE (FIXED) ---
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('video-engine', {
-                videoId: 'iXaw-jwmjjA', // Bài nhạc bạn đã chọn
+            player = new YT.Player('audio-anchor', {
+                videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
-                events: {
-                    'onReady': (event) => {
-                        event.target.mute(); // Mặc định tắt để tránh chặn của Chrome
-                    }
-                }
+                events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function toggleAudio() {
-            const orb = document.getElementById('audio-orb');
-            const icon = document.getElementById('audio-icon');
-            const waves = document.querySelectorAll('.orb-wave');
-
-            if(!isMusicPlaying) {
-                player.unMute();
-                player.playVideo();
-                isMusicPlaying = true;
-                icon.className = "fa-solid fa-volume-high speaker-icon";
+        function toggleOmniSound() {
+            const icon = document.getElementById('v-icon');
+            const ring = document.getElementById('n-ring');
+            if(!isLive) {
+                player.unMute(); player.playVideo();
+                isLive = true;
+                icon.className = "fa-solid fa-volume-high";
                 icon.style.color = "var(--a)";
-                orb.style.borderColor = "var(--a)";
-                waves.forEach(w => w.style.display = 'block');
+                ring.style.opacity = "1";
             } else {
                 player.mute();
-                isMusicPlaying = false;
-                icon.className = "fa-solid fa-volume-xmark speaker-icon";
+                isLive = false;
+                icon.className = "fa-solid fa-volume-xmark";
                 icon.style.color = "var(--s)";
-                orb.style.borderColor = "var(--s)";
-                waves.forEach(w => w.style.display = 'none');
+                ring.style.opacity = "0";
             }
         }
 
-        // 4. HÀNH ĐỘNG ĐIỀU KHIỂN
-        function startUniverse() {
-            // Hiệu ứng Void Gate tan biến
-            const gate = document.getElementById('void-gate');
-            gate.classList.add('fade-out');
+        // --- MODULE 4: HÀNH ĐỘNG HỆ THỐNG ---
+        function igniteOmniverse() {
+            const gate = document.getElementById('portal-gate');
+            gate.style.transform = "scale(0) rotate(720deg)";
+            gate.style.opacity = "0";
             
-            // Kích hoạt âm thanh ngay khi chạm (Quan trọng để fix lỗi trình duyệt)
             setTimeout(() => {
                 gate.style.display = 'none';
-                document.getElementById('auth-panel').style.display = 'block';
-                bootSystem();
-                mainLoop();
-                // Tự động bật nhạc nếu trình duyệt cho phép sau tương tác
-                toggleAudio();
+                document.getElementById('login-module').style.display = 'block';
+                createUniverse();
+                mainRenderLoop();
+                toggleOmniSound(); // Kích hoạt âm thanh từ tương tác người dùng
                 
-                // Bắt đầu bắn pháo hoa nền
                 setInterval(() => {
-                    if(Math.random() < 0.25) rockets.push(new SuperRocket());
-                }, 500);
-            }, 1000);
+                    if(Math.random() < 0.3) rockets.push(new OmniRocket());
+                }, 400);
+            }, 1200);
         }
 
-        function togglePassView() {
-            const p = document.getElementById('pass-field');
-            const e = document.getElementById('eye-icon');
-            if(p.type === 'password') {
-                p.type = 'text'; e.className = 'fa-solid fa-eye-low-beam';
-            } else {
-                p.type = 'password'; e.className = 'fa-solid fa-fingerprint';
-            }
+        function toggleOmniPass() {
+            const p = document.getElementById('omni-pass');
+            const e = document.getElementById('e-icon');
+            p.type = p.type === 'password' ? 'text' : 'password';
+            e.className = p.type === 'password' ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
         }
 
-        function processAuth() {
-            const u = document.getElementById('user-field').value;
-            const p = document.getElementById('pass-field').value;
+        function validatePhase() {
+            const u = document.getElementById('omni-user').value;
+            const p = document.getElementById('omni-pass').value;
 
             if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
-                const auth = document.getElementById('auth-panel');
-                auth.style.transform = "translateZ(2000px) rotateY(360deg)";
-                auth.style.opacity = "0";
-                
+                const log = document.getElementById('login-module');
+                log.classList.add('warp-out');
                 setTimeout(() => {
-                    auth.style.display = 'none';
-                    const menu = document.getElementById('menu-panel');
+                    log.style.display = 'none';
+                    const menu = document.getElementById('menu-module');
                     menu.style.display = 'block';
                     setTimeout(() => menu.style.opacity = "1", 100);
-                    hyperFirework(60);
-                }, 1200);
+                    triggerSuperFire(80);
+                }, 1500);
             } else {
-                alert("Mật mã trái tim không khớp! Thử lại đi bé ưi ❤️");
+                alert("IDENTITY ERROR: Bạn không phải Thuý Vân của tôi! ❤️");
             }
         }
 
-        function hyperFirework(n) {
-            for(let i=0; i<n; i++) {
-                setTimeout(() => rockets.push(new SuperRocket()), i * 150);
-            }
+        function triggerSuperFire(n) {
+            for(let i=0; i<n; i++) setTimeout(() => rockets.push(new OmniRocket()), i * 120);
         }
 
-        function finalLove() {
-            alert("Bình Minh yêu Thuý Vân mãi mãi trong vũ trụ 1000 dòng code này!");
-            hyperFirework(100);
+        function omniLove() {
+            alert("Bình Minh yêu Thuý Vân xuyên lục địa, xuyên thời gian, xuyên cả 1000 dòng code này!");
+            triggerSuperFire(120);
         }
 
-        // 5. MAIN RENDER LOOP (TRÁI TIM CỦA ENGINE)
-        function mainLoop() {
-            // Tạo hiệu ứng Motion Blur cực mạnh
-            ctx.fillStyle = 'rgba(2, 2, 5, 0.18)';
+        // --- MODULE 5: RENDER CORE (THE BEATING HEART) ---
+        function mainRenderLoop() {
+            // Hiệu ứng Trail rực rỡ
+            ctx.fillStyle = 'rgba(1, 1, 3, 0.2)';
             ctx.fillRect(0, 0, w, h);
 
-            // Vẽ bầu trời sao
-            stars.forEach(s => {
-                ctx.fillStyle = `rgba(255,255,255,${s.o})`;
-                ctx.fillRect(s.x, s.y, s.s, s.s);
+            // 5.1 Vẽ Starfield Parallax
+            starField.forEach(s => {
+                s.y += s.speed;
+                if(s.y > h) s.y = 0;
+                ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+                ctx.fillRect(s.x, s.y, s.size, s.size);
             });
 
-            // VẼ THÀNH PHỐ HYPER-REALISM
+            // 5.2 Vẽ Cityscape Realism
             buildings.forEach(b => {
-                // Đổ bóng tòa nhà đa tầng
-                let grad = ctx.createLinearGradient(b.x, h - b.h, b.x + b.w, h);
-                grad.addColorStop(0, '#050510');
-                grad.addColorStop(0.5, '#0a0a20');
-                grad.addColorStop(1, '#020205');
-                ctx.fillStyle = grad;
+                // Thân tòa nhà với Gradient 4 lớp
+                let g = ctx.createLinearGradient(b.x, h - b.h, b.x + b.w, h);
+                g.addColorStop(0, '#020205');
+                g.addColorStop(0.3, '#08081a');
+                g.addColorStop(0.7, '#050510');
+                g.addColorStop(1, '#010103');
+                ctx.fillStyle = g;
                 ctx.fillRect(b.x, h - b.h, b.w, b.h);
 
-                // ÁNH SÁNG HẤT TỪ PHÁO HOA (REAL-TIME GLOBAL ILLUMINATION)
+                // HIỆU ỨNG GLOBAL ILLUMINATION (Ánh sáng phản chiếu thực)
                 rockets.forEach(r => {
                     let dx = Math.abs(r.x - (b.x + b.w/2));
                     let dy = Math.abs(r.y - (h - b.h/2));
-                    if(dx < 400 && dy < 500) {
-                        let intensity = (1 - dx/400) * (1 - dy/500) * 0.25;
-                        ctx.fillStyle = `hsla(${r.hue}, 100%, 60%, ${intensity})`;
+                    if(dx < 500 && dy < 600) {
+                        let force = (1 - dx/500) * (1 - dy/600) * 0.35;
+                        ctx.fillStyle = `hsla(${r.hue}, 100%, 60%, ${force})`;
                         ctx.fillRect(b.x, h - b.h, b.w, b.h);
                     }
                 });
 
-                // Cửa sổ tòa nhà
-                b.windows.forEach((w, i) => {
-                    if(w.on) {
-                        ctx.fillStyle = w.color;
-                        ctx.shadowBlur = 10; ctx.shadowColor = w.color;
-                        let wx = b.x + 15 + (i % 5) * 25;
-                        let wy = h - b.h + 20 + Math.floor(i / 5) * 35;
-                        if(wx < b.x + b.w - 10 && wy < h - 10) {
-                            ctx.fillRect(wx, wy, 12, 12);
+                // Cửa sổ chi tiết (Generative Windows)
+                b.windows.forEach((win, idx) => {
+                    if(win.on) {
+                        let wx = b.x + 20 + (idx % 6) * 22;
+                        let wy = h - b.h + 30 + Math.floor(idx / 6) * 35;
+                        if(wx < b.x + b.w - 15 && wy < h - 15) {
+                            ctx.fillStyle = win.color;
+                            ctx.shadowBlur = 12; ctx.shadowColor = win.color;
+                            ctx.fillRect(wx, wy, 10, 10);
                         }
                     }
                 });
                 ctx.shadowBlur = 0;
 
-                // Đèn cảnh báo anten
-                if(b.hasAntenna) {
-                    b.blink++;
-                    ctx.fillStyle = b.blink % 60 < 30 ? '#f00' : 'transparent';
-                    ctx.fillRect(b.x + b.w/2 - 2, h - b.h - 20, 4, 4);
-                    ctx.strokeStyle = '#333';
-                    ctx.beginPath(); ctx.moveTo(b.x + b.w/2, h - b.h); ctx.lineTo(b.x + b.w/2, h - b.h - 20); ctx.stroke();
+                // Anten nhấp nháy
+                if(b.antenna) {
+                    ctx.strokeStyle = '#222'; ctx.lineWidth = 2;
+                    ctx.beginPath(); ctx.moveTo(b.x + b.w/2, h - b.h); ctx.lineTo(b.x + b.w/2, h - b.h - 30); ctx.stroke();
+                    ctx.fillStyle = Date.now() % 1000 < 500 ? '#f00' : 'transparent';
+                    ctx.fillRect(b.x + b.w/2 - 3, h - b.h - 35, 6, 6);
                 }
             });
 
-            // Xử lý Pháo hoa và Hạt
+            // 5.3 Shockwaves (Vòng tròn chấn động)
+            debris = debris.filter(d => {
+                d.r += 10; d.a -= 0.02;
+                ctx.strokeStyle = `rgba(255,255,255,${d.a})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.stroke();
+                return d.a > 0;
+            });
+
+            // 5.4 Pháo hoa & Hạt
             rockets = rockets.filter(r => {
                 r.draw();
                 return r.update();
@@ -497,11 +508,11 @@
                 return p.alpha > 0;
             });
 
-            requestAnimationFrame(mainLoop);
+            requestAnimationFrame(mainRenderLoop);
         }
 
-        // TỰ ĐỘNG KHỞI CHẠY KHÔNG GIAN
-        console.log("%c SYSTEM ETERNAL ONLINE ", "background: #ff007b; color: #fff; font-weight: bold; padding: 10px;");
+        // --- KHAI HỎA HỆ THỐNG ---
+        console.log("%c OMNIVERSE CORE DEPLOYED ", "background: #00f2ff; color: #000; font-weight: bold; padding: 15px;");
     </script>
 </body>
 </html>
