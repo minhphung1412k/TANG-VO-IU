@@ -3,73 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>THVAN: ETERNAL LOVE ODYSSEY</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Pacifico&display=swap" rel="stylesheet">
+    <title>THVAN: QUANTUM LOVE STRIKE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --p1: #ffdeeb; --p2: #ff85c0; --p3: #f759ab;
-            --white: rgba(255, 255, 255, 0.9);
+        :root { --p1: #ffdeeb; --p2: #ff85c0; --p3: #f759ab; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; overflow: hidden; font-family: 'Bebas Neue', cursive; }
+
+        /* CẢNH BÁO XOAY NGÀN MÀN HÌNH */
+        #orientation-overlay {
+            position: fixed; inset: 0; background: #1a000d; z-index: 9999;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: var(--p2); padding: 20px;
         }
+        @media (orientation: portrait) { #orientation-overlay { display: flex; } }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { background: #12000a; overflow: hidden; font-family: 'Quicksand', sans-serif; }
-
-        /* GIAO DIỆN HUD SIÊU VIP */
-        #game-ui {
-            position: fixed; top: 30px; left: 30px; z-index: 100;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            padding: 20px; border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            pointer-events: none; opacity: 0; transition: 1s;
+        /* GIAO DIỆN GAME */
+        #hud {
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            display: flex; align-items: center; gap: 20px; pointer-events: none;
         }
-        .stats-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--p1); margin-bottom: 5px; }
-        .bar-bg { width: 250px; height: 12px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        #bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--p2), #fff); box-shadow: 0 0 15px var(--p2); transition: 0.3s; }
+        .progress-container {
+            width: 300px; height: 15px; background: rgba(255,255,255,0.1);
+            border-radius: 20px; border: 2px solid var(--p2); overflow: hidden;
+        }
+        #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #fff, var(--p3)); box-shadow: 0 0 20px var(--p2); transition: 0.3s; }
+        
+        #score-display { font-size: 24px; color: #fff; letter-spacing: 2px; }
 
-        /* MÀN HÌNH CHỜ (CINEMATIC START) */
-        #start-screen {
+        /* MÀN HÌNH CHỜ VIP */
+        #start-gate {
             position: fixed; inset: 0; z-index: 1000;
-            background: radial-gradient(circle at center, #2d0015, #000);
+            background: radial-gradient(circle, #2d0015, #000);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .logo { font-family: 'Pacifico', cursive; font-size: 4rem; color: #fff; text-shadow: 0 0 30px var(--p3); margin-bottom: 10px; }
-        .sub-logo { font-size: 14px; letter-spacing: 5px; color: var(--p2); margin-bottom: 50px; }
+        .title { font-size: 5rem; color: #fff; text-shadow: 0 0 30px var(--p3); margin-bottom: 5px; }
+        .subtitle { font-family: 'Pacifico'; font-size: 1.5rem; color: var(--p1); margin-bottom: 40px; }
         
-        .play-btn {
-            position: relative; padding: 25px 60px; font-size: 18px; font-weight: bold;
-            color: #fff; background: transparent; border: 2px solid var(--p2);
-            border-radius: 50px; cursor: pointer; overflow: hidden; transition: 0.4s;
-            text-transform: uppercase; letter-spacing: 3px;
+        .btn-ignite {
+            padding: 20px 60px; font-family: 'Bebas Neue'; font-size: 1.5rem;
+            background: transparent; border: 2px solid #fff; color: #fff;
+            border-radius: 5px; cursor: pointer; transition: 0.4s; letter-spacing: 5px;
         }
-        .play-btn:hover { background: var(--p2); box-shadow: 0 0 50px var(--p3); transform: scale(1.05); }
+        .btn-ignite:hover { background: #fff; color: #000; box-shadow: 0 0 50px #fff; transform: scale(1.1); }
 
-        /* HIỆU ỨNG TEXT THẢ THÍNH */
-        #love-notif {
-            position: fixed; bottom: 10%; width: 100%; text-align: center;
-            font-family: 'Pacifico'; font-size: 1.8rem; color: var(--p1);
-            text-shadow: 0 0 15px var(--p3); pointer-events: none; opacity: 0;
-        }
-
-        canvas { display: block; }
+        canvas { display: block; filter: contrast(110%) brightness(110%); }
     </style>
 </head>
 <body>
 
-    <div id="game-ui">
-        <div class="stats-label">Sovereign: Thuý Vân</div>
-        <div class="bar-bg"><div id="bar-fill"></div></div>
-        <div class="stats-label" style="margin-top: 10px; text-align: right;" id="score-text">0 / 1000 Energy</div>
+    <div id="orientation-overlay">
+        <div style="font-size: 80px; margin-bottom: 20px;">🔄</div>
+        <h2>VUI LÒNG XOAY NGANG MÀN HÌNH</h2>
+        <p style="font-family: 'Pacifico'; margin-top: 10px;">Để trải nghiệm Vũ Trụ Tình Yêu tốt nhất</p>
     </div>
 
-    <div id="love-notif">Anh yêu Vân nhất!</div>
+    <div id="hud">
+        <div id="score-display">SYNC: 0%</div>
+        <div class="progress-container"><div id="progress-bar"></div></div>
+    </div>
 
-    <div id="start-screen">
-        <div class="logo">Thuy Van</div>
-        <div class="sub-logo">THE LOVE ODYSSEY</div>
-        <button class="play-btn" onclick="startExperience()">Kích hoạt Trái Tim</button>
-        <p style="margin-top: 30px; font-size: 10px; color: rgba(255,255,255,0.3);">RECOMMENDED: TURN ON AUDIO</p>
+    <div id="start-gate">
+        <div class="title">THVAN ODYSSEY</div>
+        <div class="subtitle">Binh Minh's Special Mission</div>
+        <button class="btn-ignite" onclick="launchGame()">INITIALIZE</button>
     </div>
 
     <div id="yt-player" style="display:none"></div>
@@ -81,20 +78,17 @@
         document.body.appendChild(canvas);
 
         let w, h, yt, active = false, score = 0;
-        let player = { x: 0, y: 0, targetX: 0, targetY: 0, size: 25 };
-        let objects = [], sparks = [], backgroundStars = [];
-        
-        const loveLines = [
-            "Vân là duy nhất!", "Mãi bên nhau nhé", "Xinh đẹp vô ngần",
-            "Bình Minh ❤️ Thuý Vân", "Cả nguồn sống là Vân", "Thương Vân rất nhiều"
-        ];
+        let player = { x: 100, y: h/2, r: 25, targetY: 0 };
+        let stars = [], enemies = [], sparkles = [];
 
         function init() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-            for(let i=0; i<150; i++) {
-                backgroundStars.push({x: Math.random()*w, y: Math.random()*h, s: Math.random()*2, o: Math.random()});
-            }
+            player.y = h/2;
+            player.targetY = h/2;
+            stars = Array.from({length: 100}, () => ({
+                x: Math.random()*w, y: Math.random()*h, s: Math.random()*3, v: Math.random()*5+2
+            }));
         }
 
         function onYouTubeIframeAPIReady() {
@@ -105,158 +99,131 @@
             });
         }
 
-        function startExperience() {
-            document.getElementById('start-screen').style.opacity = 0;
-            setTimeout(() => {
-                document.getElementById('start-screen').style.display = 'none';
-                document.getElementById('game-ui').style.opacity = 1;
-            }, 500);
-            
+        function launchGame() {
+            document.getElementById('start-gate').style.display = 'none';
             active = true;
-            yt.unMute();
-            yt.playVideo();
+            yt.unMute(); yt.playVideo();
             gameLoop();
         }
 
-        window.addEventListener('mousemove', (e) => {
-            player.targetX = e.clientX;
-            player.targetY = e.clientY;
-        });
+        // Điều khiển mượt mà cho điện thoại và máy tính
+        const handleMove = (y) => { player.targetY = y; };
+        window.addEventListener('mousemove', (e) => handleMove(e.clientY));
+        window.addEventListener('touchmove', (e) => {
+            handleMove(e.touches[0].clientY);
+            e.preventDefault();
+        }, {passive: false});
 
-        function createSparks(x, y, color) {
-            for(let i=0; i<15; i++) {
-                sparks.push({
-                    x, y, 
-                    vx: (Math.random()-0.5)*8, 
-                    vy: (Math.random()-0.5)*8, 
-                    alpha: 1, color
-                });
-            }
+        function drawPlayer(x, y) {
+            ctx.shadowBlur = 20; ctx.shadowColor = '#ff85c0';
+            ctx.fillStyle = '#fff';
+            // Phi thuyền hình trái tim nằm ngang
+            ctx.beginPath();
+            ctx.arc(x, y, 15, 0, Math.PI*2);
+            ctx.fill();
+            // Engine effect
+            let grad = ctx.createLinearGradient(x-40, y, x, y);
+            grad.addColorStop(0, 'transparent'); grad.addColorStop(1, '#f759ab');
+            ctx.fillStyle = grad;
+            ctx.fillRect(x-50, y-5, 40, 10);
         }
 
-        function drawHeart(x, y, size, color, alpha=1) {
-            ctx.save();
-            ctx.globalAlpha = alpha;
+        function drawHeart(x, y, size, color) {
             ctx.fillStyle = color;
             ctx.beginPath();
             ctx.moveTo(x, y);
-            ctx.bezierCurveTo(x, y-size/2, x-size, y-size/2, x-size, y+size/4);
-            ctx.bezierCurveTo(x-size, y+size, x, y+size*1.2, x, y+size*1.5);
-            ctx.bezierCurveTo(x, y+size*1.2, x+size, y+size, x+size, y+size/4);
-            ctx.bezierCurveTo(x+size, y-size/2, x, y-size/2, x, y);
+            ctx.bezierCurveTo(x-size, y-size, x-size, y+size, x, y+size*1.5);
+            ctx.bezierCurveTo(x+size, y+size, x+size, y-size, x, y);
             ctx.fill();
-            ctx.restore();
         }
 
         function gameLoop() {
             if(!active) return;
-            
-            // Background mượt mà
-            ctx.fillStyle = '#12000a';
+            ctx.fillStyle = '#0a0005';
             ctx.fillRect(0,0,w,h);
 
-            // Vẽ sao nền lấp lánh
-            backgroundStars.forEach(s => {
-                s.o += (Math.random()-0.5)*0.05;
-                ctx.fillStyle = `rgba(255, 222, 235, ${Math.abs(s.o)})`;
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, 7); ctx.fill();
+            // 1. Vẽ sao nền (Space Warp effect)
+            stars.forEach(s => {
+                ctx.fillStyle = `rgba(255,255,255,${Math.random()})`;
+                ctx.fillRect(s.x, s.y, s.v, 1);
+                s.x -= s.v;
+                if(s.x < 0) s.x = w;
             });
 
-            // Smooth Player Movement (Easing)
-            player.x += (player.targetX - player.x) * 0.15;
-            player.y += (player.targetY - player.y) * 0.15;
+            // 2. Player movement
+            player.y += (player.targetY - player.y) * 0.1;
+            drawPlayer(player.x, player.y);
 
-            // Hào quang Player
-            let gradient = ctx.createRadialGradient(player.x, player.y, 0, player.x, player.y, 50);
-            gradient.addColorStop(0, 'rgba(247, 89, 171, 0.4)');
-            gradient.addColorStop(1, 'transparent');
-            ctx.fillStyle = gradient;
-            ctx.beginPath(); ctx.arc(player.x, player.y, 50, 0, 7); ctx.fill();
-            
-            // Vẽ "Phi thuyền" trái tim của Vân
-            drawHeart(player.x, player.y - 10, 15, '#fff');
-
-            // Tạo vật phẩm (Hearts)
-            if(Math.random() < 0.04) {
-                objects.push({
-                    x: Math.random()*w, y: -50, 
-                    size: Math.random()*10 + 10,
-                    speed: Math.random()*2 + 2,
-                    hue: Math.random()*20 + 330 // Dải màu hồng
+            // 3. Enemies (Hearts) spawn
+            if(Math.random() < 0.05) {
+                enemies.push({
+                    x: w + 50, y: Math.random()*h, 
+                    s: Math.random()*15+10, v: Math.random()*4+4,
+                    hue: Math.random()*30 + 330
                 });
             }
 
-            // Xử lý vật phẩm
-            objects.forEach((obj, i) => {
-                obj.y += obj.speed;
-                
-                // Cơ chế Magnet (Nam châm hút khi ở gần)
-                let dx = player.x - obj.x;
-                let dy = player.y - obj.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-                
-                if(dist < 200) {
-                    obj.x += dx * 0.05;
-                    obj.y += dy * 0.05;
-                }
-
-                drawHeart(obj.x, obj.y, obj.size, `hsl(${obj.hue}, 100%, 70%)`);
+            enemies.forEach((en, i) => {
+                en.x -= en.v;
+                drawHeart(en.x, en.y, en.s, `hsl(${en.hue}, 100%, 75%)`);
 
                 // Va chạm
-                if(dist < 30) {
-                    createSparks(obj.x, obj.y, `hsl(${obj.hue}, 100%, 70%)`);
-                    objects.splice(i, 1);
-                    score += 20;
-                    if(score > 1000) score = 1000;
+                let dx = player.x - en.x;
+                let dy = player.y - en.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+
+                if(dist < 40) {
+                    enemies.splice(i, 1);
+                    score += 2;
+                    if(score > 100) score = 100;
+                    document.getElementById('progress-bar').style.width = score + '%';
+                    document.getElementById('score-display').innerText = `SYNC: ${score}%`;
                     
-                    // Cập nhật UI
-                    document.getElementById('bar-fill').style.width = (score/10) + '%';
-                    document.getElementById('score-text').innerText = `${score} / 1000 Energy`;
-                    
-                    if(Math.random() > 0.7) triggerNotif();
-                    if(score >= 1000) victory();
+                    // Tạo sparkle
+                    for(let j=0; j<10; j++) sparkles.push({
+                        x: en.x, y: en.y, vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10, a: 1
+                    });
+
+                    if(score >= 100) victory();
                 }
 
-                if(obj.y > h + 50) objects.splice(i, 1);
+                if(en.x < -100) enemies.splice(i, 1);
             });
 
-            // Xử lý Sparks (Hiệu ứng nổ)
-            sparks.forEach((s, i) => {
-                s.x += s.vx; s.y += s.vy; s.alpha -= 0.02;
-                ctx.fillStyle = s.color;
-                ctx.globalAlpha = s.alpha;
-                ctx.beginPath(); ctx.arc(s.x, s.y, 2, 0, 7); ctx.fill();
-                if(s.alpha <= 0) sparks.splice(i, 1);
+            // 4. Sparkles
+            sparkles.forEach((sp, i) => {
+                sp.x += sp.vx; sp.y += sp.vy; sp.a -= 0.02;
+                ctx.fillStyle = `rgba(255, 133, 192, ${sp.a})`;
+                ctx.fillRect(sp.x, sp.y, 3, 3);
+                if(sp.a <= 0) sparkles.splice(i, 1);
             });
-            ctx.globalAlpha = 1;
 
             requestAnimationFrame(gameLoop);
         }
 
-        function triggerNotif() {
-            const el = document.getElementById('love-notif');
-            el.innerText = loveLines[Math.floor(Math.random()*loveLines.length)];
-            el.style.opacity = 1;
-            setTimeout(() => el.style.opacity = 0, 1500);
-        }
-
         function victory() {
             active = false;
-            document.body.innerHTML += `
-                <div style="position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; animation: fadeIn 2s;">
-                    <h1 style="font-family:'Pacifico'; color:#ff85c0; font-size:5rem; text-shadow:0 0 30px #f759ab">Vân là của Anh!</h1>
-                    <p style="color:#fff; letter-spacing:10px; margin-top:20px">ETERNAL LOVE CONNECTED</p>
-                    <div style="margin-top:40px; font-size:40px">🌸💖🌸</div>
-                </div>
+            ctx.clearRect(0,0,w,h);
+            const gate = document.getElementById('start-gate');
+            gate.style.display = 'flex';
+            gate.innerHTML = `
+                <h1 class="title" style="font-size: 3rem; color: var(--p2)">MISSION COMPLETE</h1>
+                <p class="subtitle">BÌNH MINH & THUÝ VÂN: FOREVER</p>
+                <p style="color: #fff; margin-top: 20px;">Tình yêu đã đạt ngưỡng Vô Cực!</p>
+                <div style="font-size: 50px; margin-top: 20px;">🎉💖👑</div>
             `;
+            // Pháo hoa kết thúc
+            setInterval(() => {
+                let x = Math.random()*w, y = Math.random()*h;
+                for(let i=0; i<30; i++) sparkles.push({
+                    x, y, vx: (Math.random()-0.5)*15, vy: (Math.random()-0.5)*15, a: 1
+                });
+            }, 300);
+            gameLoop(); // Vẫn chạy loop để vẽ sparkles
         }
 
-        init();
         window.addEventListener('resize', init);
+        init();
     </script>
-
-    <style>
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
 </body>
 </html>
