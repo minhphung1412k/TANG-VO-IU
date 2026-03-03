@@ -2,249 +2,226 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>THE OMNIVERSE - THVAN SUPREME</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GAME: THVAN QUANTUM ADVENTURE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --n: #00f2ff; --p: #ff007b; --g: #ffd700; --v: #7d00ff;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; overflow: hidden; 
+            font-family: 'Orbitron', sans-serif; color: #fff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { background: #000; overflow: hidden; font-family: 'Syncopate', sans-serif; height: 100vh; color: #fff; }
-
-        /* NỀN ĐA CHIỀU */
-        canvas { position: fixed; inset: 0; }
-        #bg-canvas { z-index: 1; filter: contrast(120%) brightness(80%); }
-        #fw-canvas { z-index: 5; pointer-events: none; mix-blend-mode: screen; }
-
-        /* CURSOR CÔNG NGHỆ GEN 5 */
-        #cursor {
-            position: fixed; width: 40px; height: 40px; border: 2px solid var(--n);
-            border-radius: 50%; pointer-events: none; z-index: 9999;
-            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; align-items: center; justify-content: center;
+        /* GIAO DIỆN GAME HUD */
+        #ui-layer {
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            pointer-events: none;
         }
-        #cursor-eye { width: 6px; height: 6px; background: var(--p); border-radius: 50%; box-shadow: 0 0 15px var(--p); }
+        .stats { font-size: 12px; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; margin-bottom: 10px; }
+        .progress-container { width: 200px; height: 10px; background: rgba(255,255,255,0.1); border: 1px solid #00f2ff; }
+        #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #00f2ff, #ff007b); transition: 0.3s; }
 
-        /* GIAO DIỆN TRẠM KHÔNG GIAN */
-        .omni-interface {
-            position: relative; z-index: 100; height: 100vh;
-            display: flex; align-items: center; justify-content: center;
+        /* MÀN HÌNH BẮT ĐẦU (START SCREEN) */
+        #overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            z-index: 1000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            border: 10px double #00f2ff; margin: 20px;
         }
+        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.5rem; color: #ff007b; margin-bottom: 30px; line-height: 1.5; }
+        .start-btn {
+            padding: 20px 40px; background: transparent; border: 4px solid #00f2ff;
+            color: #00f2ff; font-family: 'Press Start 2P'; cursor: pointer;
+            transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+        }
+        .start-btn:hover { background: #00f2ff; color: #000; box-shadow: 0 0 50px #00f2ff; }
 
-        /* KHỐI ĐĂNG NHẬP "CHÂN KHÔNG" */
-        .vacuum-module {
-            width: 480px; padding: 80px 50px; position: relative;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(60px) saturate(200%);
-            -webkit-backdrop-filter: blur(60px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40% 10% 40% 10%;
-            box-shadow: 0 0 120px rgba(0, 0, 0, 1), inset 0 0 50px rgba(0, 242, 255, 0.1);
-            animation: modulePulse 8s infinite alternate ease-in-out;
-            text-align: center;
+        /* HIỆU ỨNG THÔNG BÁO TRONG GAME */
+        #game-msg {
+            position: fixed; bottom: 15%; width: 100%; text-align: center;
+            font-family: 'Press Start 2P'; font-size: 10px; color: #ffd700;
+            pointer-events: none; opacity: 0; transition: 0.5s;
         }
 
-        @keyframes modulePulse { 
-            0% { transform: scale(1) rotate(0deg); border-radius: 40% 10% 40% 10%; }
-            100% { transform: scale(1.05) rotate(2deg); border-radius: 10% 40% 10% 40%; }
-        }
-
-        /* NÚT NHẠC DẠNG "HOLOGRAM CORE" */
-        #hologram-audio {
-            position: fixed; bottom: 50px; left: 50px; z-index: 1000;
-            width: 80px; height: 80px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .audio-ring {
-            position: absolute; inset: 0; border: 2px solid var(--n);
-            border-radius: 50%; animation: ring-spin 4s linear infinite;
-        }
-        .audio-ring:nth-child(2) { border-color: var(--p); animation-duration: 2s; animation-direction: reverse; }
-        @keyframes ring-spin { to { transform: rotate(360deg); } }
-
-        /* INPUT SECTOR */
-        .input-sector { position: relative; margin-bottom: 45px; }
-        .input-sector label { font-size: 7px; color: var(--n); letter-spacing: 8px; margin-bottom: 12px; display: block; text-transform: uppercase; }
-        
-        .field-input {
-            width: 100%; background: transparent; border: none;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            padding: 15px; color: #fff; font-family: 'Syncopate';
-            font-size: 12px; text-align: center; outline: none; transition: 0.6s;
-        }
-        .field-input:focus { 
-            border-bottom-color: var(--p); letter-spacing: 5px; 
-            text-shadow: 0 0 15px var(--p);
-        }
-
-        /* NÚT KÍCH HOẠT OMNI */
-        .btn-activate {
-            width: 100%; padding: 25px; border: none;
-            background: linear-gradient(45deg, var(--v), var(--p));
-            color: #fff; font-family: 'Cinzel Decorative'; font-size: 14px;
-            font-weight: 900; letter-spacing: 15px; cursor: pointer;
-            border-radius: 5px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-            transition: 0.5s;
-        }
-        .btn-activate:hover { letter-spacing: 25px; box-shadow: 0 0 60px var(--p); transform: scale(1.05); }
-
-        /* VIP DASHBOARD */
-        #vip-nav { display: none; opacity: 0; grid-template-columns: 1fr 1fr; gap: 25px; width: 450px; }
-        .nav-gate {
-            padding: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            text-align: center; cursor: pointer; transition: 0.5s;
-            font-family: 'Cinzel Decorative'; font-size: 12px; letter-spacing: 5px;
-        }
-        .nav-gate:hover { background: var(--n); color: #000; box-shadow: 0 0 40px var(--n); transform: translateY(-10px) rotate(3deg); }
-
+        canvas { display: block; }
     </style>
 </head>
 <body>
 
-    <div id="cursor"><div id="cursor-eye"></div></div>
-    <canvas id="bg-canvas"></canvas>
-    <canvas id="fw-canvas"></canvas>
-
-    <div id="hologram-audio" onclick="controlNexus()">
-        <div class="audio-ring"></div>
-        <div class="audio-ring"></div>
-        <i class="fas fa-compact-disc" style="font-size: 30px; color: var(--n); z-index: 2;"></i>
+    <div id="ui-layer">
+        <div class="stats">PLAYER: THUÝ VÂN</div>
+        <div class="stats">LOVE ENERGY: <span id="score">0</span>%</div>
+        <div class="progress-container"><div id="progress-bar"></div></div>
     </div>
 
-    <div class="omni-interface">
-        <div class="vacuum-module" id="login-ui">
-            <h1 style="font-family: 'Cinzel Decorative'; font-size: 2rem; margin-bottom: 60px; color: #fff; text-shadow: 0 0 20px var(--n);">THVAN OS</h1>
-            
-            <div class="input-sector">
-                <label>IDENTIFICATION_LINK</label>
-                <input type="text" id="user" class="field-input" placeholder="NHẬP TK NHA VÂN IU" autocomplete="off">
-            </div>
+    <div id="game-msg">BÌNH MINH YÊU VÂN NHẤT!</div>
 
-            <div class="input-sector">
-                <label>SOUL_ENCRYPTION</label>
-                <input type="password" id="pass" class="field-input" placeholder="NHẬP MẬT KHẨU NHÁ BẤY BÌ" autocomplete="off">
-            </div>
-
-            <button class="btn-activate" onclick="launchOmni()">ACTIVATE</button>
-        </div>
-
-        <div id="vip-nav">
-            <div class="nav-gate" onclick="galaxy(100)">MEMORIES</div>
-            <div class="nav-gate" onclick="galaxy(100)">EXISTENCE</div>
-            <div class="nav-gate" onclick="galaxy(100)">ETERNITY</div>
-            <div class="nav-gate" style="grid-column: span 2; background: var(--p);" onclick="singularity()">GOD_MODE_LOVE</div>
-        </div>
+    <div id="overlay">
+        <h1>PROJECT: THVAN<br>QUANTUM LOVE</h1>
+        <p style="margin-bottom: 40px; letter-spacing: 5px;">HÃY THU THẬP CÁC HẠT SÁNG ĐỂ MỞ KHOÁ TRÁI TIM</p>
+        <button class="start-btn" onclick="startGame()">START MISSION</button>
     </div>
 
-    <div id="nexus-player" style="display:none"></div>
+    <div id="yt-player" style="display:none"></div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const bgC = document.getElementById('bg-canvas');
-        const fwC = document.getElementById('fw-canvas');
-        const btx = bgC.getContext('2d');
-        const ftx = fwC.getContext('2d');
-        let w, h, yt, particles = [], stars = [];
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.body.appendChild(canvas);
 
-        // Theo dõi con trỏ
-        document.addEventListener('mousemove', (e) => {
-            const cursor = document.getElementById('cursor');
-            cursor.style.left = e.clientX - 20 + 'px';
-            cursor.style.top = e.clientY - 20 + 'px';
-        });
+        let w, h, yt, animationId;
+        let score = 0;
+        let gameActive = false;
+        let player = { x: 0, y: 0, r: 20 };
+        let particles = [];
+        let stars = [];
+        let items = [];
+
+        const quotes = [
+            "VÂN LÀ XINH NHẤT!",
+            "BÌNH MINH CHỈ YÊU VÂN",
+            "MẬT MÃ: THUÝ VÂN",
+            "NĂNG LƯỢNG TRÀN ĐẦY!",
+            "SẮP TỚI ĐÍCH RỒI BẤY BÌ"
+        ];
 
         function init() {
-            w = bgC.width = fwC.width = window.innerWidth;
-            h = bgC.height = fwC.height = window.innerHeight;
-            stars = Array.from({length: 500}, () => ({
-                x: Math.random()*w, y: Math.random()*h, r: Math.random()*2, 
-                vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5,
-                o: Math.random()
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+            stars = Array.from({length: 200}, () => ({
+                x: Math.random()*w, y: Math.random()*h, s: Math.random()*2, v: Math.random()*2+1
             }));
         }
 
         function onYouTubeIframeAPIReady() {
-            yt = new YT.Player('nexus-player', {
+            yt = new YT.Player('yt-player', {
                 videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
                 events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function controlNexus() {
-            if(yt.isMuted()) { yt.unMute(); yt.playVideo(); } 
-            else { yt.mute(); }
+        function startGame() {
+            document.getElementById('overlay').style.display = 'none';
+            gameActive = true;
+            yt.unMute();
+            yt.playVideo();
+            spawnItem();
+            animate();
         }
 
-        function launchOmni() {
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
-            if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
-                document.getElementById('login-ui').style.display = 'none';
-                const nav = document.getElementById('vip-nav');
-                nav.style.display = 'grid';
-                setTimeout(() => nav.style.opacity = 1, 100);
-                if(yt.isMuted()) controlNexus();
-                galaxy(150);
-            } else { alert("ACCESS DENIED. DNA MISMATCH."); }
+        window.addEventListener('mousemove', (e) => {
+            player.x = e.clientX;
+            player.y = e.clientY;
+        });
+
+        function spawnItem() {
+            if(!gameActive) return;
+            items.push({
+                x: Math.random()*w, y: -50,
+                r: 10, v: Math.random()*3+2,
+                color: `hsl(${Math.random()*360}, 100%, 70%)`
+            });
+            setTimeout(spawnItem, 1000);
         }
 
-        // HỆ THỐNG HẠT LƯỢNG TỬ (GALAXY FIREWORKS)
-        class QuantumParticle {
-            constructor(x, y, hue) {
-                this.x = x; this.y = y; this.hue = hue;
-                this.angle = Math.random() * Math.PI * 2;
-                this.v = 5 + Math.random() * 10;
-                this.life = 1; this.decay = 0.005 + Math.random()*0.01;
-                this.spin = 0;
+        function showMsg() {
+            const msg = document.getElementById('game-msg');
+            msg.innerText = quotes[Math.floor(Math.random()*quotes.length)];
+            msg.style.opacity = 1;
+            setTimeout(() => msg.style.opacity = 0, 1500);
+        }
+
+        function createExplosion(x, y, color) {
+            for(let i=0; i<20; i++) {
+                particles.push({
+                    x, y, color,
+                    vx: (Math.random()-0.5)*10,
+                    vy: (Math.random()-0.5)*10,
+                    life: 1
+                });
             }
-            update() {
-                this.spin += 0.1;
-                this.x += Math.cos(this.angle + this.spin) * this.v;
-                this.y += Math.sin(this.angle + this.spin) * this.v;
-                this.v *= 0.95; this.life -= this.decay;
-            }
-            draw() {
-                ftx.globalAlpha = this.life;
-                ftx.shadowBlur = 20; ftx.shadowColor = `hsl(${this.hue}, 100%, 50%)`;
-                ftx.fillStyle = `hsl(${this.hue}, 100%, 75%)`;
-                ftx.beginPath(); ftx.arc(this.x, this.y, 1.5, 0, 7); ftx.fill();
-            }
         }
 
-        function galaxy(n) {
-            const h = Math.random()*360;
-            const x = Math.random()*w, y = Math.random()*h;
-            for(let i=0; i<n; i++) particles.push(new QuantumParticle(x, y, h));
-        }
+        function animate() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0,0,w,h);
 
-        function singularity() {
-            alert("KÍCH HOẠT CHẾ ĐỘ ĐA VŨ TRỤ: BÌNH MINH ❤ THUÝ VÂN");
-            for(let i=0; i<10; i++) setTimeout(() => galaxy(100), i*200);
-        }
-
-        function render() {
-            btx.fillStyle = 'rgba(0,0,0,0.2)'; btx.fillRect(0,0,w,h);
+            // Vẽ sao nền lướt đi
             stars.forEach(s => {
-                s.x += s.vx; s.y += s.vy;
-                if(s.x<0 || s.x>w) s.vx *= -1;
-                if(s.y<0 || s.y>h) s.vy *= -1;
-                btx.fillStyle = `rgba(0, 242, 255, ${s.o})`;
-                btx.beginPath(); btx.arc(s.x, s.y, s.r, 0, 7); btx.fill();
+                ctx.fillStyle = '#fff';
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, 7); ctx.fill();
+                s.y += s.v;
+                if(s.y > h) s.y = -10;
             });
 
-            ftx.clearRect(0,0,w,h);
-            particles = particles.filter(p => { p.update(); p.draw(); return p.life > 0; });
-            if(Math.random()<0.03) galaxy(60);
-            requestAnimationFrame(render);
+            // Vẽ người chơi (Phi thuyền Hologram)
+            ctx.strokeStyle = '#00f2ff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(player.x, player.y - 25);
+            ctx.lineTo(player.x + 20, player.y + 15);
+            ctx.lineTo(player.x - 20, player.y + 15);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.shadowBlur = 20; ctx.shadowColor = '#00f2ff';
+
+            // Xử lý vật phẩm
+            items.forEach((item, index) => {
+                item.y += item.v;
+                ctx.fillStyle = item.color;
+                ctx.shadowBlur = 15; ctx.shadowColor = item.color;
+                ctx.beginPath(); ctx.arc(item.x, item.y, item.r, 0, 7); ctx.fill();
+
+                // Va chạm
+                let dx = player.x - item.x;
+                let dy = player.y - item.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+
+                if(dist < player.r + item.r) {
+                    items.splice(index, 1);
+                    score += 5;
+                    document.getElementById('score').innerText = score;
+                    document.getElementById('progress-bar').style.width = score + '%';
+                    createExplosion(item.x, item.y, item.color);
+                    showMsg();
+
+                    if(score >= 100) endGame();
+                }
+                if(item.y > h) items.splice(index, 1);
+            });
+
+            // Pháo hoa hạt nhân
+            particles = particles.filter(p => {
+                p.x += p.vx; p.y += p.vy; p.life -= 0.02;
+                ctx.globalAlpha = p.life;
+                ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, 7); ctx.fill();
+                return p.life > 0;
+            });
+            ctx.globalAlpha = 1;
+
+            if(gameActive) requestAnimationFrame(animate);
+        }
+
+        function endGame() {
+            gameActive = false;
+            ctx.clearRect(0,0,w,h);
+            const overlay = document.getElementById('overlay');
+            overlay.style.display = 'flex';
+            overlay.innerHTML = `
+                <h1 style="color: #00f2ff">MISSION ACCOMPLISHED!</h1>
+                <p style="font-size: 20px; line-height: 2">BÌNH MINH ❤ THUÝ VÂN<br>FOREVER TOGETHER</p>
+                <div style="margin-top: 30px; font-size: 10px; color: #ff007b">MUSIC: ${yt.getVideoData().title}</div>
+            `;
+            // Nổ pháo hoa liên hoàn
+            setInterval(() => createExplosion(Math.random()*w, Math.random()*h, '#ff007b'), 200);
+            setInterval(() => createExplosion(Math.random()*w, Math.random()*h, '#00f2ff'), 300);
         }
 
         window.addEventListener('resize', init);
-        init(); render();
+        init();
     </script>
 </body>
 </html>
