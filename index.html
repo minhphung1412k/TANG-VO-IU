@@ -2,267 +2,249 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>THVAN ETERNITY - GOD MODE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Michroma&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>THE OMNIVERSE - THVAN SUPREME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --cyan: #00f2ff; --magenta: #ff007b; --gold: #ffcc00;
-            --dark: #020205;
+            --n: #00f2ff; --p: #ff007b; --g: #ffd700; --v: #7d00ff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
-        body { 
-            background: var(--dark); color: #fff; overflow: hidden; 
-            font-family: 'Orbitron', sans-serif; height: 100vh;
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background: #000; overflow: hidden; font-family: 'Syncopate', sans-serif; height: 100vh; color: #fff; }
+
+        /* NỀN ĐA CHIỀU */
+        canvas { position: fixed; inset: 0; }
+        #bg-canvas { z-index: 1; filter: contrast(120%) brightness(80%); }
+        #fw-canvas { z-index: 5; pointer-events: none; mix-blend-mode: screen; }
+
+        /* CURSOR CÔNG NGHỆ GEN 5 */
+        #cursor {
+            position: fixed; width: 40px; height: 40px; border: 2px solid var(--n);
+            border-radius: 50%; pointer-events: none; z-index: 9999;
+            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; justify-content: center;
         }
+        #cursor-eye { width: 6px; height: 6px; background: var(--p); border-radius: 50%; box-shadow: 0 0 15px var(--p); }
 
-        /* NỀN VŨ TRỤ CHÂN THỰC 4K */
-        #nebula-canvas { position: fixed; inset: 0; z-index: 1; }
-        #firework-canvas { position: fixed; inset: 0; z-index: 5; pointer-events: none; mix-blend-mode: screen; }
-
-        /* HUD OVERLAY (GIAO DIỆN MÁY BAY CHIẾN ĐẤU) */
-        .hud-frame {
-            position: fixed; inset: 0; z-index: 10;
-            border: 40px solid transparent;
-            border-image: url('https://i.imgur.com/8S9S7zH.png') 100 round; /* Giả lập khung HUD */
-            pointer-events: none; opacity: 0.5;
-        }
-
-        /* KHỐI ĐĂNG NHẬP: THE CORE GATES */
-        .center-interface {
+        /* GIAO DIỆN TRẠM KHÔNG GIAN */
+        .omni-interface {
             position: relative; z-index: 100; height: 100vh;
             display: flex; align-items: center; justify-content: center;
         }
 
-        .core-gates {
-            width: 420px; position: relative;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(30px) saturate(180%);
-            border: 2px solid rgba(0, 242, 255, 0.3);
-            border-radius: 80px 0 80px 0;
-            padding: 60px 40px;
-            box-shadow: 0 0 100px rgba(0, 242, 255, 0.1), inset 0 0 40px rgba(255, 0, 123, 0.1);
-            transform: perspective(1000px) rotateX(10deg);
-            animation: coreHover 4s infinite ease-in-out;
+        /* KHỐI ĐĂNG NHẬP "CHÂN KHÔNG" */
+        .vacuum-module {
+            width: 480px; padding: 80px 50px; position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(60px) saturate(200%);
+            -webkit-backdrop-filter: blur(60px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40% 10% 40% 10%;
+            box-shadow: 0 0 120px rgba(0, 0, 0, 1), inset 0 0 50px rgba(0, 242, 255, 0.1);
+            animation: modulePulse 8s infinite alternate ease-in-out;
+            text-align: center;
         }
 
-        @keyframes coreHover {
-            0%, 100% { transform: perspective(1000px) rotateX(10deg) translateY(0); }
-            50% { transform: perspective(1000px) rotateX(5deg) translateY(-20px); }
+        @keyframes modulePulse { 
+            0% { transform: scale(1) rotate(0deg); border-radius: 40% 10% 40% 10%; }
+            100% { transform: scale(1.05) rotate(2deg); border-radius: 10% 40% 10% 40%; }
         }
 
-        /* LABEL DẠNG MÃ CODE */
-        .identity-label {
-            font-size: 10px; color: var(--cyan); letter-spacing: 5px;
-            margin-bottom: 15px; display: block; text-shadow: 0 0 10px var(--cyan);
+        /* NÚT NHẠC DẠNG "HOLOGRAM CORE" */
+        #hologram-audio {
+            position: fixed; bottom: 50px; left: 50px; z-index: 1000;
+            width: 80px; height: 80px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .audio-ring {
+            position: absolute; inset: 0; border: 2px solid var(--n);
+            border-radius: 50%; animation: ring-spin 4s linear infinite;
+        }
+        .audio-ring:nth-child(2) { border-color: var(--p); animation-duration: 2s; animation-direction: reverse; }
+        @keyframes ring-spin { to { transform: rotate(360deg); } }
+
+        /* INPUT SECTOR */
+        .input-sector { position: relative; margin-bottom: 45px; }
+        .input-sector label { font-size: 7px; color: var(--n); letter-spacing: 8px; margin-bottom: 12px; display: block; text-transform: uppercase; }
+        
+        .field-input {
+            width: 100%; background: transparent; border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 15px; color: #fff; font-family: 'Syncopate';
+            font-size: 12px; text-align: center; outline: none; transition: 0.6s;
+        }
+        .field-input:focus { 
+            border-bottom-color: var(--p); letter-spacing: 5px; 
+            text-shadow: 0 0 15px var(--p);
         }
 
-        /* INPUT BIẾN THÀNH THANH NĂNG LƯỢNG */
-        .energy-input {
-            width: 100%; background: rgba(255, 255, 255, 0.03);
-            border: none; border-left: 4px solid var(--cyan);
-            padding: 20px; color: #fff; font-family: 'Michroma', sans-serif;
-            font-size: 12px; margin-bottom: 40px; outline: none;
-            transition: 0.4s; position: relative;
-        }
-        .energy-input:focus {
-            background: rgba(0, 242, 255, 0.1);
-            border-left: 4px solid var(--magenta);
-            box-shadow: -10px 0 30px rgba(255, 0, 123, 0.3);
-        }
-
-        /* NÚT KÍCH HOẠT VÔ CỰC */
-        .btn-ignite {
-            width: 100%; padding: 25px; background: transparent;
-            border: 1px solid var(--cyan); color: var(--cyan);
-            font-weight: 900; letter-spacing: 15px; text-transform: uppercase;
-            position: relative; overflow: hidden; transition: 0.5s;
-        }
-        .btn-ignite::before {
-            content: ''; position: absolute; top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+        /* NÚT KÍCH HOẠT OMNI */
+        .btn-activate {
+            width: 100%; padding: 25px; border: none;
+            background: linear-gradient(45deg, var(--v), var(--p));
+            color: #fff; font-family: 'Cinzel Decorative'; font-size: 14px;
+            font-weight: 900; letter-spacing: 15px; cursor: pointer;
+            border-radius: 5px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
             transition: 0.5s;
         }
-        .btn-ignite:hover::before { left: 100%; }
-        .btn-ignite:hover {
-            background: var(--cyan); color: #000;
-            box-shadow: 0 0 50px var(--cyan);
-            letter-spacing: 20px;
-        }
+        .btn-activate:hover { letter-spacing: 25px; box-shadow: 0 0 60px var(--p); transform: scale(1.05); }
 
-        /* HIỆU ỨNG SCANNER CHẠY QUA MÀN HÌNH */
-        .scanner-line {
-            position: fixed; width: 100%; height: 2px;
-            background: rgba(0, 242, 255, 0.2);
-            z-index: 1000; pointer-events: none;
-            animation: scanMove 3s linear infinite;
+        /* VIP DASHBOARD */
+        #vip-nav { display: none; opacity: 0; grid-template-columns: 1fr 1fr; gap: 25px; width: 450px; }
+        .nav-gate {
+            padding: 40px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            text-align: center; cursor: pointer; transition: 0.5s;
+            font-family: 'Cinzel Decorative'; font-size: 12px; letter-spacing: 5px;
         }
-        @keyframes scanMove { from { top: 0%; } to { top: 100%; } }
-
-        /* DASHBOARD SAU KHI ĐĂNG NHẬP */
-        #vip-dashboard {
-            display: none; grid-template-columns: repeat(2, 1fr); gap: 20px;
-            width: 100%; max-width: 500px;
-        }
-        .vip-card {
-            background: rgba(255,255,255,0.05); padding: 30px; border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px; text-align: center; transition: 0.4s;
-        }
-        .vip-card:hover { 
-            background: var(--magenta); transform: scale(1.1) rotate(2deg);
-            box-shadow: 0 0 40px var(--magenta);
-        }
+        .nav-gate:hover { background: var(--n); color: #000; box-shadow: 0 0 40px var(--n); transform: translateY(-10px) rotate(3deg); }
 
     </style>
 </head>
 <body>
 
-    <div class="scanner-line"></div>
-    <div class="hud-frame"></div>
-    <canvas id="nebula-canvas"></canvas>
-    <canvas id="firework-canvas"></canvas>
+    <div id="cursor"><div id="cursor-eye"></div></div>
+    <canvas id="bg-canvas"></canvas>
+    <canvas id="fw-canvas"></canvas>
 
-    <div class="center-interface">
-        <div class="core-gates" id="gate-panel">
-            <h2 style="text-align: center; margin-bottom: 50px; font-size: 1.5rem; letter-spacing: 10px; color: #fff;">
-                THE <span style="color: var(--magenta);">VAN</span> PROJECT
-            </h2>
+    <div id="hologram-audio" onclick="controlNexus()">
+        <div class="audio-ring"></div>
+        <div class="audio-ring"></div>
+        <i class="fas fa-compact-disc" style="font-size: 30px; color: var(--n); z-index: 2;"></i>
+    </div>
 
-            <span class="identity-label">BIOMETRIC USERNAME</span>
-            <input type="text" id="u" class="energy-input" placeholder="ACCESS IDENTITY..." autocomplete="off">
+    <div class="omni-interface">
+        <div class="vacuum-module" id="login-ui">
+            <h1 style="font-family: 'Cinzel Decorative'; font-size: 2rem; margin-bottom: 60px; color: #fff; text-shadow: 0 0 20px var(--n);">THVAN OS</h1>
+            
+            <div class="input-sector">
+                <label>IDENTIFICATION_LINK</label>
+                <input type="text" id="user" class="field-input" placeholder="NHẬP TK NHA VÂN IU" autocomplete="off">
+            </div>
 
-            <span class="identity-label">QUANTUM KEYCODE</span>
-            <input type="password" id="p" class="energy-input" placeholder="VERIFY PASSCODE..." autocomplete="off">
+            <div class="input-sector">
+                <label>SOUL_ENCRYPTION</label>
+                <input type="password" id="pass" class="field-input" placeholder="NHẬP MẬT KHẨU NHÁ BẤY BÌ" autocomplete="off">
+            </div>
 
-            <button class="btn-ignite" onclick="validate()">Kích Hoạt</button>
+            <button class="btn-activate" onclick="launchOmni()">ACTIVATE</button>
         </div>
 
-        <div id="vip-dashboard">
-            <div class="vip-card" onclick="launch(100)">KỈ NIỆM</div>
-            <div class="vip-card" onclick="launch(100)">HIỆN TẠI</div>
-            <div class="vip-card" onclick="launch(100)">TƯƠNG LAI</div>
-            <div class="vip-card" style="grid-column: span 2;" onclick="godMode()">ETERNAL LOVE</div>
+        <div id="vip-nav">
+            <div class="nav-gate" onclick="galaxy(100)">MEMORIES</div>
+            <div class="nav-gate" onclick="galaxy(100)">EXISTENCE</div>
+            <div class="nav-gate" onclick="galaxy(100)">ETERNITY</div>
+            <div class="nav-gate" style="grid-column: span 2; background: var(--p);" onclick="singularity()">GOD_MODE_LOVE</div>
         </div>
     </div>
 
-    <div id="yt-player" style="display:none"></div>
+    <div id="nexus-player" style="display:none"></div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const fwCanvas = document.getElementById('firework-canvas');
-        const fctx = fwCanvas.getContext('2d');
-        const nebCanvas = document.getElementById('nebula-canvas');
-        const nctx = nebCanvas.getContext('2d');
-        let w, h, yt, particles = [], rockets = [];
+        const bgC = document.getElementById('bg-canvas');
+        const fwC = document.getElementById('fw-canvas');
+        const btx = bgC.getContext('2d');
+        const ftx = fwC.getContext('2d');
+        let w, h, yt, particles = [], stars = [];
+
+        // Theo dõi con trỏ
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.getElementById('cursor');
+            cursor.style.left = e.clientX - 20 + 'px';
+            cursor.style.top = e.clientY - 20 + 'px';
+        });
 
         function init() {
-            w = fwCanvas.width = nebCanvas.width = window.innerWidth;
-            h = fwCanvas.height = nebCanvas.height = window.innerHeight;
-            // Tạo nền sao rơi
-            for(let i=0; i<200; i++) stars.push({x: Math.random()*w, y: Math.random()*h, s: Math.random()*2});
-        }
-        let stars = [];
-
-        class Particle {
-            constructor(x, y, color) {
-                this.x = x; this.y = y; this.color = color;
-                this.v = { x: (Math.random()-0.5)*20, y: (Math.random()-0.5)*20 };
-                this.alpha = 1;
-                this.decay = 0.01 + Math.random()*0.02;
-            }
-            draw() {
-                fctx.globalAlpha = this.alpha;
-                fctx.shadowBlur = 20; fctx.shadowColor = this.color;
-                fctx.fillStyle = this.color;
-                fctx.beginPath(); fctx.arc(this.x, this.y, 2, 0, Math.PI*2); fctx.fill();
-            }
-            update() {
-                this.x += this.v.x; this.y += this.v.y;
-                this.v.y += 0.2; // Trọng lực
-                this.alpha -= this.decay;
-            }
-        }
-
-        class Rocket {
-            constructor() {
-                this.x = Math.random()*w; this.y = h;
-                this.targetY = 50 + Math.random()*(h*0.5);
-                this.color = `hsl(${Math.random()*360}, 100%, 70%)`;
-                this.v = 15;
-            }
-            draw() {
-                fctx.fillStyle = "#fff";
-                fctx.fillRect(this.x, this.y, 2, 20);
-            }
-            update() {
-                this.y -= this.v;
-                if(this.y <= this.targetY) {
-                    for(let i=0; i<150; i++) particles.push(new Particle(this.x, this.y, this.color));
-                    return false;
-                }
-                return true;
-            }
+            w = bgC.width = fwC.width = window.innerWidth;
+            h = bgC.height = fwC.height = window.innerHeight;
+            stars = Array.from({length: 500}, () => ({
+                x: Math.random()*w, y: Math.random()*h, r: Math.random()*2, 
+                vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5,
+                o: Math.random()
+            }));
         }
 
         function onYouTubeIframeAPIReady() {
-            yt = new YT.Player('yt-player', {
+            yt = new YT.Player('nexus-player', {
                 videoId: 'iXaw-jwmjjA',
                 playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
                 events: { 'onReady': (e) => e.target.mute() }
             });
         }
 
-        function validate() {
-            const u = document.getElementById('u').value;
-            const p = document.getElementById('p').value;
+        function controlNexus() {
+            if(yt.isMuted()) { yt.unMute(); yt.playVideo(); } 
+            else { yt.mute(); }
+        }
+
+        function launchOmni() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
             if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
-                document.getElementById('gate-panel').style.display = 'none';
-                const db = document.getElementById('vip-dashboard');
-                db.style.display = 'grid';
-                yt.unMute(); yt.playVideo();
-                launch(120);
-            } else {
-                alert("ACCESS DENIED: SINH TRẮC HỌC KHÔNG KHỚP");
+                document.getElementById('login-ui').style.display = 'none';
+                const nav = document.getElementById('vip-nav');
+                nav.style.display = 'grid';
+                setTimeout(() => nav.style.opacity = 1, 100);
+                if(yt.isMuted()) controlNexus();
+                galaxy(150);
+            } else { alert("ACCESS DENIED. DNA MISMATCH."); }
+        }
+
+        // HỆ THỐNG HẠT LƯỢNG TỬ (GALAXY FIREWORKS)
+        class QuantumParticle {
+            constructor(x, y, hue) {
+                this.x = x; this.y = y; this.hue = hue;
+                this.angle = Math.random() * Math.PI * 2;
+                this.v = 5 + Math.random() * 10;
+                this.life = 1; this.decay = 0.005 + Math.random()*0.01;
+                this.spin = 0;
+            }
+            update() {
+                this.spin += 0.1;
+                this.x += Math.cos(this.angle + this.spin) * this.v;
+                this.y += Math.sin(this.angle + this.spin) * this.v;
+                this.v *= 0.95; this.life -= this.decay;
+            }
+            draw() {
+                ftx.globalAlpha = this.life;
+                ftx.shadowBlur = 20; ftx.shadowColor = `hsl(${this.hue}, 100%, 50%)`;
+                ftx.fillStyle = `hsl(${this.hue}, 100%, 75%)`;
+                ftx.beginPath(); ftx.arc(this.x, this.y, 1.5, 0, 7); ftx.fill();
             }
         }
 
-        function launch(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*150); }
-
-        function godMode() {
-            document.body.style.animation = "shake 0.2s infinite";
-            alert("BÌNH MINH YÊU VÂN ĐẾN TẬN CÙNG CỦA THỰC TẠI!");
-            launch(200);
-            setTimeout(() => document.body.style.animation = "", 2000);
+        function galaxy(n) {
+            const h = Math.random()*360;
+            const x = Math.random()*w, y = Math.random()*h;
+            for(let i=0; i<n; i++) particles.push(new QuantumParticle(x, y, h));
         }
 
-        function animate() {
-            nctx.fillStyle = '#020205'; nctx.fillRect(0,0,w,h);
-            nctx.fillStyle = '#fff';
-            stars.forEach(s => nctx.fillRect(s.x, s.y, s.s, s.s));
+        function singularity() {
+            alert("KÍCH HOẠT CHẾ ĐỘ ĐA VŨ TRỤ: BÌNH MINH ❤ THUÝ VÂN");
+            for(let i=0; i<10; i++) setTimeout(() => galaxy(100), i*200);
+        }
 
-            fctx.clearRect(0,0,w,h);
-            rockets = rockets.filter(r => { r.draw(); return r.update(); });
-            particles = particles.filter(p => { p.draw(); p.update(); return p.alpha > 0; });
-            requestAnimationFrame(animate);
+        function render() {
+            btx.fillStyle = 'rgba(0,0,0,0.2)'; btx.fillRect(0,0,w,h);
+            stars.forEach(s => {
+                s.x += s.vx; s.y += s.vy;
+                if(s.x<0 || s.x>w) s.vx *= -1;
+                if(s.y<0 || s.y>h) s.vy *= -1;
+                btx.fillStyle = `rgba(0, 242, 255, ${s.o})`;
+                btx.beginPath(); btx.arc(s.x, s.y, s.r, 0, 7); btx.fill();
+            });
+
+            ftx.clearRect(0,0,w,h);
+            particles = particles.filter(p => { p.update(); p.draw(); return p.life > 0; });
+            if(Math.random()<0.03) galaxy(60);
+            requestAnimationFrame(render);
         }
 
         window.addEventListener('resize', init);
-        init(); animate();
-        setInterval(() => { if(Math.random()<0.2) rockets.push(new Rocket()); }, 600);
+        init(); render();
     </script>
-
-    <style>
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            50% { transform: translate(-1px, 2px) rotate(1deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-        }
-    </style>
 </body>
 </html>
