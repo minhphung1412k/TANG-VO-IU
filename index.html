@@ -3,44 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GAME: THVAN QUANTUM ADVENTURE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>THVAN: PINK GALAXY LOVE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #000; overflow: hidden; 
-            font-family: 'Orbitron', sans-serif; color: #fff;
+        :root {
+            --pink-light: #ffc1e3;
+            --pink-main: #ff85c0;
+            --pink-dark: #f759ab;
+            --gold: #fff1b8;
         }
 
-        /* GIAO DIỆN GAME HUD */
-        #ui-layer {
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background: #2d0015; overflow: hidden; font-family: 'Orbitron', sans-serif; color: white; }
+
+        /* HUD GIAO DIỆN */
+        #hud {
             position: fixed; top: 20px; left: 20px; z-index: 100;
-            pointer-events: none;
+            padding: 15px; border-left: 5px solid var(--pink-main);
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);
         }
-        .stats { font-size: 12px; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; margin-bottom: 10px; }
-        .progress-container { width: 200px; height: 10px; background: rgba(255,255,255,0.1); border: 1px solid #00f2ff; }
-        #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #00f2ff, #ff007b); transition: 0.3s; }
+        .label { font-size: 10px; letter-spacing: 2px; color: var(--pink-light); margin-bottom: 5px; }
+        .energy-bar { width: 200px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+        #fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--pink-main), #fff); transition: 0.2s; }
 
-        /* MÀN HÌNH BẮT ĐẦU (START SCREEN) */
+        /* MÀN HÌNH BẮT ĐẦU */
         #overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-            z-index: 1000; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center;
-            border: 10px double #00f2ff; margin: 20px;
+            position: fixed; inset: 0; z-index: 1000;
+            background: radial-gradient(circle, #4d0025, #1a000d);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        h1 { font-family: 'Press Start 2P', cursive; font-size: 1.5rem; color: #ff007b; margin-bottom: 30px; line-height: 1.5; }
-        .start-btn {
-            padding: 20px 40px; background: transparent; border: 4px solid #00f2ff;
-            color: #00f2ff; font-family: 'Press Start 2P'; cursor: pointer;
-            transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+        h1 { font-family: 'Pacifico', cursive; font-size: 3.5rem; color: var(--pink-light); text-shadow: 0 0 20px var(--pink-dark); margin-bottom: 20px; }
+        .btn-start {
+            padding: 20px 50px; border: 2px solid var(--pink-main); background: transparent;
+            color: var(--pink-main); font-family: 'Orbitron'; font-weight: bold;
+            letter-spacing: 5px; cursor: pointer; border-radius: 50px; transition: 0.4s;
         }
-        .start-btn:hover { background: #00f2ff; color: #000; box-shadow: 0 0 50px #00f2ff; }
+        .btn-start:hover { background: var(--pink-main); color: white; box-shadow: 0 0 30px var(--pink-dark); transform: scale(1.1); }
 
-        /* HIỆU ỨNG THÔNG BÁO TRONG GAME */
-        #game-msg {
-            position: fixed; bottom: 15%; width: 100%; text-align: center;
-            font-family: 'Press Start 2P'; font-size: 10px; color: #ffd700;
-            pointer-events: none; opacity: 0; transition: 0.5s;
+        /* THÔNG BÁO */
+        #popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-family: 'Pacifico'; font-size: 2rem; color: var(--gold);
+            pointer-events: none; opacity: 0; z-index: 200;
         }
 
         canvas { display: block; }
@@ -48,18 +52,18 @@
 </head>
 <body>
 
-    <div id="ui-layer">
-        <div class="stats">PLAYER: THUÝ VÂN</div>
-        <div class="stats">LOVE ENERGY: <span id="score">0</span>%</div>
-        <div class="progress-container"><div id="progress-bar"></div></div>
+    <div id="hud">
+        <div class="label">MISSION: COLLECT HEARTS</div>
+        <div class="label">LOVE LEVEL: <span id="percent">0</span>%</div>
+        <div class="energy-bar"><div id="fill"></div></div>
     </div>
 
-    <div id="game-msg">BÌNH MINH YÊU VÂN NHẤT!</div>
+    <div id="popup">Vân Tuyệt Nhất!</div>
 
     <div id="overlay">
-        <h1>PROJECT: THVAN<br>QUANTUM LOVE</h1>
-        <p style="margin-bottom: 40px; letter-spacing: 5px;">HÃY THU THẬP CÁC HẠT SÁNG ĐỂ MỞ KHOÁ TRÁI TIM</p>
-        <button class="start-btn" onclick="startGame()">START MISSION</button>
+        <h1>Thuý Vân Princess</h1>
+        <p style="margin-bottom: 30px; letter-spacing: 3px; color: var(--pink-main)">TRẠM NĂNG LƯỢNG TÌNH YÊU CỦA BÌNH MINH</p>
+        <button class="btn-start" onclick="initGame()">BẮT ĐẦU QUAY PHIM</button>
     </div>
 
     <div id="yt-player" style="display:none"></div>
@@ -70,28 +74,17 @@
         const ctx = canvas.getContext('2d');
         document.body.appendChild(canvas);
 
-        let w, h, yt, animationId;
-        let score = 0;
-        let gameActive = false;
-        let player = { x: 0, y: 0, r: 20 };
-        let particles = [];
-        let stars = [];
-        let items = [];
+        let w, h, yt, score = 0, active = false;
+        let player = { x: 0, y: 0 };
+        let items = [], particles = [], hearts = [];
+        let frameCount = 0;
 
-        const quotes = [
-            "VÂN LÀ XINH NHẤT!",
-            "BÌNH MINH CHỈ YÊU VÂN",
-            "MẬT MÃ: THUÝ VÂN",
-            "NĂNG LƯỢNG TRÀN ĐẦY!",
-            "SẮP TỚI ĐÍCH RỒI BẤY BÌ"
-        ];
+        const messages = ["Yêu Vân!", "Xinh đẹp quá!", "Công chúa của anh", "Bình Minh ❤️ Thuý Vân", "Moahhh!"];
 
         function init() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-            stars = Array.from({length: 200}, () => ({
-                x: Math.random()*w, y: Math.random()*h, s: Math.random()*2, v: Math.random()*2+1
-            }));
+            player.x = w/2; player.y = h/2;
         }
 
         function onYouTubeIframeAPIReady() {
@@ -102,122 +95,113 @@
             });
         }
 
-        function startGame() {
-            document.getElementById('overlay').style.display = 'none';
-            gameActive = true;
-            yt.unMute();
-            yt.playVideo();
-            spawnItem();
-            animate();
-        }
-
         window.addEventListener('mousemove', (e) => {
-            player.x = e.clientX;
-            player.y = e.clientY;
+            player.x = e.clientX; player.y = e.clientY;
         });
 
-        function spawnItem() {
-            if(!gameActive) return;
+        function initGame() {
+            document.getElementById('overlay').style.display = 'none';
+            active = true;
+            yt.unMute();
+            yt.playVideo();
+            loop();
+        }
+
+        function spawnHeart() {
             items.push({
-                x: Math.random()*w, y: -50,
-                r: 10, v: Math.random()*3+2,
-                color: `hsl(${Math.random()*360}, 100%, 70%)`
+                x: Math.random() * w,
+                y: -50,
+                s: Math.random() * 15 + 10,
+                v: Math.random() * 3 + 2,
+                a: 0
             });
-            setTimeout(spawnItem, 1000);
         }
 
-        function showMsg() {
-            const msg = document.getElementById('game-msg');
-            msg.innerText = quotes[Math.floor(Math.random()*quotes.length)];
-            msg.style.opacity = 1;
-            setTimeout(() => msg.style.opacity = 0, 1500);
+        function showPopup() {
+            const p = document.getElementById('popup');
+            p.innerText = messages[Math.floor(Math.random() * messages.length)];
+            p.style.opacity = 1;
+            setTimeout(() => p.style.opacity = 0, 1000);
         }
 
-        function createExplosion(x, y, color) {
-            for(let i=0; i<20; i++) {
-                particles.push({
-                    x, y, color,
-                    vx: (Math.random()-0.5)*10,
-                    vy: (Math.random()-0.5)*10,
-                    life: 1
-                });
-            }
+        function drawHeart(x, y, size, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.bezierCurveTo(x, y-3, x-size, y-3, x-size, y+size/3);
+            ctx.bezierCurveTo(x-size, y+size, x, y+size*1.3, x, y+size*1.5);
+            ctx.bezierCurveTo(x, y+size*1.3, x+size, y+size, x+size, y+size/3);
+            ctx.bezierCurveTo(x+size, y-3, x, y-3, x, y);
+            ctx.fill();
         }
 
-        function animate() {
-            ctx.fillStyle = '#000';
+        function loop() {
+            if(!active) return;
+            ctx.fillStyle = '#1a000d'; // Nền tím đen cực sang
             ctx.fillRect(0,0,w,h);
 
-            // Vẽ sao nền lướt đi
-            stars.forEach(s => {
-                ctx.fillStyle = '#fff';
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, 7); ctx.fill();
-                s.y += s.v;
-                if(s.y > h) s.y = -10;
-            });
+            // Spawn vật phẩm mỗi 60 frame (khoảng 1 giây)
+            frameCount++;
+            if(frameCount % 60 === 0) spawnHeart();
 
-            // Vẽ người chơi (Phi thuyền Hologram)
-            ctx.strokeStyle = '#00f2ff';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(player.x, player.y - 25);
-            ctx.lineTo(player.x + 20, player.y + 15);
-            ctx.lineTo(player.x - 20, player.y + 15);
-            ctx.closePath();
-            ctx.stroke();
-            ctx.shadowBlur = 20; ctx.shadowColor = '#00f2ff';
+            // Vẽ Player (Vòng tròn hào quang hồng)
+            ctx.shadowBlur = 30; ctx.shadowColor = '#ff85c0';
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(player.x, player.y, 15, 0, 7); ctx.stroke();
 
-            // Xử lý vật phẩm
-            items.forEach((item, index) => {
+            // Xử lý Hearts (Items)
+            items.forEach((item, i) => {
                 item.y += item.v;
-                ctx.fillStyle = item.color;
-                ctx.shadowBlur = 15; ctx.shadowColor = item.color;
-                ctx.beginPath(); ctx.arc(item.x, item.y, item.r, 0, 7); ctx.fill();
+                item.a += 0.05;
+                let ox = Math.sin(item.a) * 2; // Bay lướt lướt
+                
+                drawHeart(item.x + ox, item.y, item.s, '#ff85c0');
 
                 // Va chạm
                 let dx = player.x - item.x;
                 let dy = player.y - item.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
 
-                if(dist < player.r + item.r) {
-                    items.splice(index, 1);
-                    score += 5;
-                    document.getElementById('score').innerText = score;
-                    document.getElementById('progress-bar').style.width = score + '%';
-                    createExplosion(item.x, item.y, item.color);
-                    showMsg();
-
-                    if(score >= 100) endGame();
+                if(dist < 30) {
+                    items.splice(i, 1);
+                    score += 10;
+                    if(score > 100) score = 100;
+                    document.getElementById('percent').innerText = score;
+                    document.getElementById('fill').style.width = score + '%';
+                    showPopup();
+                    if(score >= 100) victory();
                 }
-                if(item.y > h) items.splice(index, 1);
+
+                if(item.y > h + 50) items.splice(i, 1);
             });
 
-            // Pháo hoa hạt nhân
-            particles = particles.filter(p => {
-                p.x += p.vx; p.y += p.vy; p.life -= 0.02;
-                ctx.globalAlpha = p.life;
-                ctx.fillStyle = p.color;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, 7); ctx.fill();
-                return p.life > 0;
+            // Hiệu ứng hạt bụi (Dust)
+            if(Math.random() > 0.9) {
+                particles.push({x: Math.random()*w, y: Math.random()*h, o: 1});
+            }
+            particles.forEach((p, i) => {
+                p.o -= 0.01;
+                ctx.fillStyle = `rgba(255, 193, 227, ${p.o})`;
+                ctx.fillRect(p.x, p.y, 2, 2);
+                if(p.o <= 0) particles.splice(i, 1);
             });
-            ctx.globalAlpha = 1;
 
-            if(gameActive) requestAnimationFrame(animate);
+            requestAnimationFrame(loop);
         }
 
-        function endGame() {
-            gameActive = false;
-            ctx.clearRect(0,0,w,h);
-            const overlay = document.getElementById('overlay');
-            overlay.style.display = 'flex';
-            overlay.innerHTML = `
-                <h1 style="color: #00f2ff">MISSION ACCOMPLISHED!</h1>
-                <p style="font-size: 20px; line-height: 2">BÌNH MINH ❤ THUÝ VÂN<br>FOREVER TOGETHER</p>
-                <div style="margin-top: 30px; font-size: 10px; color: #ff007b">MUSIC: ${yt.getVideoData().title}</div>
+        function victory() {
+            active = false;
+            document.getElementById('overlay').style.display = 'flex';
+            document.getElementById('overlay').innerHTML = `
+                <h1 style="font-size: 4rem">MISSION COMPLETE</h1>
+                <p style="font-family: 'Pacifico'; font-size: 2rem; color: #fff">Bình Minh Yêu Vân Mãi Mãi!</p>
+                <div style="margin-top: 50px">✨💖✨</div>
             `;
-            // Nổ pháo hoa liên hoàn
-            setInterval(() => createExplosion(Math.random()*w, Math.random()*h, '#ff007b'), 200);
-            setInterval(() => createExplosion(Math.random()*w, Math.random()*h, '#00f2ff'), 300);
+            // Hiệu ứng pháo hoa trái tim liên tục
+            setInterval(() => {
+                drawHeart(Math.random()*w, Math.random()*h, 30, '#f759ab');
+            }, 100);
         }
 
         window.addEventListener('resize', init);
