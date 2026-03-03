@@ -2,290 +2,264 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>BÌNH MINH TẶNG EM - ETERNITY</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE VÂN PROJECT - KỶ NGUYÊN MỚI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --n: #00f2ff; --p: #ff007b; --v: #7000ff;
-            --g: rgba(255, 255, 255, 0.03);
+            --core: #00ffcc; --accent: #ff007b; --bg: #030305;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { width: 100vw; height: 100vh; background: #000; overflow: hidden; font-family: 'Segoe UI', sans-serif; color: #fff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); color: #fff; overflow: hidden; 
+            font-family: 'Orbitron', sans-serif; height: 100vh;
+        }
 
-        /* LAYER ĐỒ HỌA */
-        #bg-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-        #fw-canvas { position: fixed; inset: 0; z-index: 2; pointer-events: none; mix-blend-mode: screen; }
+        /* NỀN BẢNG MẠCH CHẠY NGẦM */
+        #circuit-bg {
+            position: fixed; inset: 0; z-index: 1; opacity: 0.3;
+            background-image: radial-gradient(var(--core) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
 
-        /* GIAO DIỆN TỔNG THỂ */
-        .os-container {
-            position: fixed; inset: 0; z-index: 100;
+        /* LÕI NĂNG LƯỢNG TRUNG TÂM */
+        .main-frame {
+            position: relative; z-index: 10; height: 100vh;
             display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.6) 100%);
+            perspective: 1000px;
         }
 
-        /* KHUNG ĐĂNG NHẬP: NEON-GLASS HYBRID */
-        .login-module {
-            width: 360px; padding: 50px 40px; position: relative;
-            background: rgba(10, 10, 20, 0.8);
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px 5px;
-            box-shadow: 0 0 50px rgba(0,0,0,1), inset 0 0 20px rgba(0, 242, 255, 0.1);
-            overflow: hidden;
-            animation: slideUp 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        .quantum-shell {
+            width: 380px; background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(0, 255, 204, 0.2);
+            padding: 50px 30px; border-radius: 30px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 100px rgba(0, 255, 204, 0.05);
+            text-align: center; transform-style: preserve-3d;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* VIỀN LED CHẠY QUANH KHUNG */
-        .login-module::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--n), transparent);
-            animation: borderRun 3s linear infinite;
+        .quantum-shell:hover { transform: rotateX(5deg) rotateY(5deg); border-color: var(--core); }
+
+        .header h1 {
+            font-family: 'Syncopate', sans-serif; font-size: 1.2rem;
+            letter-spacing: 10px; margin-bottom: 40px; color: var(--core);
+            text-shadow: 0 0 15px var(--core);
         }
-        @keyframes borderRun { to { left: 100%; } }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(100px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        /* INPUT KIỂU SCANNER */
+        .scanner-group { position: relative; margin-bottom: 30px; text-align: left; }
+        .scanner-group label { 
+            font-size: 9px; letter-spacing: 3px; color: #666; 
+            display: block; margin-bottom: 8px; padding-left: 10px;
+        }
 
-        .os-header { text-align: center; margin-bottom: 40px; }
-        .os-header h1 { font-family: 'Cinzel Decorative'; font-size: 1.6rem; letter-spacing: 3px; color: #fff; text-shadow: 0 0 15px var(--p); }
-        .os-header span { font-family: 'Orbitron'; font-size: 9px; color: var(--n); letter-spacing: 5px; text-transform: uppercase; }
+        .input-wrapper {
+            position: relative; display: flex; align-items: center;
+            background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.1);
+            border-radius: 8px; overflow: hidden;
+        }
 
-        /* INPUT SECTOR */
-        .input-row { position: relative; margin-bottom: 30px; }
-        .input-row label { display: block; font-family: 'Orbitron'; font-size: 8px; color: var(--n); letter-spacing: 3px; margin-bottom: 10px; opacity: 0.7; }
+        .input-wrapper i { padding: 0 15px; color: var(--core); font-size: 14px; }
+
+        input {
+            width: 100%; background: transparent; border: none; padding: 15px 10px;
+            color: #fff; font-family: 'Orbitron'; font-size: 13px; outline: none;
+        }
+
+        /* NÚT KÍCH HOẠT (FUSION BUTTON) */
+        .fusion-btn {
+            width: 100%; padding: 20px; margin-top: 10px;
+            background: transparent; border: 1px solid var(--core);
+            color: var(--core); font-family: 'Syncopate'; font-size: 10px;
+            letter-spacing: 5px; cursor: pointer; position: relative;
+            overflow: hidden; transition: 0.4s;
+        }
+
+        .fusion-btn:hover {
+            background: var(--core); color: #000;
+            box-shadow: 0 0 40px var(--core);
+        }
+
+        /* HỆ THỐNG PHÁO HOA "ELECTRON" */
+        #particle-canvas {
+            position: fixed; inset: 0; z-index: 5; pointer-events: none;
+        }
+
+        /* CỬA SỔ DASHBOARD SAU KHI VÀO */
+        #dashboard { display: none; opacity: 0; transition: 1s; }
         
-        .field-wrap {
-            display: flex; align-items: center; background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: 0.4s;
+        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .nav-item {
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px;
+            border-radius: 12px; cursor: pointer; transition: 0.3s;
         }
-        .field-wrap:focus-within { border-color: var(--p); box-shadow: 0 0 15px rgba(255,0,123,0.3); background: rgba(255,255,255,0.07); }
-        
-        .field-wrap i { padding: 0 15px; color: var(--n); font-size: 14px; transition: 0.3s; }
-        .field-wrap:focus-within i { transform: rotate(15deg) scale(1.2); color: var(--p); }
+        .nav-item:hover { background: rgba(255, 0, 123, 0.2); border-color: var(--accent); }
 
-        .field-wrap input {
-            width: 100%; padding: 14px 0; background: transparent; border: none;
-            color: #fff; font-size: 13.5px; outline: none; font-weight: 500;
+        /* NÚT NHẠC KIỂU HOLOGRAM */
+        #audio-node {
+            position: fixed; bottom: 30px; left: 30px; z-index: 1000;
+            width: 40px; height: 40px; border-radius: 50%;
+            border: 1px solid var(--core); display: flex; align-items: center; justify-content: center;
+            cursor: pointer; animation: pulse 2s infinite;
         }
-
-        /* NÚT BẤM "VÔ CỰC" */
-        .btn-infinity {
-            width: 100%; padding: 18px; border: none; margin-top: 10px;
-            font-family: 'Orbitron'; font-weight: 900; font-size: 0.85rem;
-            color: #fff; letter-spacing: 10px; cursor: pointer;
-            background: linear-gradient(45deg, var(--p), var(--v));
-            border-radius: 12px; transition: 0.5s; position: relative;
-        }
-        .btn-infinity:hover { letter-spacing: 15px; transform: scale(1.02); box-shadow: 0 0 40px var(--p); }
-
-        /* CỔNG QUÉT SINH TRẮC */
-        #biometric-gate {
-            position: fixed; inset: 0; z-index: 10000; background: #000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
-        }
-        .scan-circle {
-            width: 130px; height: 130px; border: 2px solid var(--n); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 30px var(--n); position: relative;
-        }
-        .scan-line {
-            position: absolute; width: 100%; height: 2px; background: var(--n);
-            box-shadow: 0 0 15px var(--n); animation: scanMove 2s ease-in-out infinite;
-        }
-        @keyframes scanMove { 0%, 100% { top: 0%; } 50% { top: 100%; } }
-
-        /* DASHBOARD */
-        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .grid-item {
-            background: rgba(255,255,255,0.05); padding: 22px 10px; border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer;
-            font-family: 'Orbitron'; font-size: 10px; letter-spacing: 2px; transition: 0.3s;
-        }
-        .grid-item:hover { background: var(--p); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255,0,123,0.4); }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(0, 255, 204, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 204, 0); } }
     </style>
 </head>
 <body>
 
-    <div id="biometric-gate" onclick="bootOS()">
-        <div class="scan-circle">
-            <div class="scan-line"></div>
-            <i class="fas fa-fingerprint" style="font-size: 50px; color: #fff;"></i>
-        </div>
-        <h2 style="margin-top: 40px; font-family: 'Orbitron'; letter-spacing: 12px; color: #fff;">CHẠM ĐỂ SƯỚNG</h2>
+    <div id="circuit-bg"></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <div id="audio-node" onclick="toggleAudio()">
+        <i id="music-icon" class="fas fa-satellite-dish" style="color: var(--core);"></i>
     </div>
 
-    <canvas id="bg-canvas"></canvas>
-    <canvas id="fw-canvas"></canvas>
-    <div id="yt-player" style="display:none"></div>
-
-    <div class="os-container">
-        <div class="login-module" id="auth-ui">
-            <div class="os-header">
-                <h1>BÌNH MINH</h1>
-                <span>TẶNG EM THUÝ VÂN</span>
+    <div class="main-frame">
+        <div class="quantum-shell" id="auth-box">
+            <div class="header">
+                <h1>PROJECT VÂN</h1>
+                <div style="width: 50px; height: 2px; background: var(--core); margin: -30px auto 40px;"></div>
             </div>
 
-            <div class="input-row">
-                <label>BIOMETRIC USERNAME</label>
-                <div class="field-wrap">
-                    <i class="fas fa-user-astronaut"></i>
-                    <input type="text" id="u-in" placeholder="Nhập tk nha Vân iu">
+            <div class="scanner-group">
+                <label>IDENTITY SCAN</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-fingerprint"></i>
+                    <input type="text" id="u-name" placeholder="Nhập tk nha Vân iu">
                 </div>
             </div>
 
-            <div class="input-row">
-                <label>QUANTUM PASSWORD</label>
-                <div class="field-wrap">
-                    <i class="fas fa-shield-heart"></i>
-                    <input type="password" id="p-in" placeholder="Nhập mật khẩu nhá bấy bì">
+            <div class="scanner-group">
+                <label>ENCRYPTION KEY</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-terminal"></i>
+                    <input type="password" id="u-pass" placeholder="Nhập mật khẩu nhá bấy bì">
                 </div>
             </div>
 
-            <button class="btn-infinity" onclick="verify()">TRUY CẬP</button>
+            <button class="fusion-btn" onclick="initFusion()">KÍCH HOẠT</button>
         </div>
 
-        <div class="login-module" id="menu-ui" style="display:none; opacity:0;">
-            <div class="os-header"><h1>VŨ TRỤ CỦA VÂN</h1></div>
-            <div class="grid-menu">
-                <div class="grid-item" onclick="ignite(80)">KỈ NIỆM</div>
-                <div class="grid-item" onclick="ignite(80)">HIỆN TẠI</div>
-                <div class="grid-item" onclick="ignite(80)">TƯƠNG LAI</div>
-                <div class="grid-item" onclick="love()">YÊU ANH</div>
+        <div class="quantum-shell" id="dashboard">
+            <div class="header">
+                <h1>ACCESS GRANTED</h1>
+                <p style="font-size: 8px; color: var(--accent); letter-spacing: 5px; margin: -25px 0 35px;">HELLO THUÝ VÂN</p>
+            </div>
+            <div class="nav-grid">
+                <div class="nav-item" onclick="bang(50)">MEMORY</div>
+                <div class="nav-item" onclick="bang(50)">PRESENT</div>
+                <div class="nav-item" onclick="bang(50)">FUTURE</div>
+                <div class="nav-item" style="grid-column: span 2;" onclick="loveMode()">ETERNAL LOVE</div>
             </div>
         </div>
     </div>
+
+    <div id="yt-wrap" style="display:none"></div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const bg = document.getElementById('bg-canvas');
-        const fw = document.getElementById('fw-canvas');
-        const bctx = bg.getContext('2d');
-        const fctx = fw.getContext('2d');
-        let w, h, yt, audioCtx, stars = [], buildings = [], rockets = [], particles = [];
-        const loveLines = ["BMINH THƯƠNG EM", "BMINH YÊU EM", "THVAN CUTE", "THVAN XINH", "MÃI YÊU EM"];
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h, yt, audioCtx, active = false;
+        let particles = [];
 
-        function initOS() {
-            w = bg.width = fw.width = window.innerWidth;
-            h = bg.height = fw.height = window.innerHeight;
-            
-            // Tạo thành phố chân thực (Layered Parallax)
-            buildings = Array.from({length: 65}, () => ({
-                x: Math.random() * w,
-                w: 60 + Math.random() * 120,
-                h: 120 + Math.random() * (h * 0.7),
-                z: 0.3 + Math.random() * 0.7, // Độ sâu để làm mờ
-                neon: Math.random() > 0.8 ? loveLines[Math.floor(Math.random()*loveLines.length)] : null,
-                seed: Math.random() * 100
-            }));
-            stars = Array.from({length: 300}, () => ({x:Math.random()*w, y:Math.random()*h, s:Math.random()*2, o:Math.random()}));
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
         }
+        window.addEventListener('resize', resize);
+        resize();
 
-        class Particle {
-            constructor(x, y, hue) {
-                this.x = x; this.y = y; this.h = hue;
-                this.vx = (Math.random()-0.5)*15;
-                this.vy = (Math.random()-0.5)*15;
-                this.a = 1; this.d = 0.008 + Math.random()*0.015;
-                this.gravity = 0.12;
+        class Electron {
+            constructor(x, y, color) {
+                this.x = x; this.y = y;
+                this.v = { x: (Math.random()-0.5)*12, y: (Math.random()-0.5)*12 };
+                this.life = 1;
+                this.decay = 0.01 + Math.random()*0.02;
+                this.color = color;
             }
             draw() {
-                fctx.fillStyle = `hsla(${this.h}, 100%, 75%, ${this.a})`;
-                fctx.shadowBlur = 10; fctx.shadowColor = `hsla(${this.h}, 100%, 50%, ${this.a})`;
-                fctx.beginPath(); fctx.arc(this.x, this.y, 1.8, 0, 7); fctx.fill();
-                fctx.shadowBlur = 0;
-            }
-            update() { 
-                this.vx *= 0.96; this.vy *= 0.96; this.vy += this.gravity; 
-                this.x += this.vx; this.y += this.vy; this.a -= this.d; 
-            }
-        }
-
-        class Rocket {
-            constructor() {
-                this.x = Math.random()*w; this.y = h;
-                this.targetY = 50 + Math.random()*(h*0.4);
-                this.v = 14 + Math.random()*6; this.hue = Math.random()*360;
-            }
-            draw() {
-                fctx.fillStyle = '#fff';
-                fctx.shadowBlur = 15; fctx.shadowColor = '#fff';
-                fctx.fillRect(this.x, this.y, 1.5, 18);
-                fctx.shadowBlur = 0;
+                ctx.save();
+                ctx.shadowBlur = 15; ctx.shadowColor = this.color;
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.life;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 1.5, 0, Math.PI*2);
+                ctx.fill();
+                ctx.restore();
             }
             update() {
-                this.y -= this.v;
-                if(this.y <= this.targetY) {
-                    for(let i=0; i<180; i++) particles.push(new Particle(this.x, this.y, this.hue));
-                    return false;
-                }
-                return true;
+                this.x += this.v.x; this.y += this.v.y;
+                this.v.y += 0.05; // Gravity
+                this.life -= this.decay;
             }
         }
 
         function onYouTubeIframeAPIReady() {
-            yt = new YT.Player('yt-player', { videoId: 'iXaw-jwmjjA', playerVars: { loop:1, playlist:'iXaw-jwmjjA' }});
-        }
-
-        function bootOS() {
-            document.getElementById('biometric-gate').style.display = 'none';
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            initOS(); loop();
-            setInterval(() => { if(Math.random()<0.3) rockets.push(new Rocket()); }, 500);
-            if(yt) { yt.unMute(); yt.playVideo(); }
-        }
-
-        function verify() {
-            if(document.getElementById('u-in').value === "thuyvanchithuongbminh" && document.getElementById('p-in').value === "bminhcungchicuoithvanthoi") {
-                document.getElementById('auth-ui').style.display = 'none';
-                const m = document.getElementById('menu-ui'); m.style.display = 'block';
-                setTimeout(() => m.style.opacity = 1, 100); ignite(100);
-            } else { alert("ADN KHÔNG TRÙNG KHỚP! VUI LÒNG NHẬP LẠI."); }
-        }
-
-        function ignite(n) { for(let i=0; i<n; i++) setTimeout(() => rockets.push(new Rocket()), i*150); }
-        function love() { alert("BÌNH MINH YÊU THUÝ VÂN MÃI MÃI!"); ignite(120); }
-
-        function loop() {
-            bctx.fillStyle = '#00000a'; bctx.fillRect(0,0,w,h);
-            
-            // Vẽ bầu trời sao
-            stars.forEach(s => { bctx.fillStyle=`rgba(255,255,255,${s.o})`; bctx.fillRect(s.x, s.y, s.s, s.s); });
-
-            // Vẽ thành phố chân thực
-            buildings.forEach(b => {
-                const brightness = Math.floor(b.z * 15);
-                let grad = bctx.createLinearGradient(b.x, h-b.h, b.x, h);
-                grad.addColorStop(0, `rgb(${brightness}, ${brightness}, ${brightness+10})`);
-                grad.addColorStop(1, '#000');
-                bctx.fillStyle = grad;
-                bctx.fillRect(b.x, h-b.h, b.w, b.h);
-
-                // Đèn cửa sổ nhấp nháy
-                if(b.z > 0.6) {
-                    bctx.fillStyle = Math.sin(Date.now()*0.001 + b.seed) > 0 ? '#ffd70033' : '#ffd70005';
-                    bctx.fillRect(b.x + 10, h-b.h+20, b.w-20, 5);
-                }
-
-                if(b.neon) {
-                    bctx.font = `bold ${10 * b.z}px Orbitron`;
-                    bctx.fillStyle = `rgba(0, 242, 255, ${b.z})`;
-                    bctx.shadowBlur = 15; bctx.shadowColor = 'var(--n)';
-                    bctx.fillText(b.neon, b.x + 5, h-b.h + 40);
-                    bctx.shadowBlur = 0;
-                }
+            yt = new YT.Player('yt-wrap', {
+                videoId: 'iXaw-jwmjjA',
+                playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'iXaw-jwmjjA' },
+                events: { 'onReady': (e) => e.target.mute() }
             });
-
-            // Vẽ pháo hoa layer trên
-            fctx.clearRect(0,0,w,h);
-            rockets = rockets.filter(r => { r.draw(); return r.update(); });
-            particles = particles.filter(p => { p.draw(); p.update(); return p.a > 0; });
-            
-            requestAnimationFrame(loop);
         }
-        window.addEventListener('resize', initOS);
+
+        function toggleAudio() {
+            active = !active;
+            const icon = document.getElementById('music-icon');
+            if(active) {
+                yt.unMute(); yt.playVideo();
+                icon.className = "fas fa-broadcast-tower";
+                icon.style.color = "var(--accent)";
+            } else {
+                yt.mute();
+                icon.className = "fas fa-satellite-dish";
+                icon.style.color = "var(--core)";
+            }
+        }
+
+        function initFusion() {
+            const u = document.getElementById('u-name').value;
+            const p = document.getElementById('u-pass').value;
+            if(u === "thuyvanchithuongbminh" && p === "bminhcungchicuoithvanthoi") {
+                document.getElementById('auth-box').style.display = 'none';
+                const db = document.getElementById('dashboard');
+                db.style.display = 'block';
+                setTimeout(() => db.style.opacity = 1, 100);
+                bang(100);
+            } else {
+                alert("HỆ THỐNG TỪ CHỐI: SAI MÃ TRUY CẬP");
+            }
+        }
+
+        function bang(n) {
+            const colors = ['#00ffcc', '#ff007b', '#7000ff', '#ffffff'];
+            for(let i=0; i<n; i++) {
+                setTimeout(() => {
+                    const x = Math.random()*w; const y = Math.random()*h;
+                    const c = colors[Math.floor(Math.random()*colors.length)];
+                    for(let j=0; j<30; j++) particles.push(new Electron(x, y, c));
+                }, i*100);
+            }
+        }
+
+        function loveMode() {
+            alert("VÂN LÀ NGUỒN NĂNG LƯỢNG DUY NHẤT CỦA BÌNH MINH!");
+            bang(150);
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, w, h);
+            particles = particles.filter(p => {
+                p.update(); p.draw();
+                return p.life > 0;
+            });
+            requestAnimationFrame(render);
+        }
+        render();
     </script>
 </body>
 </html>
