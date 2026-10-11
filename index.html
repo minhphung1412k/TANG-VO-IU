@@ -250,18 +250,27 @@ function settingsPage(){
 }
 function bind(){
  const root=$('#view');
- // Reassign one delegated handler on each render. It remains active when search/sort
- // replaces card HTML without a full render, and avoids a stale one-time listener.
- root.onclick=ev=>{
-  const target=ev.target?.nodeType===1?ev.target:ev.target?.parentElement;
-  const el=target?.closest?.('[data-act]');
-  if(!el||!root.contains(el)||el.disabled)return;
-  if(el.tagName==='BUTTON')ev.preventDefault();
-  try{act(el)}catch(err){
-   console.error('THIDAN action failed:',el.dataset.act,err);
-   toast('Thao tác chưa hoàn tất: '+(err?.message||'lỗi không xác định'),'error');
-  }
- };
+ // Capture actions at document level so button clicks still work after cards are
+ // replaced dynamically by search/sort. One handler avoids stale/dead elements.
+ if(!document.documentElement.dataset.thidanActionsBound){
+  document.addEventListener('click',ev=>{
+   const target=ev.target?.nodeType===1?ev.target:ev.target?.parentElement;
+   const el=target?.closest?.('[data-act]');
+   if(!el)return;
+   const viewRoot=$('#view');
+   if(!viewRoot||!viewRoot.contains(el)||el.disabled)return;
+   if(el.tagName==='BUTTON')ev.preventDefault();
+   ev.stopPropagation();
+   try{
+    console.debug('[THIDAN CUTE] action',el.dataset.act,'id=',el.dataset.id||'');
+    act(el);
+   }catch(err){
+    console.error('THIDAN action failed:',el.dataset.act,err);
+    toast('Thao tác chưa hoàn tất: '+(err?.message||'lỗi không xác định'),'error');
+   }
+  },true);
+  document.documentElement.dataset.thidanActionsBound='1';
+ }
  root.querySelectorAll('[data-act]').forEach(el=>{if(el.tagName==='BUTTON')el.type='button'});
  if(viewName==='create'){
   let ta=$('#jsonInput');
